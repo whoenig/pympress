@@ -53,7 +53,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress-128.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.4.1
+		v1.5.0-b4
 	</div>
 
 	
@@ -615,11 +615,16 @@
     <span class="c1">#: a static `dict` of :class:`~Gdk.Cursor`s, ready to use</span>
     <span class="n">_cursors</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;parent&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">LEFT_PTR</span><span class="p">),</span>
-        <span class="s1">&#39;pointer&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">HAND1</span><span class="p">),</span>
-        <span class="s1">&#39;crosshair&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">CROSSHAIR</span><span class="p">),</span>
-        <span class="s1">&#39;invisible&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">BLANK_CURSOR</span><span class="p">),</span>
     <span class="p">}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_populate_cursors</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_cursors</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;default&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">LEFT_PTR</span><span class="p">),</span>
+            <span class="s1">&#39;pointer&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">HAND1</span><span class="p">),</span>
+            <span class="s1">&#39;crosshair&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">CROSSHAIR</span><span class="p">),</span>
+            <span class="s1">&#39;invisible&#39;</span><span class="p">:</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">new_for_display</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">CursorType</span><span class="o">.</span><span class="n">BLANK_CURSOR</span><span class="p">),</span>
+        <span class="p">})</span>
 
 <div class="viewcode-block" id="Cursor.set_cursor"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Cursor.set_cursor">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_cursor</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">cursor_name</span> <span class="o">=</span> <span class="s1">&#39;parent&#39;</span><span class="p">):</span>
@@ -629,7 +634,13 @@
 <span class="sd">            widget (:class:`~Gtk.Widget`): The widget triggering the cursor change, used to retrieve a Gdk.Window</span>
 <span class="sd">            cursor_name (`str`): Name of the cursor to be set</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_cursors</span><span class="p">[</span><span class="n">cursor_name</span><span class="p">])</span></div></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_cursors</span><span class="p">[</span><span class="n">cursor_name</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_populate_cursors</span><span class="p">()</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_cursors</span><span class="p">[</span><span class="n">cursor_name</span><span class="p">]</span>
+
+        <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Zoom"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom">[docs]</a><span class="k">class</span> <span class="nc">Zoom</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
