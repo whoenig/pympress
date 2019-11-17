@@ -2655,32 +2655,49 @@ widget names and its values are document types from ui.</p>
 </div>
 <span class="target" id="module-pympress.pointer"></span><div class="section" id="pympress-pointer-manage-when-and-where-to-draw-a-software-emulated-laser-pointer-on-screen">
 <h3><a class="reference internal" href="#module-pympress.pointer" title="pympress.pointer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.pointer</span></code></a> – Manage when and where to draw a software-emulated laser pointer on screen<a class="headerlink" href="#pympress-pointer-manage-when-and-where-to-draw-a-software-emulated-laser-pointer-on-screen" title="Permalink to this headline">¶</a></h3>
-<dl class="data">
-<dt id="pympress.pointer.POINTER_HIDE">
-<code class="sig-prename descclassname">pympress.pointer.</code><code class="sig-name descname">POINTER_HIDE</code><em class="property"> = 0</em><a class="headerlink" href="#pympress.pointer.POINTER_HIDE" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pointer enabled but hidden, will be drawn on ctrl + click</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="pympress.pointer.POINTER_OFF">
-<code class="sig-prename descclassname">pympress.pointer.</code><code class="sig-name descname">POINTER_OFF</code><em class="property"> = -1</em><a class="headerlink" href="#pympress.pointer.POINTER_OFF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pointer disabled, will not be drawn</p>
-</dd></dl>
-
-<dl class="data">
-<dt id="pympress.pointer.POINTER_SHOW">
-<code class="sig-prename descclassname">pympress.pointer.</code><code class="sig-name descname">POINTER_SHOW</code><em class="property"> = 1</em><a class="headerlink" href="#pympress.pointer.POINTER_SHOW" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw the pointer on the current slide</p>
-</dd></dl>
-
 <dl class="class">
 <dt id="pympress.pointer.Pointer">
 <em class="property">class </em><code class="sig-prename descclassname">pympress.pointer.</code><code class="sig-name descname">Pointer</code><span class="sig-paren">(</span><em class="sig-param">config</em>, <em class="sig-param">builder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#object" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
-<dt id="pympress.pointer.Pointer.change_pointer">
-<code class="sig-name descname">change_pointer</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.change_pointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.change_pointer" title="Permalink to this definition">¶</a></dt>
+<dt id="pympress.pointer.Pointer.activate_pointermode">
+<code class="sig-name descname">activate_pointermode</code><span class="sig-paren">(</span><em class="sig-param">mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.activate_pointermode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.activate_pointermode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the pointer as given by mode</p>
+<p>Depending on the given mode, shows or hides the laser pointer and the normal mouse pointer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<a class="reference internal" href="#pympress.pointer.PointerMode" title="pympress.pointer.PointerMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointerMode</span></code></a>) – The mode to activate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.Pointer.c_da">
+<code class="sig-name descname">c_da</code><em class="property"> = None</em><a class="headerlink" href="#pympress.pointer.Pointer.c_da" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> Slide in the Contents window, used to reliably set cursors.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.Pointer.c_frame">
+<code class="sig-name descname">c_frame</code><em class="property"> = None</em><a class="headerlink" href="#pympress.pointer.Pointer.c_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> Frame of the Contents window, used to reliably set cursors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pympress.pointer.Pointer.change_pointercolor">
+<code class="sig-name descname">change_pointercolor</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.change_pointercolor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.change_pointercolor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback for a radio item selection as pointer color</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/RadioMenuItem.html#Gtk.RadioMenuItem" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadioMenuItem</span></code></a>) – the selected radio item in the pointer type selection menu</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pympress.pointer.Pointer.change_pointermode">
+<code class="sig-name descname">change_pointermode</code><span class="sig-paren">(</span><em class="sig-param">widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.change_pointermode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.change_pointermode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for a radio item selection as pointer mode (continuous, manual, none)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/RadioMenuItem.html#Gtk.RadioMenuItem" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadioMenuItem</span></code></a>) – the selected radio item in the pointer type selection menu</p>
@@ -2697,7 +2714,7 @@ widget names and its values are document types from ui.</p>
 <dl class="method">
 <dt id="pympress.pointer.Pointer.load_pointer">
 <code class="sig-name descname">load_pointer</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.load_pointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.load_pointer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform the change of pointer using its name</p>
+<dd><p>Perform the change of pointer using its color name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Name of the pointer to load</p>
@@ -2706,15 +2723,39 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pympress.pointer.Pointer.old_pointer_mode">
+<code class="sig-name descname">old_pointer_mode</code><em class="property"> = 2</em><a class="headerlink" href="#pympress.pointer.Pointer.old_pointer_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#pympress.pointer.PointerMode" title="pympress.pointer.PointerMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointerMode</span></code></a> to which we toggle back</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.Pointer.p_da_cur">
+<code class="sig-name descname">p_da_cur</code><em class="property"> = None</em><a class="headerlink" href="#pympress.pointer.Pointer.p_da_cur" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> Slide in the Presenter window, used to reliably set cursors.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f0894a8ba40 (GdkPixbuf at 0x55c1bd1a1980)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f5614b9ba40 (GdkPixbuf at 0x55f071c46980)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.Pointer.pointer_mode">
+<code class="sig-name descname">pointer_mode</code><em class="property"> = 1</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.pointer.PointerMode" title="pympress.pointer.PointerMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">PointerMode</span></code></a> indicating the pointer mode</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pympress.pointer.Pointer.pointer_pos">
 <code class="sig-name descname">pointer_pos</code><em class="property"> = (0.5, 0.5)</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer_pos" title="Permalink to this definition">¶</a></dt>
 <dd><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">(float,</span> <span class="pre">float)</span></code> of position relative to slide, where the pointer should appear</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.Pointer.pointermode_radios">
+<code class="sig-name descname">pointermode_radios</code><em class="property"> = {}</em><a class="headerlink" href="#pympress.pointer.Pointer.pointermode_radios" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> of the <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/RadioMenuItem.html#Gtk.RadioMenuItem" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadioMenuItem</span></code></a> selecting the pointer mode</p>
 </dd></dl>
 
 <dl class="method">
@@ -2740,7 +2781,7 @@ widget names and its values are document types from ui.</p>
 
 <dl class="attribute">
 <dt id="pympress.pointer.Pointer.show_pointer">
-<code class="sig-name descname">show_pointer</code><em class="property"> = -1</em><a class="headerlink" href="#pympress.pointer.Pointer.show_pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">show_pointer</code><em class="property"> = False</em><a class="headerlink" href="#pympress.pointer.Pointer.show_pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> indicating whether we should show the pointer</p>
 </dd></dl>
 
@@ -2748,6 +2789,35 @@ widget names and its values are document types from ui.</p>
 <dt id="pympress.pointer.Pointer.toggle_pointer">
 <code class="sig-name descname">toggle_pointer</code><span class="sig-paren">(</span><em class="sig-param">widget</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.toggle_pointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.toggle_pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Track events defining when the laser is pointing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget which has received the event.</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pympress.pointer.Pointer.toggle_pointermode">
+<code class="sig-name descname">toggle_pointermode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.toggle_pointermode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.toggle_pointermode" title="Permalink to this definition">¶</a></dt>
+<dd><p>callback for shortcut to switch on/off continuous pointer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pympress.pointer.Pointer.track_enter_leave">
+<code class="sig-name descname">track_enter_leave</code><span class="sig-paren">(</span><em class="sig-param">widget</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.track_enter_leave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.track_enter_leave" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switches laser off/on in continuous mode on leave/enter slides</p>
+<p>In continuous mode, the laser pointer is switched off when the mouse leaves the slide
+(otherwise the laser pointer “sticks” to the edge of the slide).
+It is switched on again when the mouse reenters the slide.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2782,6 +2852,31 @@ widget names and its values are document types from ui.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
 </dd>
 </dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pympress.pointer.PointerMode">
+<em class="property">class </em><code class="sig-prename descclassname">pympress.pointer.</code><code class="sig-name descname">PointerMode</code><a class="reference internal" href="_modules/pympress/pointer.html#PointerMode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.PointerMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.4/library/enum.html#enum.Enum" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="pympress.pointer.PointerMode.CONTINUOUS">
+<code class="sig-name descname">CONTINUOUS</code><em class="property"> = 2</em><a class="headerlink" href="#pympress.pointer.PointerMode.CONTINUOUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pointer switched on continuously</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.PointerMode.DISABLED">
+<code class="sig-name descname">DISABLED</code><em class="property"> = 0</em><a class="headerlink" href="#pympress.pointer.PointerMode.DISABLED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pointer never switched on</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pympress.pointer.PointerMode.MANUAL">
+<code class="sig-name descname">MANUAL</code><em class="property"> = 1</em><a class="headerlink" href="#pympress.pointer.PointerMode.MANUAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pointer switched on only manual</p>
 </dd></dl>
 
 </dd></dl>
@@ -3446,7 +3541,7 @@ Times are given in seconds. In between timestamps the color will interpolated li
 
 <dl class="attribute">
 <dt id="pympress.config.Config.shortcuts">
-<code class="sig-name descname">shortcuts</code><em class="property"> = {(accelerator_key=32, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=32, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=97, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'annotations', (accelerator_key=98, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'blank_screen', (accelerator_key=102, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=102, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_presenter', (accelerator_key=103, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'goto_page', (accelerator_key=104, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'highlight', (accelerator_key=106, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'jumpto_label', (accelerator_key=108, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=110, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'notes_mode', (accelerator_key=111, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'open_file', (accelerator_key=112, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=113, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'quit', (accelerator_key=114, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'reset_timer', (accelerator_key=115, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'swap_screens', (accelerator_key=116, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'talk_time', (accelerator_key=117, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'unzoom', (accelerator_key=119, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'close_file', (accelerator_key=122, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'zoom', (accelerator_key=122, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'undo_scribble', (accelerator_key=65288, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'hist_back', (accelerator_key=65288, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'hist_forward', (accelerator_key=65293, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65299, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=65307, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'cancel', (accelerator_key=65360, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'first', (accelerator_key=65361, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65361, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65362, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65362, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65363, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65363, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65364, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65364, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65365, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65365, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65366, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65366, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65367, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'last', (accelerator_key=65421, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65474, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=65480, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content'}</em><a class="headerlink" href="#pympress.config.Config.shortcuts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">shortcuts</code><em class="property"> = {(accelerator_key=32, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=32, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=97, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'annotations', (accelerator_key=98, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'blank_screen', (accelerator_key=102, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=102, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_presenter', (accelerator_key=103, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'goto_page', (accelerator_key=104, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'highlight', (accelerator_key=106, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'jumpto_label', (accelerator_key=108, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'toggle_pointermode', (accelerator_key=108, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=110, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'notes_mode', (accelerator_key=111, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'open_file', (accelerator_key=112, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=113, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'quit', (accelerator_key=114, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'reset_timer', (accelerator_key=115, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'swap_screens', (accelerator_key=116, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'talk_time', (accelerator_key=117, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'unzoom', (accelerator_key=119, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'close_file', (accelerator_key=122, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'zoom', (accelerator_key=122, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'undo_scribble', (accelerator_key=65288, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'hist_back', (accelerator_key=65288, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'hist_forward', (accelerator_key=65293, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65299, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=65307, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'cancel', (accelerator_key=65360, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'first', (accelerator_key=65361, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65361, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65362, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65362, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65363, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65363, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65364, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65364, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65365, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65365, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65366, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65366, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65367, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'last', (accelerator_key=65421, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65474, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=65480, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content'}</em><a class="headerlink" href="#pympress.config.Config.shortcuts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map of (keyval, Gdk.ModifierType) to string, which representing the shortcuts for each command</p>
 </dd></dl>
 
@@ -3483,6 +3578,12 @@ to fall back to the user profile location.</p>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="pympress.config.Config.upgrade">
+<code class="sig-name descname">upgrade</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.upgrade"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.config.Config.upgrade" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update obsolete config options when pympress updates</p>
 </dd></dl>
 
 <dl class="method">

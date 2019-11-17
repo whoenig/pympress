@@ -381,6 +381,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">next_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">highlight_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_frame_annot</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_annotations</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">activate_pointermode</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="UI.load_icons"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.load_icons">[docs]</a>    <span class="k">def</span> <span class="nf">load_icons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1114,6 +1115,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">close_file</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;open_file&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">pick_file</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;toggle_pointermode&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">toggle_pointermode</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">command</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;ERROR: missing command &quot;</span><span class="si">{}</span><span class="s1">&quot; for </span><span class="si">{}{}{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
