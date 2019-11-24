@@ -53,7 +53,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress-128.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.0-b4
+		v1.5.0
 	</div>
 
 	
@@ -219,7 +219,7 @@
     <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="k">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
 <span class="k">except</span> <span class="n">ModuleNotFoundError</span><span class="p">:</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Gobject Introspections module is missing&#39;</span><span class="p">,</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections module is missing, make Gtk and pygobject are installed on your system.&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections module is missing, make sure Gtk and pygobject are installed on your system.&#39;</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;For instructions, refer to https://github.com/Cimbali/pympress/blob/master/README.md#dependencies&#39;</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;If using a virtualenv or anaconda, you can either allow system site packages, or run: pip install pygobject&#39;</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pip will then download and compile pygobject, for which you need the Gtk headers (or development package).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
