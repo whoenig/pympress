@@ -246,21 +246,7 @@
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
-
-    <span class="c1"># prefere X11 on posix systems because Wayland still has some shortcomings for us,</span>
-    <span class="c1"># specifically libVLC and the ability to disable screensavers</span>
-    <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">IS_POSIX</span><span class="p">:</span>
-        <span class="n">Gdk</span><span class="o">.</span><span class="n">set_allowed_backends</span><span class="p">(</span><span class="s1">&#39;x11,*&#39;</span><span class="p">)</span>
-    <span class="n">Gtk</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="s2">&quot;hn:t:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;notes=&quot;</span><span class="p">,</span> <span class="s2">&quot;talk-time=&quot;</span><span class="p">,</span> <span class="s2">&quot;log=&quot;</span><span class="p">])</span>
-    <span class="k">except</span> <span class="n">getopt</span><span class="o">.</span><span class="n">GetoptError</span><span class="p">:</span>
-        <span class="n">usage</span><span class="p">()</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-
+<div class="viewcode-block" id="parse_opts"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.parse_opts">[docs]</a><span class="k">def</span> <span class="nf">parse_opts</span><span class="p">(</span><span class="n">opts</span><span class="p">):</span>
     <span class="n">ett</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
     <span class="n">notes_pos</span> <span class="o">=</span> <span class="kc">None</span>
@@ -296,6 +282,17 @@
                     <span class="n">arg</span><span class="p">,</span> <span class="s2">&quot;DEBUG, INFO, WARNING, ERROR, CRITICAL&quot;</span>
                 <span class="p">))</span>
 
+    <span class="k">return</span> <span class="n">ett</span><span class="p">,</span> <span class="n">log_level</span><span class="p">,</span> <span class="n">notes_pos</span></div>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+
+    <span class="c1"># prefere X11 on posix systems because Wayland still has some shortcomings for us,</span>
+    <span class="c1"># specifically libVLC and the ability to disable screensavers</span>
+    <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">IS_POSIX</span><span class="p">:</span>
+        <span class="n">Gdk</span><span class="o">.</span><span class="n">set_allowed_backends</span><span class="p">(</span><span class="s1">&#39;x11,*&#39;</span><span class="p">)</span>
+    <span class="n">Gtk</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
 
     <span class="n">pympress_meta</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_pympress_meta</span><span class="p">()</span><span class="o">.</span><span class="n">__version__</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;Pympress:&#39;</span><span class="p">,</span> <span class="n">pympress_meta</span><span class="p">,</span>
@@ -308,6 +305,13 @@
             <span class="s1">&#39;; Media:&#39;</span><span class="p">,</span> <span class="n">extras</span><span class="o">.</span><span class="n">Media</span><span class="o">.</span><span class="n">backend_version</span><span class="p">()</span>
         <span class="p">]))</span>
 
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="s2">&quot;hn:t:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;notes=&quot;</span><span class="p">,</span> <span class="s2">&quot;talk-time=&quot;</span><span class="p">,</span> <span class="s2">&quot;log=&quot;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="n">getopt</span><span class="o">.</span><span class="n">GetoptError</span><span class="p">:</span>
+        <span class="n">usage</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">ett</span><span class="p">,</span> <span class="n">log_level</span><span class="p">,</span> <span class="n">notes_pos</span> <span class="o">=</span> <span class="n">parse_opts</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
     <span class="c1"># Create windows</span>
