@@ -81,7 +81,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../README.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html#dependencies">Dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html#contributing">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pympress.html">Pympress package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../options.html">Configuration file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pympress.html">Module documentation</a></li>
 </ul>
 
             
@@ -173,7 +174,7 @@
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -184,7 +185,7 @@
 <span class="kn">import</span> <span class="nn">gettext</span>
 <span class="kn">import</span> <span class="nn">platform</span>
 
-<span class="kn">from</span> <span class="nn">pympress</span> <span class="k">import</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span>
 
 
 <span class="c1"># Setup logging, and catch all uncaught exceptions in the log file.</span>
@@ -216,7 +217,7 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">gi</span>
     <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="k">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+    <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
 <span class="k">except</span> <span class="n">ModuleNotFoundError</span><span class="p">:</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Gobject Introspections module is missing&#39;</span><span class="p">,</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections module is missing, make sure Gtk and pygobject are installed on your system.&#39;</span><span class="p">))</span>
@@ -229,7 +230,7 @@
 
 
 <span class="c1"># Finally the real deal: load pympress modules, handle command line args, and start up</span>
-<span class="kn">from</span> <span class="nn">pympress</span> <span class="k">import</span> <span class="n">extras</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">ui</span>
+<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">extras</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">ui</span>
 
 
 <div class="viewcode-block" id="usage"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.usage">[docs]</a><span class="k">def</span> <span class="nf">usage</span><span class="p">():</span>

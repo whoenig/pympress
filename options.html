@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configuration file &mdash; Pympress developer documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/pympress.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Pympress package" href="pympress.html" />
+    <link rel="prev" title="What is Pympress?" href="README.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+	<a href="https://github.com/Cimbali/pympress/" class="fa fa-github"> Pympress on GitHub</a>
+	<br />
+	<a href="index.html" class="icon icon-home"> Docs home</a>
+	<img src="_static/pympress-128.png" class="logo" alt="Logo"/>
+	<div class="version">
+		v1.5.1
+	</div>
+
+	
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+	
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html"> What is Pympress?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#installing">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#dependencies">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html#contributing">Contributing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration file</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#shortcuts">Shortcuts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layouts">Layouts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pympress.html">Module documentation</a></li>
+</ul>
+
+            
+          
+	<hr style="border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); width:80%; margin: 10px auto;" />
+	<a href="genindex.html">Index</a>
+	<a href="py-modindex.html">Module index</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pympress</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Configuration file</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/Cimbali/pympress/blob/master/docs/source/options.md" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration-file">
+<h1>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">¶</a></h1>
+<p>Pympress has a number of options available from its configuration file.</p>
+<p>This file is usually located in:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">~/.config/pympress</span></code> on Linux,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%APPDATA%/pympress.ini</span></code> on Windows,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/Library/Preferences/pympress</span></code> on macOS,</p></li>
+<li><p>in the top-level of the pympress install directory for portable installations.</p></li>
+</ul>
+<p>The path to the currently used configuration file can be checked in the <code class="docutils literal notranslate"><span class="pre">Help</span> <span class="pre">&gt;</span> <span class="pre">About</span></code> information window.</p>
+<div class="section" id="shortcuts">
+<h2>Shortcuts<a class="headerlink" href="#shortcuts" title="Permalink to this headline">¶</a></h2>
+<p>The shortcuts are parsed using <a class="reference external" href="https://lazka.github.io/pgi-docs/#Gtk-3.0/functions.html#Gtk.accelerator_parse"><code class="docutils literal notranslate"><span class="pre">Gtk.accelerator_parse()</span></code></a>:</p>
+<blockquote>
+<div><p>The format looks like “&lt;Control&gt;a” or “&lt;Shift&gt;&lt;Alt&gt;F1” or “&lt;Release&gt;z” (the last one is for key release).</p>
+<p>The parser is fairly liberal and allows lower or upper case, and also abbreviations such as “&lt;Ctl&gt;” and “&lt;Ctrl&gt;”. Key names are parsed using <a class="reference external" href="https://lazka.github.io/pgi-docs/#Gdk-3.0/functions.html#Gdk.keyval_from_name"><code class="docutils literal notranslate"><span class="pre">Gdk.keyval_from_name()</span></code></a>. For character keys the name is not the symbol, but the lowercase name, e.g. one would use “&lt;Ctrl&gt;minus” instead of “&lt;Ctrl&gt;-”.</p>
+</div></blockquote>
+<p>This means that any value in this <a class="reference external" href="https://lazka.github.io/pgi-docs/#Gdk-3.0/constants.html#Gdk.KEY_0">list of key constants</a> is valid (removing the initial <code class="docutils literal notranslate"><span class="pre">Gdk.KEY_</span></code> part). You can verify that this value is parsed correctly from the <code class="docutils literal notranslate"><span class="pre">Help</span> <span class="pre">&gt;</span> <span class="pre">Shortcuts</span></code> information window.</p>
+</div>
+<div class="section" id="layouts">
+<h2>Layouts<a class="headerlink" href="#layouts" title="Permalink to this headline">¶</a></h2>
+<p>The panes (current slide, next slide, notes, annotations, etc.) can be rearranged arbitrarily by setting the entries of the <code class="docutils literal notranslate"><span class="pre">layout</span></code> section in the configuration file.
+Here are a couple examples of layouts, with <code class="docutils literal notranslate"><span class="pre">Cu</span></code> the current slide, <code class="docutils literal notranslate"><span class="pre">No</span></code> the notes half of the slide, <code class="docutils literal notranslate"><span class="pre">Nx</span></code> the next slide:</p>
+<ul>
+<li><p>All-horizontal layout:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----+----+----+</span>
+<span class="o">|</span> <span class="n">Cu</span> <span class="o">|</span> <span class="n">No</span> <span class="o">|</span> <span class="n">Nx</span> <span class="o">|</span>
+<span class="o">+----+----+----+</span>
+</pre></div>
+</div>
+<p>Setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">notes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">],</span> <span class="s2">&quot;proportions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">],</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="s2">&quot;resizeable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>All-vertical layout:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----+</span>
+<span class="o">|</span> <span class="n">Cu</span> <span class="o">|</span>
+<span class="o">+----+</span>
+<span class="o">|</span> <span class="n">No</span> <span class="o">|</span>
+<span class="o">+----+</span>
+<span class="o">|</span> <span class="n">Nx</span> <span class="o">|</span>
+<span class="o">+----+</span>
+</pre></div>
+</div>
+<p>Setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">notes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">],</span> <span class="s2">&quot;proportions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">,</span> <span class="mf">0.33</span><span class="p">],</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="s2">&quot;resizeable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Vertical layout with horizontally divided top pane:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----+----+</span>
+<span class="o">|</span> <span class="n">Cu</span> <span class="o">|</span> <span class="n">No</span> <span class="o">|</span>
+<span class="o">+----+----+</span>
+<span class="o">|</span>    <span class="n">Nx</span>   <span class="o">|</span>
+<span class="o">+---------+</span>
+</pre></div>
+</div>
+<p>Setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">notes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span>
+  			<span class="p">{</span><span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">],</span> <span class="s2">&quot;proportions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="s2">&quot;resizeable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">},</span>
+  			<span class="s2">&quot;next&quot;</span>
+  		<span class="p">],</span> <span class="s2">&quot;proportions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="s2">&quot;resizeable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>Horizontal layout with horizontally divided right pane:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+----+----+</span>
+<span class="o">|</span>    <span class="o">|</span> <span class="n">Nx</span> <span class="o">|</span>
+<span class="o">+</span> <span class="n">Cu</span> <span class="o">+----+</span>
+<span class="o">|</span>    <span class="o">|</span> <span class="n">No</span> <span class="o">|</span>
+<span class="o">+---------+</span>
+</pre></div>
+</div>
+<p>Setting:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">notes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span>
+  			<span class="s2">&quot;current&quot;</span><span class="p">,</span>
+  			<span class="p">{</span><span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">],</span> <span class="s2">&quot;proportions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="s2">&quot;resizeable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">}</span>
+  		<span class="p">],</span> <span class="s2">&quot;proportions&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="s2">&quot;orientation&quot;</span><span class="p">:</span> <span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="s2">&quot;resizeable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>And so on. You can play with the items, their nesting, their order, and the orientation in which a set of widgets appears.</p>
+<p>For each entry the widgets (strings that are leaves of “children” nodes in this representation) must be:</p>
+<ul class="simple">
+<li><p>for <code class="docutils literal notranslate"><span class="pre">notes</span></code>: “current”, “notes”, “next”</p></li>
+<li><p>for <code class="docutils literal notranslate"><span class="pre">plain</span></code>: “current”, “next” and “annotations” (the annotations widget is toggled with the <code class="docutils literal notranslate"><span class="pre">A</span></code> key by default)</p></li>
+<li><p>for <code class="docutils literal notranslate"><span class="pre">highlight</span></code>: same as <code class="docutils literal notranslate"><span class="pre">plain</span></code> with “highlight” instead of “current”</p></li>
+</ul>
+<p>A few further remarks:</p>
+<ul class="simple">
+<li><p>If you set “resizeable” to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the panes won’t be resizeable dynamically with a handle in the middle</p></li>
+<li><p>“proportions” are normalized, and saved on exit if you resize panes during the execution. If you set them to <code class="docutils literal notranslate"><span class="pre">4</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code>, the panes will be <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">/</span> <span class="pre">(4</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">=</span> <span class="pre">20%</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">(4</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">=</span> <span class="pre">100%</span></code>, so the ini will contain something like <code class="docutils literal notranslate"><span class="pre">0.2</span></code> and <code class="docutils literal notranslate"><span class="pre">0.8</span></code> after executing pympress.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pympress.html" class="btn btn-neutral float-right" title="Pympress package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="README.html" class="btn btn-neutral float-left" title="What is Pympress?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2011, Thomas Jost; 2015-2017 Cimbali
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

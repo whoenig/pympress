@@ -81,7 +81,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../README.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../README.html#dependencies">Dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../README.html#contributing">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../pympress.html">Pympress package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../options.html">Configuration file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pympress.html">Module documentation</a></li>
 </ul>
 
             
@@ -175,7 +176,7 @@
 <span class="sd">---------------------------------------------------------------------</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -185,10 +186,10 @@
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="k">import</span> <span class="n">GLib</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">GLib</span>
 
-<span class="kn">from</span> <span class="nn">pympress.util</span> <span class="k">import</span> <span class="n">IS_POSIX</span><span class="p">,</span> <span class="n">IS_MAC_OS</span><span class="p">,</span> <span class="n">IS_WINDOWS</span>
-<span class="kn">from</span> <span class="nn">pympress.media_overlays</span> <span class="k">import</span> <span class="n">base</span>
+<span class="kn">from</span> <span class="nn">pympress.util</span> <span class="kn">import</span> <span class="n">IS_POSIX</span><span class="p">,</span> <span class="n">IS_MAC_OS</span><span class="p">,</span> <span class="n">IS_WINDOWS</span>
+<span class="kn">from</span> <span class="nn">pympress.media_overlays</span> <span class="kn">import</span> <span class="n">base</span>
 
 
 <span class="kn">import</span> <span class="nn">vlc</span>
@@ -202,7 +203,7 @@
     <span class="c1">#: A single vlc.Instance() to be shared by (possible) multiple players.</span>
     <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">media_player_new</span><span class="p">()</span> <span class="c1"># before loading UI, needed to connect &quot;map&quot; signal</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">VlcOverlay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>

@@ -81,7 +81,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../README.html#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html#dependencies">Dependencies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../README.html#contributing">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../pympress.html">Pympress package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../options.html">Configuration file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pympress.html">Module documentation</a></li>
 </ul>
 
             
@@ -239,9 +240,9 @@
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">pathtools.patterns</span> <span class="k">import</span> <span class="n">match_any_paths</span>
-<span class="kn">from</span> <span class="nn">watchdog.utils</span> <span class="k">import</span> <span class="n">has_attribute</span>
-<span class="kn">from</span> <span class="nn">watchdog.utils</span> <span class="k">import</span> <span class="n">unicode_paths</span>
+<span class="kn">from</span> <span class="nn">pathtools.patterns</span> <span class="kn">import</span> <span class="n">match_any_paths</span>
+<span class="kn">from</span> <span class="nn">watchdog.utils</span> <span class="kn">import</span> <span class="n">has_attribute</span>
+<span class="kn">from</span> <span class="nn">watchdog.utils</span> <span class="kn">import</span> <span class="n">unicode_paths</span>
 
 
 <span class="n">EVENT_TYPE_MOVED</span> <span class="o">=</span> <span class="s1">&#39;moved&#39;</span>
@@ -265,7 +266,7 @@
     <span class="n">is_directory</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="sd">&quot;&quot;&quot;True if event was emitted for a directory; False otherwise.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_src_path</span> <span class="o">=</span> <span class="n">src_path</span>
 
     <span class="nd">@property</span>
@@ -273,10 +274,10 @@
         <span class="sd">&quot;&quot;&quot;Source path of the file system object that triggered this event.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_src_path</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: event_type=</span><span class="si">%(event_type)s</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;src_path=</span><span class="si">%(src_path)r</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;is_directory=</span><span class="si">%(is_directory)s</span><span class="s2">&gt;&quot;</span>
@@ -291,13 +292,13 @@
     <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">!=</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span>
 
-    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 
 
@@ -308,7 +309,7 @@
 
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_MOVED</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FileSystemMovedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dest_path</span> <span class="o">=</span> <span class="n">dest_path</span>
 
@@ -322,7 +323,7 @@
     <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;dest_path=</span><span class="si">%(dest_path)r</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;is_directory=</span><span class="si">%(is_directory)s</span><span class="s2">&gt;&quot;</span>
@@ -340,10 +341,10 @@
 
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_DELETED</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FileDeletedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">&gt;&quot;</span> <span class="o">%</span>\
                <span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                     <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">)</span>
@@ -354,10 +355,10 @@
 
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_MODIFIED</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FileModifiedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                           <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">))</span>
@@ -368,10 +369,10 @@
 
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_CREATED</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FileCreatedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                           <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">))</span>
@@ -380,10 +381,10 @@
 <span class="k">class</span> <span class="nc">FileMovedEvent</span><span class="p">(</span><span class="n">FileSystemMovedEvent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;File system event representing file movement on the file system.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FileMovedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;dest_path=</span><span class="si">%(dest_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
@@ -400,10 +401,10 @@
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_DELETED</span>
     <span class="n">is_directory</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DirDeletedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                           <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">))</span>
@@ -417,10 +418,10 @@
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_MODIFIED</span>
     <span class="n">is_directory</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DirModifiedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                           <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">))</span>
@@ -432,10 +433,10 @@
     <span class="n">event_type</span> <span class="o">=</span> <span class="n">EVENT_TYPE_CREATED</span>
     <span class="n">is_directory</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DirCreatedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                           <span class="n">src_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">src_path</span><span class="p">))</span>
@@ -446,10 +447,10 @@
 
     <span class="n">is_directory</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DirMovedEvent</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span> <span class="n">dest_path</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&lt;</span><span class="si">%(class_name)s</span><span class="s2">: src_path=</span><span class="si">%(src_path)r</span><span class="s2">, &quot;</span>
                 <span class="s2">&quot;dest_path=</span><span class="si">%(dest_path)r</span><span class="s2">&gt;&quot;</span>
                 <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
@@ -531,7 +532,7 @@
 <span class="sd">    Matches given patterns with file paths associated with occurring events.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">patterns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_patterns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">ignore_directories</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PatternMatchingEventHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -610,7 +611,7 @@
 <span class="sd">    Matches given regexes with file paths associated with occurring events.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regexes</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s2">&quot;.*&quot;</span><span class="p">],</span> <span class="n">ignore_regexes</span><span class="o">=</span><span class="p">[],</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regexes</span><span class="o">=</span><span class="p">[</span><span class="sa">r</span><span class="s2">&quot;.*&quot;</span><span class="p">],</span> <span class="n">ignore_regexes</span><span class="o">=</span><span class="p">[],</span>
                  <span class="n">ignore_directories</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">RegexMatchingEventHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
