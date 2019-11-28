@@ -295,7 +295,7 @@
         <span class="n">Gdk</span><span class="o">.</span><span class="n">set_allowed_backends</span><span class="p">(</span><span class="s1">&#39;x11,*&#39;</span><span class="p">)</span>
     <span class="n">Gtk</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
 
-    <span class="n">pympress_meta</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_pympress_meta</span><span class="p">()</span><span class="o">.</span><span class="n">__version__</span>
+    <span class="n">pympress_meta</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_pympress_meta</span><span class="p">()[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;Pympress:&#39;</span><span class="p">,</span> <span class="n">pympress_meta</span><span class="p">,</span>
             <span class="s1">&#39;; Python:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
             <span class="s1">&#39;; OS:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span> <span class="c1">#platform.version(),</span>
