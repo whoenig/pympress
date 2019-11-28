@@ -696,13 +696,13 @@
 
         <span class="c1"># Guess notes mode by default if the document has notes</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">reloading</span><span class="p">:</span>
-            <span class="n">target_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">guess_notes</span><span class="p">()</span>
+            <span class="n">hpref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;notes position&#39;</span><span class="p">,</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">)</span>
+            <span class="n">vpref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;notes position&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">=</span> <span class="n">target_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">guess_notes</span><span class="p">(</span><span class="n">hpref</span><span class="p">,</span> <span class="n">vpref</span><span class="p">)</span>
 
-            <span class="c1"># Special cases: don&#39;t let us toggle with NONE, give A4 documents the benefit of the doubt?</span>
+            <span class="c1"># don&#39;t toggle from NONE to NONE</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">==</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="o">.</span><span class="n">RIGHT</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">==</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">:</span>
-                <span class="n">target_mode</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span> <span class="o">!=</span> <span class="n">target_mode</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">switch_mode</span><span class="p">(</span><span class="s1">&#39;swap_document&#39;</span><span class="p">,</span> <span class="n">docpath</span><span class="p">,</span> <span class="n">target_mode</span> <span class="o">=</span> <span class="n">target_mode</span><span class="p">)</span>
@@ -1454,7 +1454,7 @@
 
 
 <div class="viewcode-block" id="UI.change_notes_pos"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.change_notes_pos">[docs]</a>    <span class="k">def</span> <span class="nf">change_notes_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">force_change</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Switch the display mode to &quot;Notes mode&quot; or &quot;Normal mode&quot; (without notes).</span>
+        <span class="sd">&quot;&quot;&quot; Switch the position of the nodes in the slide.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the mode has been toggled.</span>
@@ -1478,6 +1478,7 @@
         <span class="k">if</span> <span class="n">target_mode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">=</span> <span class="n">target_mode</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;notes_&#39;</span> <span class="o">+</span> <span class="n">target_mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;notes position&#39;</span><span class="p">,</span> <span class="n">target_mode</span><span class="o">.</span><span class="n">direction</span><span class="p">(),</span> <span class="n">target_mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
 
         <span class="c1"># Change the notes arrangement if they are enabled or if we are forced to</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span> <span class="ow">or</span> <span class="n">force_change</span><span class="p">:</span>
@@ -1497,7 +1498,7 @@
             <span class="c1"># Exit to not risk double-toggling. Button is now in sync and can be toggled again correctly.</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">target_mode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">target_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">target_mode</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span>
 
         <span class="k">if</span> <span class="n">target_mode</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">:</span>

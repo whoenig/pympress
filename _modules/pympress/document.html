@@ -192,6 +192,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
@@ -254,6 +255,15 @@
         <span class="sd">&quot;&quot;&quot; Return the enum value that does only scaling not shifting</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">PdfPage</span><span class="p">(</span><span class="n">val</span> <span class="o">|</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PdfPage.direction"><a class="viewcode-back" href="../../pympress.html#pympress.ui.PdfPage.direction">[docs]</a>    <span class="k">def</span> <span class="nf">direction</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns whether the pdf page/notes mode is horizontal or vertical</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `str`: a string representing the direction that can be used as the key in the config section</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;horizontal&#39;</span> <span class="k">if</span> <span class="n">val</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="k">else</span> <span class="s1">&#39;vertical&#39;</span></div>
 
 
 <div class="viewcode-block" id="PdfPage.from_screen"><a class="viewcode-back" href="../../pympress.html#pympress.ui.PdfPage.from_screen">[docs]</a>    <span class="k">def</span> <span class="nf">from_screen</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -757,8 +767,6 @@
     <span class="n">nb_pages</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="c1">#: Number of the current page</span>
     <span class="n">cur_page</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="c1">#: :class:`~pympress.document.PdfPage` representing our best guess for the notes position in this document</span>
-    <span class="n">notes</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span>
     <span class="c1">#: Pages cache (`dict` of :class:`~pympress.document.Page`). This makes</span>
     <span class="c1">#: navigation in the document faster by avoiding calls to Poppler when loading</span>
     <span class="c1">#: a page that has already been loaded.</span>
@@ -800,20 +808,6 @@
 
         <span class="c1"># Pages cache</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pages_cache</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="c1"># Guess if the document has notes</span>
-        <span class="n">page0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">page0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># &quot;Regular&quot; pages will have an apsect ratio of 4/3, 16/9, 16/10...</span>
-            <span class="c1"># Full A4 pages will have an aspect ratio &lt; 1.</span>
-            <span class="c1"># So if the aspect ratio is &gt;= 2, we can assume it is a document with notes.</span>
-            <span class="n">ar</span> <span class="o">=</span> <span class="n">page0</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">ar</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">notes</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">RIGHT</span>
-            <span class="k">elif</span> <span class="n">ar</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">notes</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">BOTTOM</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">notes</span> <span class="o">=</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span>
 
 
 <div class="viewcode-block" id="Document.get_structure"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.get_structure">[docs]</a>    <span class="k">def</span> <span class="nf">get_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_iter</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -917,13 +911,42 @@
         <span class="k">return</span> <span class="n">doc</span></div>
 
 
-<div class="viewcode-block" id="Document.guess_notes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.guess_notes">[docs]</a>    <span class="k">def</span> <span class="nf">guess_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Document.guess_notes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.guess_notes">[docs]</a>    <span class="k">def</span> <span class="nf">guess_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">horizontal</span><span class="p">,</span> <span class="n">vertical</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get our best guess for the document mode.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            horizontal (`str`): A string representing the preference for horizontal slides</span>
+<span class="sd">            vertical (`str`): A string representing the preference for vertical slides</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            :class:`~pympress.document.PdfPage`: the notes mode</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes</span></div>
+        <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cur_page</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span>
+
+        <span class="n">ar</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">()</span>
+
+        <span class="c1"># &quot;Regular&quot; slides will have an aspect ratio of 4/3, 16/9, 16/10... i.e. in the range [1..2]</span>
+        <span class="c1"># So if the aspect ratio is &gt;= 2, we can assume it is a document with notes on the side.</span>
+        <span class="k">if</span> <span class="n">ar</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">PdfPage</span><span class="p">[</span><span class="n">horizontal</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">RIGHT</span>
+
+        <span class="c1"># Make exception for classic american letter format and ISO (A4, B5, etc.)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ar</span> <span class="o">-</span> <span class="mf">8.5</span> <span class="o">/</span> <span class="mi">11</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-3</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ar</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span>
+
+        <span class="c1"># If the aspect ratio is &lt; 1, we can assume it is a document with notes above or below.</span>
+        <span class="k">if</span> <span class="n">ar</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">PdfPage</span><span class="p">[</span><span class="n">vertical</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">BOTTOM</span>
+
+        <span class="k">return</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span></div>
 
 
 <div class="viewcode-block" id="Document.page"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.page">[docs]</a>    <span class="k">def</span> <span class="nf">page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>

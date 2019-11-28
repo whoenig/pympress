@@ -263,7 +263,7 @@ current and the next page, as well as a time counter and a clock.</p>
 <dl class="method">
 <dt id="pympress.ui.UI.change_notes_pos">
 <code class="sig-name descname">change_notes_pos</code><span class="sig-paren">(</span><em class="sig-param">widget</em>, <em class="sig-param">event=None</em>, <em class="sig-param">force_change=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.change_notes_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.ui.UI.change_notes_pos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Switch the display mode to “Notes mode” or “Normal mode” (without notes).</p>
+<dd><p>Switch the position of the nodes in the slide.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>whether the mode has been toggled.</p>
@@ -1161,14 +1161,20 @@ or to the current directory.</p>
 
 <dl class="method">
 <dt id="pympress.document.Document.guess_notes">
-<code class="sig-name descname">guess_notes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.guess_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.guess_notes" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">guess_notes</code><span class="sig-paren">(</span><em class="sig-param">horizontal</em>, <em class="sig-param">vertical</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.guess_notes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.guess_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get our best guess for the document mode.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the notes mode</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>horizontal</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – A string representing the preference for horizontal slides</p></li>
+<li><p><strong>vertical</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – A string representing the preference for vertical slides</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the notes mode</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1275,12 +1281,6 @@ If we’re within a set of pages with the same label we want to go <em>before</e
 <dd class="field-even"><p><a class="reference internal" href="#pympress.document.Page" title="pympress.document.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pympress.document.Document.notes">
-<code class="sig-name descname">notes</code><em class="property"> = 0</em><a class="headerlink" href="#pympress.document.Document.notes" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a> representing our best guess for the notes position in this document</p>
 </dd></dl>
 
 <dl class="method">
@@ -1808,6 +1808,20 @@ if one exists, <a class="reference external" href="https://docs.python.org/3.4/l
 <dt id="pympress.document.PdfPage.complement">
 <code class="sig-name descname">complement</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#PdfPage.complement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.PdfPage.complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the enum value for the other part of the page.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pympress.document.PdfPage.direction">
+<code class="sig-name descname">direction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#PdfPage.direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.PdfPage.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the pdf page/notes mode is horizontal or vertical</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a string representing the direction that can be used as the key in the config section</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -2742,7 +2756,7 @@ widget names and its values are document types from ui.</p>
 
 <dl class="attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f23bba5f2c0 (GdkPixbuf at 0x565522a9c980)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f9f065ea240 (GdkPixbuf at 0x555f3b87ad80)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
