@@ -191,15 +191,14 @@ Highly configurable, fully-featured, and portable</p>
 <div class="section" id="installing">
 <h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>Linux: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pympress</span></code> − requires <a class="reference external" href="#dependencies">python, gtk+3, poppler, and their python bindings</a>.</p></li>
-<li><p>macOS: <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">pympress</span></code> − using <a class="reference external" href="https://brew.sh/">Homebrew</a></p></li>
+<li><p>Linux, macOS: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pympress</span></code> − requires <a class="reference external" href="#dependencies">python, gtk+3, poppler, and their python bindings</a>.</p></li>
 <li><p>Windows: <code class="docutils literal notranslate"><span class="pre">choco</span> <span class="pre">install</span> <span class="pre">pympress</span></code> with <a class="reference external" href="https://chocolatey.org/">Chocolatey</a> or download the installer from the <a class="reference external" href="https://github.com/Cimbali/pympress/releases/latest">latest Github release</a>.</p></li>
 </ul>
 <div class="section" id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>To support playing embedded videos in the PDFs, your system must have VLC installed (with the same bitness as pympress). VLC is not distributed with pympress, but it is certainly available in your system’s package manager and <a class="reference external" href="https://www.videolan.org/vlc/">on their website</a>.</p></li>
-<li><p>On Linux, make sure you have all <a class="reference external" href="#dependencies">the dependencies</a>, as they do not come via pip. (On Windows and macOS, they are included in the package.)</p></li>
+<li><p>On Linux and macOS, make sure you have all <a class="reference external" href="#dependencies">the dependencies</a>, as they do not come via pip. (On Windows, they are included in the binary package.)</p></li>
 <li><p>Using pip, you may want to use <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span></code> as the command if <code class="docutils literal notranslate"><span class="pre">pip</span></code> points to the python 2.x pip. You may also want to install with the <code class="docutils literal notranslate"><span class="pre">--user</span></code> option, or install from github or downloaded sources. See <a class="reference external" href="https://docs.python.org/3.7/installing/index.html">the python documentation on installing</a> for more details.</p></li>
 </ul>
 </div>
@@ -296,7 +295,7 @@ For example, on ubuntu, you can run the following as root to make sure you have 
 <div class="section" id="on-macos">
 <h2>On macOS<a class="headerlink" href="#on-macos" title="Permalink to this headline">¶</a></h2>
 <p>Dependencies can be installed using <a class="reference external" href="https://brew.sh/">Homebrew</a>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">install</span> <span class="o">--</span><span class="n">only</span><span class="o">-</span><span class="n">dependencies</span> <span class="n">pympress</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">install</span> <span class="n">gtk</span><span class="o">+</span><span class="mi">3</span> <span class="n">poppler</span> <span class="n">gobject</span><span class="o">-</span><span class="n">introspection</span> <span class="n">pygobject3</span>
 </pre></div>
 </div>
 </div>
