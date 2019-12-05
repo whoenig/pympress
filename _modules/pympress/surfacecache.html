@@ -171,7 +171,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.surfacecache` -- pages prerendering and caching</span>
 <span class="sd">--------------------------------------------------------------</span>
@@ -189,19 +188,22 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">GLib</span>
 
 
 <div class="viewcode-block" id="OrderedDict"><a class="viewcode-back" href="../../pympress.html#pympress.surfacecache.OrderedDict">[docs]</a><span class="k">class</span> <span class="nc">OrderedDict</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; OrderedDict for python2 compatibility, adding move_to_end().</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="OrderedDict.move_to_end"><a class="viewcode-back" href="../../pympress.html#pympress.surfacecache.OrderedDict.move_to_end">[docs]</a>    <span class="k">def</span> <span class="nf">move_to_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Move an existing key to either end of an ordered dictionary.</span>
+
+<span class="sd">        Forward or reimplement :meth:`~collections.OrderedDict.move_to_end`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="o">.</span><span class="n">move_to_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
@@ -226,8 +228,8 @@
     <span class="c1">#: popped from the start of the cache.</span>
     <span class="n">surface_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="c1">#: `dict` containing functions that return a :class:`~cairo.Surface` given a :class:`~cairo.Context`, width `int` and height `int`</span>
-    <span class="c1">#: see :meth:`~cairo.Surface.create_similar`</span>
+    <span class="c1">#: `dict` containing functions that return a :class:`~cairo.Surface` given a :class:`~cairo.Context`,</span>
+    <span class="c1">#: width `int` and height `int`, see :meth:`~cairo.Surface.create_similar`</span>
     <span class="n">surface_factory</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1">#: Size of the different managed widgets, as a `dict` of tuples</span>
@@ -288,7 +290,6 @@
 <span class="sd">        Args:</span>
 <span class="sd">            new_doc (:class:`~pympress.document.Document`):  the new document</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">new_doc</span>
 
@@ -323,7 +324,7 @@
 <span class="sd">            wtype (`int`):  type of document handled by the widget (see :attr:`surface_type`)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">!=</span> <span class="n">wtype</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">!=</span> <span class="n">wtype</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">wtype</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">surface_cache</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
@@ -427,7 +428,6 @@
 <span class="sd">            widget_name (`str`):  name of the concerned widget</span>
 <span class="sd">            page_nb (`int`):  number of the page to store in the cache</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">page_nb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_cache</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]:</span>
                 <span class="c1"># Already in cache</span>
@@ -457,7 +457,7 @@
         <span class="c1"># Save if possible and necessary</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]:</span>
             <span class="n">pc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_cache</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_size</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">page_nb</span> <span class="ow">in</span> <span class="n">pc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_size</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="ow">and</span> <span class="n">page_nb</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">pc</span><span class="p">:</span>
                 <span class="n">pc</span><span class="p">[</span><span class="n">page_nb</span><span class="p">]</span> <span class="o">=</span> <span class="n">surface</span>
                 <span class="n">pc</span><span class="o">.</span><span class="n">move_to_end</span><span class="p">(</span><span class="n">page_nb</span><span class="p">)</span>
 

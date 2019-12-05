@@ -170,7 +170,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.extras` -- Manages the display of fancy extras such as annotations, videos and cursors</span>
 <span class="sd">-----------------------------------------------------------------------------------------------------</span>
@@ -185,7 +184,7 @@
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Pango</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
 
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
@@ -198,6 +197,8 @@
 
 
 <div class="viewcode-block" id="TimingReport"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport">[docs]</a><span class="k">class</span> <span class="nc">TimingReport</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Widget tracking and displaying hierachically how much time was spent in each page/section of the presentation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: `list` of time at which each page was reached</span>
     <span class="n">page_time</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1">#: `int` the time at which the clock was reset</span>
@@ -216,32 +217,41 @@
 
 
 <div class="viewcode-block" id="TimingReport.transition"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.transition">[docs]</a>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Record a transition time between slides</span>
+        <span class="sd">&quot;&quot;&quot; Record a transition time between slides.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            page (`int`): the page number of the current slide</span>
 <span class="sd">            time (`int`): the number of seconds elapsed since the beginning of the presentation</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">[:]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">page</span><span class="p">,</span> <span class="n">time</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="TimingReport.reset"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reset_time</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; A timer reset. Clear the history as soon as we start changing pages again.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot; A timer reset. Clear the history as soon as we start changing pages again.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">=</span> <span class="n">reset_time</span></div>
 
 
+<div class="viewcode-block" id="TimingReport.format_time"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.format_time">[docs]</a>    <span class="k">def</span> <span class="nf">format_time</span><span class="p">(</span><span class="n">secs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Formats a number of seconds as `minutes:seconds`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `str`: The formatted time, with 2+ digits for minutes and 2 digits for seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">secs</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="TimingReport.show"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_time</span><span class="p">,</span> <span class="n">doc_structure</span><span class="p">,</span> <span class="n">page_labels</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Show the popup with the timing infortmation</span>
+        <span class="sd">&quot;&quot;&quot; Show the popup with the timing infortmation.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            current_time (`int`): the number of seconds elapsed since the beginning of the presentation</span>
 <span class="sd">            doc_structure (`dict`): the structure of the document</span>
 <span class="sd">            page_labels (`list`): the page labels for each of the pages</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span> <span class="k">for</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">current_time</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span><span class="p">]</span>
         <span class="n">durations</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">s</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">times</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
@@ -269,12 +279,12 @@
                     <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">duration</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">pos</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[],</span>
-                                        <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">})</span>
+                                                     <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">})</span>
                 <span class="n">cur_info_pos</span> <span class="o">=</span> <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="c1"># add the actual page as a leaf node</span>
             <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;slide #&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">page_labels</span><span class="p">[</span><span class="n">page</span><span class="p">],</span>
-                                        <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">})</span>
+                                             <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">})</span>
 
 
         <span class="n">treemodel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing_treeview</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
@@ -286,9 +296,8 @@
         <span class="n">dfs_info</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="n">infos</span><span class="p">)]</span>
         <span class="k">while</span> <span class="n">dfs_info</span><span class="p">:</span>
             <span class="n">first_it</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="n">dfs_info</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-            <span class="n">fmt</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
             <span class="n">last_col</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">page_labels</span><span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]],</span> <span class="n">first</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_labels</span><span class="p">))</span>
-            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="n">fmt</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]),</span> <span class="n">fmt</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]),</span> <span class="n">last_col</span><span class="p">]</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]),</span> <span class="n">last_col</span><span class="p">]</span>
             <span class="n">it</span> <span class="o">=</span> <span class="n">treemodel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_it</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="s1">&#39;children&#39;</span> <span class="ow">in</span> <span class="n">first</span><span class="p">:</span>
@@ -302,6 +311,11 @@
 
 
 <div class="viewcode-block" id="Annotations"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations">[docs]</a><span class="k">class</span> <span class="nc">Annotations</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Widget displaying a PDF’s text annotations into a tree view.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        annotations (`list`): A list of strings, that are the annotations to be displayed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: The containing widget for the annotations</span>
     <span class="n">scrollable_treelist</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: Making the annotations list scroll if it&#39;s too long</span>
@@ -310,11 +324,6 @@
     <span class="n">annotation_renderer</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load the widgets and setup for the annotations&#39; display.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Annotations</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -322,10 +331,7 @@
 
 
 <div class="viewcode-block" id="Annotations.add_annotations"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.add_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotations</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Insert text annotations into the tree view that displays them.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            annotations (`list`): A list of strings, that are the annotations to be displayed</span>
+        <span class="sd">&quot;&quot;&quot; Add annotations to be displayed (typically on going to a new slide).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prev_annots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrollable_treelist</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">prev_annots</span><span class="p">:</span>
@@ -371,6 +377,12 @@
 
 
 <div class="viewcode-block" id="Media"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media">[docs]</a><span class="k">class</span> <span class="nc">Media</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Class managing statically the medias and media player backends, to enable play/pause callbacks.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
+<span class="sd">        conf (:class:`~pympress.config.Config`): An object containing the preferences</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: `dict` of :class:`~pympress.media_overlays.base.VideoOverlay` ready to be added on top of the slides</span>
     <span class="n">_media_overlays</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -381,18 +393,13 @@
 
     <span class="c1">#: static `bool` tracking whether we&#39;ve already done the one-time setup</span>
     <span class="n">_backends_setup</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="c1">#: `dict` of mime type as `str` to the `type` of a class inheriting from :class:`~pympress.media_overlays.base.VideoOverlay`</span>
+    <span class="c1">#: `dict` containing the mapping from mime types (as `str`)</span>
+    <span class="c1">#: to classes inheriting from :class:`~pympress.media_overlays.base.VideoOverlay`</span>
     <span class="n">_backends</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="c1"># `list` of info on backend versions</span>
     <span class="n">_backend_versions</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set up the required widgets and queue an initial draw.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
-<span class="sd">            conf (:class:`~pympress.config.Config`): An object containing the preferences</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Media</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_setup_backends</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -435,7 +442,8 @@
                 <span class="n">factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_factory</span><span class="p">(</span><span class="n">mime_type</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">factory</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No available overlay for mime type </span><span class="si">{}</span><span class="s1">, ignoring media </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mime_type</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No available overlay for mime type </span><span class="si">{}</span><span class="s1">, ignoring media </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mime_type</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
                     <span class="k">continue</span>
 
                 <span class="k">def</span> <span class="nf">get_curryfied_callback</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">media_id</span> <span class="o">=</span> <span class="n">media_id</span><span class="p">):</span>
@@ -461,7 +469,7 @@
 
 
 <div class="viewcode-block" id="Media.resize"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Resize all media overlays that are a child of an overlay</span>
+        <span class="sd">&quot;&quot;&quot; Resize all media overlays that are a child of an overlay.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">needs_resizing</span> <span class="o">=</span> <span class="p">(</span><span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;presenter&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">which</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">media_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">:</span>
@@ -534,7 +542,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_setup_backends</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load the backends for video overlays</span>
+        <span class="sd">&quot;&quot;&quot; Load the backends for video overlays.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends_setup</span><span class="p">:</span>
             <span class="k">return</span>
@@ -552,7 +560,8 @@
             <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GifOverlay</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">_backend_versions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
 
-        <span class="k">except</span><span class="p">:</span> <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Video support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Overlay&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Video support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Overlay&#39;</span><span class="p">))</span>
 
 
         <span class="k">try</span><span class="p">:</span>
@@ -569,7 +578,8 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">types_list</span><span class="p">:</span>
                     <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">GstOverlay</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">)</span>
 
-        <span class="k">except</span><span class="p">:</span> <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Video support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GStreamer&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Video support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GStreamer&#39;</span><span class="p">))</span>
 
 
         <span class="k">try</span><span class="p">:</span>
@@ -586,7 +596,8 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">types_list</span><span class="p">:</span>
                     <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">VlcOverlay</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">)</span>
 
-        <span class="k">except</span><span class="p">:</span> <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;VLC&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;VLC&#39;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="Media.backend_version"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.backend_version">[docs]</a>    <span class="nd">@classmethod</span>
@@ -602,10 +613,10 @@
 
 <div class="viewcode-block" id="Media.get_factory"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.get_factory">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">get_factory</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a class of type :attr:`~_backend`</span>
+        <span class="sd">&quot;&quot;&quot; Returns a class of type :attr:`~_backend`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">_setup_backends</span><span class="p">()</span>
-        <span class="k">try</span><span class="p">:</span> <span class="c1"># NB don&#39;t get(mime_type, None) so that a default can be set</span>
+        <span class="k">try</span><span class="p">:</span>  <span class="c1"># NB don&#39;t get(mime_type, None) so that a default can be set</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="n">mime_type</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span></div></div>
@@ -613,6 +624,8 @@
 
 
 <div class="viewcode-block" id="Cursor"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Cursor">[docs]</a><span class="k">class</span> <span class="nc">Cursor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Class managing cursors statically for displays, so we can select the mouse cursor with a simple string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: a static `dict` of :class:`~Gdk.Cursor`s, ready to use</span>
     <span class="n">_cursors</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;parent&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
@@ -629,7 +642,7 @@
 
 <div class="viewcode-block" id="Cursor.set_cursor"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Cursor.set_cursor">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">set_cursor</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">cursor_name</span> <span class="o">=</span> <span class="s1">&#39;parent&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the cursor named cursor_name&#39;</span>
+        <span class="sd">&quot;&quot;&quot; Set the cursor named cursor_name&#39;.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`): The widget triggering the cursor change, used to retrieve a Gdk.Window</span>
@@ -645,6 +658,11 @@
 
 
 <div class="viewcode-block" id="Zoom"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom">[docs]</a><span class="k">class</span> <span class="nc">Zoom</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Manage the zoom level (using a cairo matrix), draw area that will be zoomed while it is being selected.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: Whether we are displaying the interface to scribble on screen and the overlays containing said scribbles</span>
     <span class="n">zoom_selecting</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">zoom_points</span> <span class="o">=</span> <span class="kc">None</span>
@@ -664,11 +682,6 @@
     <span class="n">clear_cache</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Setup all the necessary for zooming</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Zoom</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -678,6 +691,7 @@
 
 <div class="viewcode-block" id="Zoom.delayed_callback_connection"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.delayed_callback_connection">[docs]</a>    <span class="k">def</span> <span class="nf">delayed_callback_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scribble_builder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Connect callbacks later than at init, due to circular dependencies.</span>
+
 <span class="sd">        Call this when the page_number module is initialized, but before needing the callback.</span>
 
 <span class="sd">        Args:</span>
@@ -815,7 +829,7 @@
 
                 <span class="c1"># make center of drawn rectangle the center of the zoomed slide</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">+</span> <span class="n">xmax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-                                    <span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">+</span> <span class="n">ymax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                              <span class="o">.</span><span class="mi">5</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">+</span> <span class="n">ymax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mf">1.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -909,7 +923,7 @@
 
 <div class="viewcode-block" id="FileWatcher.call"><a class="viewcode-back" href="../../pympress.html#pympress.extras.FileWatcher.call">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Call the callback</span>
+        <span class="sd">&quot;&quot;&quot; Call the callback.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            callback (`function`): callback to call with all the further arguments</span>
@@ -921,14 +935,14 @@
 
 <div class="viewcode-block" id="FileWatcher.stop_watching"><a class="viewcode-back" href="../../pympress.html#pympress.extras.FileWatcher.stop_watching">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">stop_watching</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove all files that are being watched</span>
+        <span class="sd">&quot;&quot;&quot; Remove all files that are being watched.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">unschedule_all</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="FileWatcher.start_daemon"><a class="viewcode-back" href="../../pympress.html#pympress.extras.FileWatcher.start_daemon">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">start_daemon</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Start the watchdog observer thread</span>
+        <span class="sd">&quot;&quot;&quot; Start the watchdog observer thread.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>

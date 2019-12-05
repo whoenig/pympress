@@ -152,8 +152,6 @@
   <h1>Source code for pympress.__main__</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="c1">#</span>
-<span class="c1">#!/usr/bin/env python</span>
-<span class="c1">#</span>
 <span class="c1">#       pympress</span>
 <span class="c1">#</span>
 <span class="c1">#       Copyright 2009, 2010 Thomas Jost &lt;thomas.jost@gmail.com&gt;</span>
@@ -173,6 +171,10 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:mod:`pympress.__main__` -- The entry point of pympress</span>
+<span class="sd">-------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
 
@@ -195,8 +197,11 @@
 
 
 <div class="viewcode-block" id="uncaught_handler"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.uncaught_handler">[docs]</a><span class="k">def</span> <span class="nf">uncaught_handler</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Exception handler, to log uncuaght exceptiosn to our log file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Uncaught exception:</span><span class="se">\n</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">()</span><span class="o">.</span><span class="n">formatException</span><span class="p">(</span><span class="n">exc_info</span><span class="p">)))</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">__excepthook__</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)</span></div>
+
 
 <span class="n">sys</span><span class="o">.</span><span class="n">excepthook</span> <span class="o">=</span> <span class="n">uncaught_handler</span>
 
@@ -210,6 +215,12 @@
 <span class="n">gettext</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="s1">&#39;pympress&#39;</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">get_locale_dir</span><span class="p">())</span>
 
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># python 2.7 does not have this</span>
+    <span class="n">ModuleNotFoundError</span>
+<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+    <span class="n">ModuleNotFoundError</span> <span class="o">=</span> <span class="ne">ImportError</span>
+
 
 <span class="c1"># Load python bindings for gobject introspections, aka pygobject, aka gi.</span>
 <span class="c1"># This is a dependency that is not specified in the setup.py, so we need to start here</span>
@@ -220,12 +231,14 @@
     <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
 <span class="k">except</span> <span class="n">ModuleNotFoundError</span><span class="p">:</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Gobject Introspections module is missing&#39;</span><span class="p">,</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections module is missing, make sure Gtk and pygobject are installed on your system.&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;For instructions, refer to https://github.com/Cimbali/pympress/blob/master/README.md#dependencies&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;If using a virtualenv or anaconda, you can either allow system site packages, or run: pip install pygobject&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pip will then download and compile pygobject, for which you need the Gtk headers (or development package).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections module is missing, &#39;</span> <span class="o">+</span>
+                   <span class="s1">&#39;make sure Gtk and pygobject are installed on your system.&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;For instructions, refer to https://github.com/Cimbali/pympress/blob/master/README.md#dependencies&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;If using a virtualenv or anaconda, you can either allow system site packages, &#39;</span> <span class="o">+</span>
+            <span class="s1">&#39;or run: pip install pygobject&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pip will then download and compile pygobject, &#39;</span> <span class="o">+</span>
+            <span class="s1">&#39;for which you need the Gtk headers (or development package).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
 
 
 
@@ -234,20 +247,34 @@
 
 
 <div class="viewcode-block" id="usage"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.usage">[docs]</a><span class="k">def</span> <span class="nf">usage</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Usage: </span><span class="si">{}</span><span class="s2"> [options] &lt;presentation_file&gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Options:&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    -h, --help                       &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;This help&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    -t mm[:ss], --talk-time=mm[:ss]  &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;The estimated (intended) talk time in minutes&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                                       &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;(and optionally seconds)&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    -n position, --notes=position    &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Set the position of notes on the pdf page (none, left, right, top, or bottom).&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                                       &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Overrides the detection from the file.&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    --log=level                      &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Set level of verbosity in log file:&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                                       &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, or </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;CRITICAL&quot;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+    <span class="sd">&quot;&quot;&quot; Display how to use the command line options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Usage: </span><span class="si">{}</span><span class="s1"> [options] &lt;presentation_file&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Options:&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    -h, --help                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;This help&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    -t mm[:ss], --talk-time=mm[:ss]  &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;The estimated (intended) talk time in minutes&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;(and optionally seconds)&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    -n position, --notes=position    &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set the position of notes on the pdf page (none, left, right, top, or bottom).&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Overrides the detection from the file.&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    --log=level                      &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set level of verbosity in log file:&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, or </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;CRITICAL&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="parse_opts"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.parse_opts">[docs]</a><span class="k">def</span> <span class="nf">parse_opts</span><span class="p">(</span><span class="n">opts</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Parse command line options, returned from getopt.getopt().</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `tuple`: estimated talk time, log level, notes positions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ett</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
     <span class="n">notes_pos</span> <span class="o">=</span> <span class="kc">None</span>
@@ -287,6 +314,8 @@
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="sd">&quot;&quot;&quot; Entry point of pympress. Parse command line arguments, instantiate the UI, and start the main loop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
 
     <span class="c1"># prefere X11 on posix systems because Wayland still has some shortcomings for us,</span>
@@ -296,15 +325,16 @@
     <span class="n">Gtk</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
 
     <span class="n">pympress_meta</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_pympress_meta</span><span class="p">()[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;Pympress:&#39;</span><span class="p">,</span> <span class="n">pympress_meta</span><span class="p">,</span>
-            <span class="s1">&#39;; Python:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
-            <span class="s1">&#39;; OS:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span> <span class="c1">#platform.version(),</span>
-            <span class="s1">&#39;; Gtk </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">get_major_version</span><span class="p">(),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">get_minor_version</span><span class="p">(),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">get_micro_version</span><span class="p">()),</span>
-            <span class="s1">&#39;; GLib </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">MAJOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MINOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MICRO_VERSION</span><span class="p">),</span>
-            <span class="s1">&#39;; Poppler&#39;</span><span class="p">,</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_version</span><span class="p">(),</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">value_nick</span><span class="p">,</span>
-            <span class="s1">&#39;; Cairo&#39;</span><span class="p">,</span> <span class="n">ui</span><span class="o">.</span><span class="n">cairo</span><span class="o">.</span><span class="n">cairo_version_string</span><span class="p">(),</span> <span class="s1">&#39;, pycairo&#39;</span><span class="p">,</span> <span class="n">ui</span><span class="o">.</span><span class="n">cairo</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
-            <span class="s1">&#39;; Media:&#39;</span><span class="p">,</span> <span class="n">extras</span><span class="o">.</span><span class="n">Media</span><span class="o">.</span><span class="n">backend_version</span><span class="p">()</span>
-        <span class="p">]))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+        <span class="s1">&#39;Pympress:&#39;</span><span class="p">,</span> <span class="n">pympress_meta</span><span class="p">,</span>
+        <span class="s1">&#39;; Python:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
+        <span class="s1">&#39;; OS:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span>
+        <span class="s1">&#39;; Gtk </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">get_major_version</span><span class="p">(),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">get_minor_version</span><span class="p">(),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">get_micro_version</span><span class="p">()),</span>
+        <span class="s1">&#39;; GLib </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">MAJOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MINOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MICRO_VERSION</span><span class="p">),</span>
+        <span class="s1">&#39;; Poppler&#39;</span><span class="p">,</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_version</span><span class="p">(),</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">value_nick</span><span class="p">,</span>
+        <span class="s1">&#39;; Cairo&#39;</span><span class="p">,</span> <span class="n">ui</span><span class="o">.</span><span class="n">cairo</span><span class="o">.</span><span class="n">cairo_version_string</span><span class="p">(),</span> <span class="s1">&#39;, pycairo&#39;</span><span class="p">,</span> <span class="n">ui</span><span class="o">.</span><span class="n">cairo</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="s1">&#39;; Media:&#39;</span><span class="p">,</span> <span class="n">extras</span><span class="o">.</span><span class="n">Media</span><span class="o">.</span><span class="n">backend_version</span><span class="p">()</span>
+    <span class="p">]))</span>
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="s2">&quot;hn:t:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;notes=&quot;</span><span class="p">,</span> <span class="s2">&quot;talk-time=&quot;</span><span class="p">,</span> <span class="s2">&quot;log=&quot;</span><span class="p">])</span>
@@ -319,7 +349,8 @@
     <span class="n">gui</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">UI</span><span class="p">()</span>
 
     <span class="c1"># pass command line args</span>
-    <span class="k">if</span> <span class="n">ett</span><span class="p">:</span> <span class="n">gui</span><span class="o">.</span><span class="n">est_time</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">ett</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ett</span><span class="p">:</span>
+        <span class="n">gui</span><span class="o">.</span><span class="n">est_time</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">ett</span><span class="p">)</span>
 
     <span class="n">gui</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="k">if</span> <span class="n">args</span> <span class="k">else</span> <span class="n">gui</span><span class="o">.</span><span class="n">pick_file</span><span class="p">()</span>
 

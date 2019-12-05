@@ -170,7 +170,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.editable_label` -- A label that can be swapped out for an editable entry</span>
 <span class="sd">---------------------------------------------------------------------------------------</span>
@@ -184,10 +183,11 @@
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
-<span class="kn">import</span> <span class="nn">time</span>
 
 
 <div class="viewcode-block" id="EditableLabel"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EditableLabel">[docs]</a><span class="k">class</span> <span class="nc">EditableLabel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A label that can switch between simply displaying a value, and allowing user input to edit this value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: :class:`~Gtk.EventBox` around the label, used to sense clicks</span>
     <span class="n">event_box</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -239,22 +239,28 @@
 
 
 <div class="viewcode-block" id="EditableLabel.validate"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EditableLabel.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Validate the input to the label. Needs to be reimplemented by children classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="EditableLabel.cancel"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EditableLabel.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Cancel editing the label. Needs to be reimplemented by children classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="EditableLabel.more_actions"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EditableLabel.more_actions">[docs]</a>    <span class="k">def</span> <span class="nf">more_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Perform actions based on passed key strokes or other events. Needs to be reimplemented by children classes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="EditableLabel.on_keypress"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EditableLabel.on_keypress">[docs]</a>    <span class="k">def</span> <span class="nf">on_keypress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Manage key presses for the editable label.</span>
 
-<span class="sd">        If we are editing the label, intercept some key presses (to validate or cancel editing or other specific behaviour),</span>
-<span class="sd">        otherwise pass the key presses on to the button for normal behaviour.</span>
+<span class="sd">        If we are editing the label, intercept some key presses (to validate or cancel editing or other specific</span>
+<span class="sd">        behaviour), otherwise pass the key presses on to the button for normal behaviour.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which has received the event.</span>
@@ -289,6 +295,7 @@
 
 <div class="viewcode-block" id="EditableLabel.restore_label"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EditableLabel.restore_label">[docs]</a>    <span class="k">def</span> <span class="nf">restore_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Make sure that the editable label is not in entry mode.</span>
+
 <span class="sd">        If it is an entry, then replace it with the label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
@@ -309,6 +316,11 @@
 
 
 <div class="viewcode-block" id="PageNumber"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.PageNumber">[docs]</a><span class="k">class</span> <span class="nc">PageNumber</span><span class="p">(</span><span class="n">EditableLabel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A label that displays &quot;current page / max page&quot;, that can be edited to select a page to which to go.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: Slide counter :class:`~Gtk.Label` for the current slide.</span>
     <span class="n">label_cur</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: Slide counter :class:`~Gtk.Label` for the last slide.</span>
@@ -345,11 +357,6 @@
     <span class="n">stop_editing_est_time</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">page_num_scroll</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Load all the widgets we need from the spinner.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            builder (:class:`~pympress.builder.Builder`): A builder from which to load widgets</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PageNumber</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="c1"># The spinner&#39;s scroll is with page numbers, invert to scroll with pages</span>
@@ -395,7 +402,7 @@
 
 
 <div class="viewcode-block" id="PageNumber.changed_page_label"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.PageNumber.changed_page_label">[docs]</a>    <span class="k">def</span> <span class="nf">changed_page_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the page number from the spinner and go to that page</span>
+        <span class="sd">&quot;&quot;&quot; Get the page number from the spinner and go to that page.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_label</span><span class="o">.</span><span class="n">is_focus</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_label</span><span class="o">.</span><span class="n">get_text</span><span class="p">():</span>
             <span class="k">return</span>
@@ -409,7 +416,7 @@
 
 
 <div class="viewcode-block" id="PageNumber.validate"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.PageNumber.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the page number from the spinner and go to that page</span>
+        <span class="sd">&quot;&quot;&quot; Get the page number from the spinner and go to that page.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">page_nb</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_label</span><span class="o">.</span><span class="n">is_focus</span><span class="p">():</span>
@@ -431,7 +438,9 @@
 
 
 <div class="viewcode-block" id="PageNumber.more_actions"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.PageNumber.more_actions">[docs]</a>    <span class="k">def</span> <span class="nf">more_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Implement directions (left/right/home/end) keystrokes, otherwise pass on to :func:`~Gtk.SpinButton.do_key_press_event()`</span>
+        <span class="sd">&quot;&quot;&quot; Implement directions (left/right/home/end) keystrokes.</span>
+
+<span class="sd">        Otherwise pass on to :func:`~Gtk.SpinButton.do_key_press_event()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">modified</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">ModifierType</span><span class="o">.</span><span class="n">CONTROL_MASK</span> <span class="ow">or</span> <span class="n">event</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">ModifierType</span><span class="o">.</span><span class="n">SHIFT_MASK</span>
 
@@ -532,6 +541,7 @@
 
 <div class="viewcode-block" id="PageNumber.restore_label"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.PageNumber.restore_label">[docs]</a>    <span class="k">def</span> <span class="nf">restore_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Make sure that the current page number is displayed in a label and not in an entry.</span>
+
 <span class="sd">        If it is an entry, then replace it with the label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_cur</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hb_cur</span><span class="p">:</span>
@@ -572,6 +582,15 @@
 
 
 <div class="viewcode-block" id="EstimatedTalkTime"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EstimatedTalkTime">[docs]</a><span class="k">class</span> <span class="nc">EstimatedTalkTime</span><span class="p">(</span><span class="n">EditableLabel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A label that displays the time elapsed since the start of the talk, that can be edited to select talk duration.</span>
+
+<span class="sd">    The duration of the talk will cause the label to blink and change colour as the elapsed time gets closer to the</span>
+<span class="sd">    targeted talk duration.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        builder (builder.Builder): The builder from which to load widgets.</span>
+<span class="sd">        ett (`int`): the estimated time for the talk, in seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: Elapsed time :class:`~Gtk.Label`.</span>
     <span class="n">label_time</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: Estimated talk time :class:`~Gtk.Label` for the talk.</span>
@@ -589,12 +608,6 @@
 
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">ett</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Setup the talk time.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            builder (builder.Builder): The builder from which to load widgets.</span>
-<span class="sd">            ett (`int`): the estimated time for the talk, in seconds.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">EstimatedTalkTime</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entry_ett</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Entry</span><span class="p">()</span>
@@ -610,6 +623,7 @@
 
 <div class="viewcode-block" id="EstimatedTalkTime.delayed_callback_connection"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EstimatedTalkTime.delayed_callback_connection">[docs]</a>    <span class="k">def</span> <span class="nf">delayed_callback_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Connect callbacks later than at init, due to circular dependencies.</span>
+
 <span class="sd">        Call this when the page_number module is initialized, but before needing the callback.</span>
 
 <span class="sd">        Args:</span>
@@ -619,7 +633,7 @@
 
 
 <div class="viewcode-block" id="EstimatedTalkTime.validate"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EstimatedTalkTime.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Update estimated talk time from the input/</span>
+        <span class="sd">&quot;&quot;&quot; Update estimated talk time from the input.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry_ett</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
 
@@ -648,7 +662,7 @@
 
 
 <div class="viewcode-block" id="EstimatedTalkTime.more_actions"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EstimatedTalkTime.more_actions">[docs]</a>    <span class="k">def</span> <span class="nf">more_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Pass on keystrokes to :func:`~Gtk.Entry.do_key_press_event()`</span>
+        <span class="sd">&quot;&quot;&quot; Pass on keystrokes to :func:`~Gtk.Entry.do_key_press_event()`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Entry</span><span class="o">.</span><span class="n">do_key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entry_ett</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
@@ -672,6 +686,7 @@
 
 <div class="viewcode-block" id="EstimatedTalkTime.restore_label"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.EstimatedTalkTime.restore_label">[docs]</a>    <span class="k">def</span> <span class="nf">restore_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Make sure that the current page number is displayed in a label and not in an entry.</span>
+
 <span class="sd">        If it is an entry, then replace it with the label.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">child</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eb_ett</span><span class="o">.</span><span class="n">get_child</span><span class="p">()</span>
@@ -680,9 +695,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">eb_ett</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_ett</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="o">=</span> <span class="kc">False</span></div></div>
-
-
-
 </pre></div>
 
            </div>

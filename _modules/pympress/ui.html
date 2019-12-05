@@ -171,7 +171,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.ui` -- GUI management</span>
 <span class="sd">------------------------------------</span>
@@ -189,7 +188,8 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">os.path</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
@@ -293,7 +293,7 @@
     <span class="c1">#: Software-implemented laser pointer, :class:`~pympress.pointer.Pointer`</span>
     <span class="n">laser</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: :class:`~pympress.editable_label.PageNumber` displaying current and max page numbers and setting current page number</span>
+    <span class="c1">#: :class:`~pympress.editable_label.PageNumber` displaying and setting current page numbers</span>
     <span class="n">page_number</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: :class:`~pympress.editable_label.EstimatedTalkTime` to set estimated/remaining talk time</span>
@@ -386,11 +386,11 @@
 
 
 <div class="viewcode-block" id="UI.load_icons"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.load_icons">[docs]</a>    <span class="k">def</span> <span class="nf">load_icons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set the icon list for both windows</span>
+        <span class="sd">&quot;&quot;&quot; Set the icon list for both windows.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">icon_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">GdkPixbuf</span><span class="o">.</span><span class="n">Pixbuf</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">util</span><span class="o">.</span><span class="n">list_icons</span><span class="p">()]</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Error loading icons&#39;</span><span class="p">)</span>
             <span class="k">return</span>
 
@@ -465,7 +465,7 @@
 
 
 <div class="viewcode-block" id="UI.setup_screens"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.setup_screens">[docs]</a>    <span class="k">def</span> <span class="nf">setup_screens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Sets up the position of the windows</span>
+        <span class="sd">&quot;&quot;&quot; Sets up the position of the windows.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># If multiple monitors, apply windows to monitors according to config</span>
         <span class="n">screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">get_screen</span><span class="p">()</span>
@@ -476,7 +476,8 @@
             <span class="n">c_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">c_monitor</span> <span class="o">==</span> <span class="n">p_monitor</span> <span class="ow">and</span> <span class="p">(</span><span class="n">c_full</span> <span class="ow">or</span> <span class="n">p_full</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Content and presenter window must not be on the same monitor if you start full screen!&quot;</span><span class="p">))</span>
+                <span class="n">warning</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Content and presenter window must not be on the same monitor if you start full screen!&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">warning</span><span class="p">)</span>
                 <span class="n">p_monitor</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">c_monitor</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">c_monitor</span> <span class="o">=</span> <span class="mi">0</span>
@@ -484,8 +485,10 @@
             <span class="n">c_full</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">p_full</span> <span class="o">=</span> <span class="kc">False</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Not starting content or presenter window full screen because there is only one monitor&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">)</span> \
+                    <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Not starting content or presenter window full screen &#39;</span> <span class="o">+</span>
+                                 <span class="s1">&#39;because there is only one monitor&#39;</span><span class="p">))</span>
 
         <span class="n">p_bounds</span> <span class="o">=</span> <span class="n">screen</span><span class="o">.</span><span class="n">get_monitor_geometry</span><span class="p">(</span><span class="n">p_monitor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">p_bounds</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p_bounds</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
@@ -545,7 +548,6 @@
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which has been resized</span>
 <span class="sd">            event (:class:`~Gdk.Event`):  the GTK event, which contains the new dimensions of the widget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Don&#39;t trust those</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">send_event</span><span class="p">:</span>
             <span class="k">return</span>
@@ -578,7 +580,10 @@
 
 
 <div class="viewcode-block" id="UI.redraw_panes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.redraw_panes">[docs]</a>    <span class="k">def</span> <span class="nf">redraw_panes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Handler for :class:`~Gtk.Paned`&#39;s resizing signal, used for delayed drawing events of drawing areas inside the panes.</span>
+        <span class="sd">&quot;&quot;&quot; Handler for :class:`~Gtk.Paned`&#39;s resizing signal.</span>
+
+<span class="sd">        Used for delayed drawing events of drawing areas inside the panes.</span>
+
 <span class="sd">        This is very useful on windows where resizing gets sluggish if we try to redraw while resizing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resize_panes</span> <span class="o">=</span> <span class="kc">False</span>
@@ -594,7 +599,7 @@
 
 
 <div class="viewcode-block" id="UI.on_pane_event"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_pane_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_pane_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Signal handler for gtk.paned events</span>
+        <span class="sd">&quot;&quot;&quot; Signal handler for gtk.paned events.</span>
 
 <span class="sd">        This function allows to delay drawing events when resizing, and to speed up redrawing when</span>
 <span class="sd">        moving the middle pane is done (which happens at the end of a mouse resize)</span>
@@ -651,16 +656,17 @@
         <span class="n">about</span><span class="o">.</span><span class="n">set_program_name</span><span class="p">(</span><span class="s1">&#39;pympress&#39;</span><span class="p">)</span>
         <span class="n">about</span><span class="o">.</span><span class="n">set_version</span><span class="p">(</span><span class="n">pympress</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">])</span>
         <span class="n">about</span><span class="o">.</span><span class="n">set_copyright</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Contributors:&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">pympress</span><span class="p">[</span><span class="s1">&#39;contributors&#39;</span><span class="p">])</span>
-        <span class="n">about</span><span class="o">.</span><span class="n">set_comments</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pympress is a little PDF reader written in Python using Poppler for PDF rendering and GTK for the GUI.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-                         <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Some preferences are saved in &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">path_to_config</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-                         <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Resources are loaded from &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_locale_dir</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-                         <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;The log is written to &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">util</span><span class="o">.</span><span class="n">get_log_path</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-                         <span class="o">+</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support uses </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">backend_version</span><span class="p">()))</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-                         <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Python version </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
+        <span class="n">about</span><span class="o">.</span><span class="n">set_comments</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pympress is a little PDF reader written in Python &#39;</span> <span class="o">+</span>
+                             <span class="s1">&#39;using Poppler for PDF rendering and GTK for the GUI.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Some preferences are saved in &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">path_to_config</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Resources are loaded from &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_locale_dir</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;The log is written to &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">util</span><span class="o">.</span><span class="n">get_log_path</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support uses </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">backend_version</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Python version </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
         <span class="n">about</span><span class="o">.</span><span class="n">set_website</span><span class="p">(</span><span class="s1">&#39;https://github.com/Cimbali/pympress&#39;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">about</span><span class="o">.</span><span class="n">set_logo</span><span class="p">(</span><span class="n">GdkPixbuf</span><span class="o">.</span><span class="n">Pixbuf</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_icon_path</span><span class="p">(</span><span class="s1">&#39;pympress-128.png&#39;</span><span class="p">)))</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error loading icon for about window&#39;</span><span class="p">))</span>
         <span class="n">about</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="n">about</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
@@ -671,7 +677,7 @@
     <span class="c1">##############################################################################</span>
 
 <div class="viewcode-block" id="UI.swap_document"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.swap_document">[docs]</a>    <span class="k">def</span> <span class="nf">swap_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docpath</span><span class="p">,</span> <span class="n">page</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">reloading</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Replace the currently open document with a new one</span>
+        <span class="sd">&quot;&quot;&quot; Replace the currently open document with a new one.</span>
 
 <span class="sd">        The new document is possibly and EmptyDocument if docpath is None.</span>
 <span class="sd">        The state of the ui and cache are updated accordingly.</span>
@@ -689,7 +695,8 @@
                 <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="o">.</span><span class="n">watch_file</span><span class="p">(</span><span class="n">docpath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_document</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">reloading</span><span class="p">:</span> <span class="k">return</span>
+            <span class="k">if</span> <span class="n">reloading</span><span class="p">:</span>
+                <span class="k">return</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">error_opening_file</span><span class="p">(</span><span class="n">docpath</span><span class="p">)</span>
             <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
@@ -783,7 +790,6 @@
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">dialog</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()))</span>
 
@@ -795,11 +801,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check if the path is valid</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="n">msg</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Could not find the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Could not find the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error opening the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error opening the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">dialog</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="n">transient_for</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="p">,</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">DialogFlags</span><span class="o">.</span><span class="n">MODAL</span><span class="p">,</span>
-                                    <span class="n">message_type</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageType</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message_format</span> <span class="o">=</span> <span class="n">msg</span><span class="p">)</span>
+                                   <span class="n">message_type</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageType</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message_format</span> <span class="o">=</span> <span class="n">msg</span><span class="p">)</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">add_buttons</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_CLOSE</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">)</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">WindowPosition</span><span class="o">.</span><span class="n">CENTER</span><span class="p">)</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
@@ -835,7 +841,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">widget</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_buffer</span><span class="p">()</span><span class="o">.</span><span class="n">get_text</span><span class="p">()))</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">pass</span>
 
         <span class="n">page_nb</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span>
@@ -871,7 +877,7 @@
         <span class="n">cur</span> <span class="o">=</span> <span class="n">page_cur</span><span class="o">.</span><span class="n">number</span><span class="p">()</span>
         <span class="n">page_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">(),</span> <span class="n">cur</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
         <span class="n">page_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cur</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cur</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">page_max</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">page_min</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cur</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">page_max</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">cur</span><span class="p">,</span> <span class="n">page_min</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">prerender</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></div>
 
 
@@ -930,7 +936,7 @@
         <span class="c1"># Prerender the 4 next pages and the 2 previous ones</span>
         <span class="n">page_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_preview_nb</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
         <span class="n">page_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_preview_nb</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_preview_nb</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">page_max</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_preview_nb</span><span class="p">,</span> <span class="n">page_min</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_preview_nb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">page_max</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_preview_nb</span><span class="p">,</span> <span class="n">page_min</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">prerender</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">replace_media_overlays</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">current_page</span><span class="p">(),</span> <span class="n">page_type</span><span class="p">)</span></div>
@@ -948,7 +954,6 @@
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget to update</span>
 <span class="sd">            cairo_context (:class:`~cairo.Context`):  the Cairo context (or `None` if called directly)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="p">:</span>
             <span class="c1"># Current page</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blanked</span><span class="p">:</span>
@@ -971,8 +976,8 @@
         <span class="n">wtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">get_widget_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_allocated_width</span><span class="p">(),</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">scale</span> <span class="o">!=</span> <span class="mf">1.</span> <span class="ow">and</span> <span class="p">(</span><span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span> <span class="ow">or</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span>
-                                      <span class="ow">or</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribble_p_da</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">scale</span> <span class="o">!=</span> <span class="mf">1.</span> <span class="ow">and</span> <span class="p">(</span><span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span> <span class="ow">or</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span> <span class="ow">or</span>
+                                      <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribble_p_da</span><span class="p">):</span>
             <span class="n">zoom_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="o">.</span><span class="n">get_matrix</span><span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span>
             <span class="n">name</span> <span class="o">+=</span> <span class="s1">&#39;_zoomed&#39;</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1023,7 +1028,7 @@
 
 
 <div class="viewcode-block" id="UI.redraw_current_slide"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.redraw_current_slide">[docs]</a>    <span class="k">def</span> <span class="nf">redraw_current_slide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Callback to queue a redraw of the current slides (in both winows)</span>
+        <span class="sd">&quot;&quot;&quot; Callback to queue a redraw of the current slides (in both winows).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
@@ -1035,7 +1040,7 @@
     <span class="c1">##############################################################################</span>
 
 <div class="viewcode-block" id="UI.on_navigation"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_navigation">[docs]</a>    <span class="k">def</span> <span class="nf">on_navigation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Manage key presses for both windows</span>
+        <span class="sd">&quot;&quot;&quot; Manage key presses for both windows.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured (ignored)</span>
@@ -1120,9 +1125,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">toggle_pointermode</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">command</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;ERROR: missing command &quot;</span><span class="si">{}</span><span class="s1">&quot; for </span><span class="si">{}{}{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
-                    <span class="s1">&#39;ctrl + &#39;</span> <span class="k">if</span> <span class="n">ctrl_pressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;shift + &#39;</span> <span class="k">if</span> <span class="n">shift_pressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;meta + &#39;</span> <span class="k">if</span> <span class="n">meta_pressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;ERROR: missing command &quot;</span><span class="si">{}</span><span class="s1">&quot; for </span><span class="si">{}{}{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>  <span class="c1"># noqa: E128</span>
+                             <span class="s1">&#39;ctrl + &#39;</span> <span class="k">if</span> <span class="n">ctrl_pressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;shift + &#39;</span> <span class="k">if</span> <span class="n">shift_pressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;meta + &#39;</span> <span class="k">if</span> <span class="n">meta_pressed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
 
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -1130,7 +1135,7 @@
 
 
 <div class="viewcode-block" id="UI.on_scroll"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">on_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Manage scroll events</span>
+        <span class="sd">&quot;&quot;&quot; Manage scroll events.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured (ignored)</span>
@@ -1152,7 +1157,7 @@
 
 
 <div class="viewcode-block" id="UI.track_motions"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.track_motions">[docs]</a>    <span class="k">def</span> <span class="nf">track_motions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Track mouse motion events</span>
+        <span class="sd">&quot;&quot;&quot; Track mouse motion events.</span>
 
 <span class="sd">        Handles mouse motions on the &quot;about&quot; menu.</span>
 
@@ -1174,7 +1179,7 @@
 
 
 <div class="viewcode-block" id="UI.track_clicks"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.track_clicks">[docs]</a>    <span class="k">def</span> <span class="nf">track_clicks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Track mouse press and release events</span>
+        <span class="sd">&quot;&quot;&quot; Track mouse press and release events.</span>
 
 <span class="sd">        Handles clicks on the slides.</span>
 
@@ -1197,6 +1202,7 @@
 
 <div class="viewcode-block" id="UI.click_link"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.click_link">[docs]</a>    <span class="k">def</span> <span class="nf">click_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Check whether a link was clicked and follow it.</span>
+
 <span class="sd">        Handles a click on a slide.</span>
 
 <span class="sd">        Args:</span>
@@ -1206,7 +1212,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">BUTTON_RELEASE</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -1230,8 +1235,7 @@
 
 
 <div class="viewcode-block" id="UI.hover_link"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.hover_link">[docs]</a>    <span class="k">def</span> <span class="nf">hover_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Manage events related to hyperlinks, setting the cursor to a pointer if</span>
-<span class="sd">        the hovered region is clickable.</span>
+        <span class="sd">&quot;&quot;&quot; Manage events related to hyperlinks, setting the cursor to a pointer if the hovered region is clickable.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured</span>
@@ -1240,7 +1244,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">MOTION_NOTIFY</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -1264,8 +1267,7 @@
 
 
 <div class="viewcode-block" id="UI.switch_fullscreen"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.switch_fullscreen">[docs]</a>    <span class="k">def</span> <span class="nf">switch_fullscreen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Switch the Content window to fullscreen (if in normal mode)</span>
-<span class="sd">        or to normal mode (if fullscreen).</span>
+        <span class="sd">&quot;&quot;&quot; Switch the Content window to fullscreen (if in normal mode) or to normal mode (if fullscreen).</span>
 
 <span class="sd">        Screensaver will be disabled when entering fullscreen mode, and enabled</span>
 <span class="sd">        when leaving fullscreen mode.</span>
@@ -1363,10 +1365,10 @@
 
 
 <div class="viewcode-block" id="UI.show_timing_report"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.show_timing_report">[docs]</a>    <span class="k">def</span> <span class="nf">show_timing_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39; Show the popup with information on timing of the talk.</span>
+        <span class="sd">&quot;&quot;&quot; Show the popup with information on timing of the talk.</span>
 
 <span class="sd">        Gather current time, document structure, page labels etc. and pass it to timing popup for display.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span><span class="o">.</span><span class="n">delta</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page_labels</span><span class="p">)</span></div>
 
 
@@ -1397,7 +1399,7 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">p_win_state</span> <span class="o">&amp;</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">WindowState</span><span class="o">.</span><span class="n">MAXIMIZED</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">unmaximize</span><span class="p">()</span>
 
-        <span class="n">p_monitor</span><span class="p">,</span> <span class="n">c_monitor</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_monitor</span><span class="p">,</span> <span class="n">p_monitor</span><span class="p">)</span>
+        <span class="n">p_monitor</span><span class="p">,</span> <span class="n">c_monitor</span> <span class="o">=</span> <span class="n">c_monitor</span><span class="p">,</span> <span class="n">p_monitor</span>
 
         <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="n">ch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
         <span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="n">pw</span><span class="p">,</span> <span class="n">ph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
@@ -1434,7 +1436,7 @@
 
 
 <div class="viewcode-block" id="UI.swap_layout"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.swap_layout">[docs]</a>    <span class="k">def</span> <span class="nf">swap_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save the old layout in the prefs, load the new layout</span>
+        <span class="sd">&quot;&quot;&quot; Save the old layout in the prefs, load the new layout.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            old (`str`): the name of the layout to save, `None` to use plain or notes automatically</span>
@@ -1459,7 +1461,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the mode has been toggled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">CheckMenuItem</span><span class="p">):</span>
             <span class="c1"># if this widget is not the active one do nothing</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
@@ -1566,7 +1567,7 @@
 
 
 <div class="viewcode-block" id="UI.switch_bigbuttons"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.switch_bigbuttons">[docs]</a>    <span class="k">def</span> <span class="nf">switch_bigbuttons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Toggle the display of big buttons (nice for touch screens)</span>
+        <span class="sd">&quot;&quot;&quot; Toggle the display of big buttons (nice for touch screens).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span>
 

@@ -170,7 +170,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.talk_time` -- Manages the clock of elapsed talk time</span>
 <span class="sd">-------------------------------------------------------------------</span>
@@ -183,15 +182,15 @@
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">GLib</span>
 <span class="kn">import</span> <span class="nn">time</span>
-
-<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">editable_label</span>
 
 
 <div class="viewcode-block" id="TimeLabelColorer"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeLabelColorer">[docs]</a><span class="k">class</span> <span class="nc">TimeLabelColorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Manage the colors of a label with a set of colors between which to fade, based on how much time remains (&lt;0 has run out of time).</span>
-<span class="sd">    Times are given in seconds. In between timestamps the color will interpolated linearly, outside of the intervals the closest color will be used.</span>
+    <span class="sd">&quot;&quot;&quot; Manage the colors of a label with a set of colors between which to fade, based on how much time remains.</span>
+
+<span class="sd">    Times are given in seconds (&lt;0 has run out of time). In between timestamps the color will interpolated linearly,</span>
+<span class="sd">    outside of the intervals the closest color will be used.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        label_time (:class:`Gtk.Label`): the label where the talk time is displayed</span>
@@ -206,7 +205,8 @@
     <span class="c1">#: :class:`~Gtk.CssProvider` affecting the style context of the labels</span>
     <span class="n">color_override</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: `list` of tuples (`int`, :class:`~Gdk.RGBA`), which are the desired colors at the corresponding timestamps. Sorted on the timestamps.</span>
+    <span class="c1">#: `list` of tuples (`int`, :class:`~Gdk.RGBA`), which are the desired colors at the corresponding timestamps.</span>
+    <span class="c1">#: Sorted on the timestamps.</span>
     <span class="n">color_map</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_time</span><span class="p">):</span>
@@ -243,7 +243,7 @@
         <span class="k">if</span> <span class="n">class_name</span><span class="p">:</span>
             <span class="n">style_context</span><span class="o">.</span><span class="n">add_class</span><span class="p">(</span><span class="n">class_name</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">label_time</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_time</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">style_context</span><span class="o">.</span><span class="n">get_color</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">StateType</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">class_name</span><span class="p">:</span>
@@ -290,6 +290,12 @@
 
 
 <div class="viewcode-block" id="TimeCounter"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeCounter">[docs]</a><span class="k">class</span> <span class="nc">TimeCounter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A double counter, that displays the time elapsed in the talk and a clock.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        builder (builder.Builder): The builder from which to load widgets.</span>
+<span class="sd">        ett (`int`): the estimated time for the talk, in seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: Elapsed time :class:`~Gtk.Label`.</span>
     <span class="n">label_time</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: Clock :class:`~Gtk.Label`.</span>
@@ -307,16 +313,10 @@
     <span class="c1">#: :class:`~Gtk.CheckMenuItem` that shows whether the time is toggled</span>
     <span class="n">pres_pause</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: :class:`~editable_label.EstimatedTalkTime` that handles changing the ett</span>
+    <span class="c1">#: :class:`~pympress.editable_label.EstimatedTalkTime` that handles changing the ett</span>
     <span class="n">ett</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">ett</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Setup the talk time.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            builder (builder.Builder): The builder from which to load widgets.</span>
-<span class="sd">            ett (`int`): the estimated time for the talk, in seconds.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TimeCounter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span> <span class="o">=</span> <span class="n">TimeLabelColorer</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;label_time&#39;</span><span class="p">))</span>
@@ -392,7 +392,7 @@
 <span class="sd">            `bool`: `True` (to prevent the timer from stopping)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Current time</span>
-        <span class="n">clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1">#&quot;%H:%M:%S&quot;</span>
+        <span class="n">clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &quot;%H:%M:%S&quot;</span>
 
         <span class="c1"># Time elapsed since the beginning of the presentation</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
@@ -410,8 +410,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span><span class="o">.</span><span class="n">default_color</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="kc">True</span></div></div>
-
-
 </pre></div>
 
            </div>

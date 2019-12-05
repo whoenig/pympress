@@ -170,11 +170,9 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.config` -- Configuration</span>
 <span class="sd">---------------------------------------</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
@@ -194,25 +192,27 @@
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span>
 
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">unicode</span> <span class="c1"># trigger NameError in python3</span>
+    <span class="n">unicode</span>  <span class="c1"># trigger NameError in python3</span>
 
     <span class="k">def</span> <span class="nf">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Recursively convert unicode to str (for python2)</span>
+        <span class="sd">&quot;&quot;&quot;Recursively convert unicode to str (for python2).</span>
+
 <span class="sd">        Raises NameError in python3 as &#39;unicode&#39; is undefined</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obj (`unicode` or `str` or `dict` or `list`): A unicode string to transform, or a container whose children to transform</span>
+<span class="sd">            obj (`unicode` or `str` or `dict` or `list`): A unicode string to transform,</span>
+<span class="sd">                                                          or a container whose children to transform</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span><span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -220,11 +220,16 @@
 
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
 <div class="viewcode-block" id="recursive_unicode_to_str"><a class="viewcode-back" href="../../pympress.html#pympress.ui.recursive_unicode_to_str">[docs]</a>    <span class="k">def</span> <span class="nf">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Dummy function that does nothing, for python3.</span>
+
+<span class="sd">        For python2 the equivalent function transforms strings to unicode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">obj</span></div>
 
 
 <div class="viewcode-block" id="layout_from_json"><a class="viewcode-back" href="../../pympress.html#pympress.ui.layout_from_json">[docs]</a><span class="k">def</span> <span class="nf">layout_from_json</span><span class="p">(</span><span class="n">layout_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load the layout from config, with all strings cast to type `str` (even on python2 where they default to `unicode`)</span>
+    <span class="sd">&quot;&quot;&quot; Load the layout from config, with all strings cast to type `str` (even on python2 where they default to `unicode`).</span>
+
 <span class="sd">    Raises ValueError until python 3.4, json.decoder.JSONDecodeError afterwards, on invalid input.</span>
 
 <span class="sd">    Args:</span>
@@ -233,14 +238,16 @@
     <span class="k">return</span> <span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">layout_string</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="c1"># python 2 fix</span>
+<div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>  <span class="c1"># python 2 fix</span>
     <span class="sd">&quot;&quot;&quot; Manage configuration :Get the configuration from its file and store its back.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: `dict`-tree of presenter layouts for various modes</span>
     <span class="n">layout</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="c1">#: `dict` of strings that are the valid representations of widgets from the presenter window that can be dynamically rearranged, mapping to their names</span>
-    <span class="n">placeable_widgets</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_notes&quot;</span><span class="p">,</span> <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_cur&quot;</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_next&quot;</span><span class="p">,</span> <span class="s2">&quot;annotations&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_annot&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">:</span> <span class="s2">&quot;scribble_overlay&quot;</span><span class="p">}</span>
+    <span class="c1">#: `dict` of strings that are the valid representations of widgets from the presenter window</span>
+    <span class="c1">#: that can be dynamically rearranged, mapping to their names</span>
+    <span class="n">placeable_widgets</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_notes&quot;</span><span class="p">,</span> <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_cur&quot;</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_next&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;annotations&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_annot&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">:</span> <span class="s2">&quot;scribble_overlay&quot;</span><span class="p">}</span>
 
     <span class="c1">#: Map of (keyval, Gdk.ModifierType) to string, which representing the shortcuts for each command</span>
     <span class="n">shortcuts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -279,13 +286,13 @@
         <span class="k">if</span> <span class="n">Config</span><span class="o">.</span><span class="n">using_portable_config</span><span class="p">():</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_portable_config</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_portable_config</span><span class="p">(),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_portable_config</span><span class="p">(),</span> <span class="s1">&#39;w&#39;</span><span class="p">):</span>
                 <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="Config.using_portable_config"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.using_portable_config">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">using_portable_config</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot; Checks which configuration file location is in use</span>
+        <span class="sd">&quot;&quot;&quot; Checks which configuration file location is in use.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: `True` iff we are using the portable (i.e. in install dir) location</span>
@@ -317,7 +324,7 @@
 
 
 <div class="viewcode-block" id="Config.upgrade"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.upgrade">[docs]</a>    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Update obsolete config options when pympress updates</span>
+        <span class="sd">&quot;&quot;&quot; Update obsolete config options when pympress updates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;pointer_none&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
@@ -374,22 +381,24 @@
 <span class="sd">        - children: `list` of size &gt;= 2, containing `str`s or `dict`s (mandatory)</span>
 <span class="sd">        - proportions: `list` of `float` with sum = 1, length == len(children), representing the relative sizes</span>
 <span class="sd">        of all the resizeable items (if and only if resizeable).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">next_visits</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">layout</span><span class="p">])</span>
         <span class="n">widget_seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">while</span> <span class="n">next_visits</span><span class="p">:</span>
             <span class="n">w_desc</span> <span class="o">=</span> <span class="n">next_visits</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">w_desc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expected_widgets</span> <span class="ow">and</span> <span class="n">w_desc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">optional_widgets</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unrecognized widget &quot;</span><span class="si">{}</span><span class="s1">&quot;, pick one of: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_widgets</span><span class="p">)))</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unrecognized widget &quot;</span><span class="si">{}</span><span class="s1">&quot;, pick one of: </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">expected_widgets</span><span class="p">)))</span>
                 <span class="k">elif</span> <span class="n">w_desc</span> <span class="ow">in</span> <span class="n">widget_seen</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Duplicate widget &quot;</span><span class="si">{}</span><span class="s1">&quot;, all expected_widgets can only appear once&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
                 <span class="n">widget_seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">w_desc</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s1">&#39;orientation&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">w_desc</span> <span class="ow">or</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;orientation&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">]:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;orientation&quot; is mandatory and must be &quot;horizontal&quot; or &quot;vertical&quot; at node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;orientation&quot; is mandatory and must be &quot;horizontal&quot; or &quot;vertical&quot; at node </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
                 <span class="k">elif</span> <span class="s1">&#39;children&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">w_desc</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;children&quot; is mandatory and must be a list of 2+ items at node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
                 <span class="k">elif</span> <span class="s1">&#39;resizeable&#39;</span> <span class="ow">in</span> <span class="n">w_desc</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;resizeable&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">:</span>
@@ -398,12 +407,17 @@
                 <span class="k">elif</span> <span class="s1">&#39;proportions&#39;</span> <span class="ow">in</span> <span class="n">w_desc</span><span class="p">:</span>
                     <span class="k">if</span> <span class="s1">&#39;resizeable&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">w_desc</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;resizeable&#39;</span><span class="p">]:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;proportions&quot; is only valid for resizeable widgets at node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
-                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">float</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-10</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;proportions&quot; must be a list of floats (one per separator), between 0 and 1, at node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span> <span class="ow">or</span> \
+                            <span class="nb">any</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">float</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="ow">or</span> \
+                            <span class="nb">len</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span> <span class="ow">or</span> \
+                            <span class="nb">abs</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;proportions&quot; must be a list of floats (one per separator), &#39;</span> <span class="o">-</span>
+                                         <span class="s1">&#39;between 0 and 1, at node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">w_desc</span><span class="p">))</span>
 
                 <span class="n">next_visits</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected type </span><span class="si">{}</span><span class="s1">, nodes must be dicts or strings, at node </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">),</span> <span class="n">w_desc</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected type </span><span class="si">{}</span><span class="s1">, nodes must be dicts or strings, at node </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">w_desc</span><span class="p">),</span> <span class="n">w_desc</span><span class="p">))</span>
         <span class="n">widget_missing</span> <span class="o">=</span> <span class="n">expected_widgets</span> <span class="o">-</span> <span class="n">widget_seen</span>
         <span class="k">if</span> <span class="n">widget_missing</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Following placeable_widgets were not specified: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">widget_missing</span><span class="p">)))</span></div>
@@ -424,22 +438,23 @@
                 <span class="n">loaded_layout</span> <span class="o">=</span> <span class="n">layout_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layout&#39;</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">))</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">validate_layout</span><span class="p">(</span><span class="n">loaded_layout</span><span class="p">,</span> <span class="o">*</span><span class="n">widget_reqs</span><span class="p">[</span><span class="n">layout_name</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">loaded_layout</span>
-            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Invalid layout&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Config.widget_layout_to_tree"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.widget_layout_to_tree">[docs]</a>    <span class="k">def</span> <span class="nf">widget_layout_to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Build a tree representing a widget hierarchy, leaves are strings and nodes are `dict`.</span>
+
 <span class="sd">        Recursive function. See validate_layout() for more info on the tree structure.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`): the widget where to start</span>
-<span class="sd">            pane_handle_pos (`dict`): Map of :class:`~Gtk.Paned` to the relative position (float between 0 and 1) of its handle</span>
+<span class="sd">            pane_handle_pos (`dict`): Map of :class:`~Gtk.Paned` to the relative handle position (float in 0..1)</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `dict`: A tree of dicts reprensenting the widget hierarchy</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">orientation_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">:</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">VERTICAL</span><span class="p">:</span><span class="s1">&#39;vertical&#39;</span><span class="p">}</span>
+        <span class="n">orientation_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">:</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">VERTICAL</span><span class="p">:</span> <span class="s1">&#39;vertical&#39;</span><span class="p">}</span>
 
         <span class="n">name</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
         <span class="n">matching_widget_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">name</span><span class="p">]</span>
@@ -448,14 +463,17 @@
             <span class="k">return</span> <span class="n">matching_widget_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Box</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resizeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_children</span><span class="p">()],</span>
-                    <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="n">orientation_names</span><span class="p">[</span><span class="n">widget</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()]}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resizeable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="n">orientation_names</span><span class="p">[</span><span class="n">widget</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()],</span>
+                    <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_children</span><span class="p">()]}</span>
 
         <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Paned</span><span class="p">):</span>
             <span class="n">proportions</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">reverse_children</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">orientation</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()</span>
-            <span class="n">get_size</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Widget</span><span class="o">.</span><span class="n">get_allocated_width</span> <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span> <span class="k">else</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Widget</span><span class="o">.</span><span class="n">get_allocated_height</span>
+            <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">:</span>
+                <span class="n">get_size</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Widget</span><span class="o">.</span><span class="n">get_allocated_width</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">get_size</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Widget</span><span class="o">.</span><span class="n">get_allocated_height</span>
 
             <span class="k">while</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Paned</span><span class="p">)</span> <span class="ow">and</span> <span class="n">orientation</span> <span class="o">==</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">():</span>
                 <span class="n">left_pane</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_child1</span><span class="p">()</span>
@@ -477,10 +495,11 @@
 
             <span class="n">reverse_children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">left_pane</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resizeable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">reverse_children</span><span class="p">)],</span>
-                    <span class="s1">&#39;proportions&#39;</span><span class="p">:</span> <span class="n">proportions</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="n">orientation_names</span><span class="p">[</span><span class="n">orientation</span><span class="p">]}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;resizeable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;proportions&#39;</span><span class="p">:</span> <span class="n">proportions</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="n">orientation_names</span><span class="p">[</span><span class="n">orientation</span><span class="p">],</span>
+                    <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">reverse_children</span><span class="p">)]}</span>
 
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Error serializing layout: widget of type </span><span class="si">{}</span><span class="s1"> is not an expected container or named widget: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">name</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Error serializing layout: widget of type </span><span class="si">{}</span><span class="s1"> &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">))</span> <span class="o">+</span>
+                         <span class="s1">&#39;is not an expected container or named widget: &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Config.get_layout"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.get_layout">[docs]</a>    <span class="k">def</span> <span class="nf">get_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">):</span>
@@ -495,7 +514,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            layout_name (`str`): the name of the layout to update</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`): the widget that will contain the layout.</span>
-<span class="sd">            pane_handle_pos (`dict`): Map of :class:`~Gtk.Paned` to the relative position (float between 0 and 1) of its handle</span>
+<span class="sd">            pane_handle_pos (`dict`): Map of :class:`~Gtk.Paned` to the relative handle position (float in 0..1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">)</span></div></div>
 </pre></div>

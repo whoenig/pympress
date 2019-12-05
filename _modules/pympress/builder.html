@@ -170,7 +170,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.ui_builder` -- abstract GUI management</span>
 <span class="sd">-----------------------------------------------------</span>
@@ -230,8 +229,8 @@
         <span class="n">Builder</span><span class="o">.</span><span class="n">__translate_widget_strings</span><span class="p">(</span><span class="n">a_widget</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a_widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Container</span><span class="p">):</span>
-            <span class="c1">#NB: Parent-loop in widgets would cause infinite loop here, but that&#39;s absurd (right?)</span>
-            <span class="c1">#NB2: maybe forall instead of foreach if we miss some strings?</span>
+            <span class="c1"># NB: Parent-loop in widgets would cause infinite loop here, but that&#39;s absurd (right?)</span>
+            <span class="c1"># NB2: maybe forall instead of foreach if we miss some strings?</span>
             <span class="n">a_widget</span><span class="o">.</span><span class="n">foreach</span><span class="p">(</span><span class="n">Builder</span><span class="o">.</span><span class="n">__recursive_translate_widgets</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a_widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MenuItem</span><span class="p">)</span> <span class="ow">and</span> <span class="n">a_widget</span><span class="o">.</span><span class="n">get_submenu</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -242,24 +241,26 @@
     <span class="k">def</span> <span class="nf">signal_resolver</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr_list</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Dynamically resolves a signal that is target.a.b.c() when attr_list is [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;].</span>
 
-<span class="sd">        This allows to specify multi-level signals in the XML files, instead of targeting everything at the main UI object.</span>
+<span class="sd">        This allows to specify multi-level signals in the XML files, instead of targeting everything at the main UI</span>
+<span class="sd">        object.</span>
 
-<span class="sd">        Also, resolving signals dynamically means the object properties of the top-level object can be replaced, and the signal</span>
-<span class="sd">        will still connect to something meaningful. The downside is that this connection is done at runtime, thus probably less</span>
-<span class="sd">        efficient and might fail to find the target if any attribute along the way has an unexpected value.</span>
+<span class="sd">        Also, resolving signals dynamically means the object properties of the top-level object can be replaced, and the</span>
+<span class="sd">        signal will still connect to something meaningful. The downside is that this connection is done at runtime, thus</span>
+<span class="sd">        probably less efficient and might fail to find the target if any attribute along the way has an unexpected</span>
+<span class="sd">        value.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            attr_list (`list`): a list of attribute names, designating objects except the last one designating a function</span>
+<span class="sd">            attr_list (`list`): a list of attribute names, designating objects except the last one which is a function</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            function: The function to which we want to connect</span>
+<span class="sd">            `function`: The function to which we want to connect</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">top</span> <span class="o">=</span> <span class="n">target</span>
 
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">target</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Can not reach target of signal </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">()&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">attr_list</span><span class="p">)),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="n">target</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -268,41 +269,47 @@
 
 <div class="viewcode-block" id="Builder.find_callback_handler"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.find_callback_handler">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">find_callback_handler</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">handler_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns the handler from its name, searching in target. Parse handler names and split on &#39;.&#39; to use recursion.</span>
+        <span class="sd">&quot;&quot;&quot; Returns the handler from its name, searching in target.</span>
+
+<span class="sd">        Parse handler names and split on &#39;.&#39; to use recursion.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            target (`object`): An object that has a method called `handler_name`</span>
 <span class="sd">            handler_name (`str`): The name of the function to be connected to a signal</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `function`: A function bound to an object or, if the object may change, a lambda calling Builder.signal_resolver to get said function bound to an object</span>
+<span class="sd">            `function`: A function bound to an object or, if the object may change, a lambda calling</span>
+<span class="sd">            :meth:`~pympress.Builder.signal_resolver` to get said function bound to an object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">handler_name</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">attr_list</span> <span class="o">=</span>  <span class="n">handler_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+            <span class="n">attr_list</span> <span class="o">=</span> <span class="n">handler_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">attr_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Handler name not in target object. Expected &quot;.&quot; but got: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler_name</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Handler name not in target object. Expected &quot;.&quot; but got: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">handler_name</span><span class="p">),</span>
+                             <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="k">raise</span>
 
             <span class="c1"># Dynamically resolved handler for &#39;doc&#39; (only) since target.doc may change</span>
             <span class="k">if</span> <span class="s1">&#39;doc&#39;</span> <span class="ow">in</span> <span class="n">attr_list</span><span class="p">:</span>
                 <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Builder</span><span class="o">.</span><span class="n">signal_resolver</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr_list</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span>  <span class="n">Builder</span><span class="o">.</span><span class="n">signal_resolver</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr_list</span><span class="p">)</span></div>
+                <span class="k">return</span> <span class="n">Builder</span><span class="o">.</span><span class="n">signal_resolver</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr_list</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Builder.get_callback_handler"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.get_callback_handler">[docs]</a>    <span class="k">def</span> <span class="nf">get_callback_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Convenience non-static wrapper function for :func:`find_callback_handler` to search in the builder object.</span>
-<span class="sd">        The `handler_name` function must be a method of this builder (realistically, a method of an inherited UI class&#39; instance).</span>
+
+<span class="sd">        The `handler_name` function must be a method of this builder (realistically, of an inherited UI class instance).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            handler_name (`str`): The name of the function to be connected to a signal</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `function`: A function bound to an object or, if the object may change, a lambda calling Builder.signal_resolver to get said function bound to an object</span>
+<span class="sd">            `function`: A function bound to an object or, if the object may change, a lambda calling</span>
+<span class="sd">            :meth:`~pympress.Builder.signal_resolver` to get said function bound to an object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_callback_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler_name</span><span class="p">)</span></div>
 
@@ -323,15 +330,17 @@
             <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="n">handler_name</span><span class="p">)</span>
             <span class="nb">object</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">signal_name</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="o">*</span><span class="n">user_data</span><span class="p">)</span>
 
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Impossible to connect signal </span><span class="si">{}</span><span class="s1"> from object </span><span class="si">{}</span><span class="s1"> to handler </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">signal_name</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">handler_name</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Impossible to connect signal </span><span class="si">{}</span><span class="s1"> from object </span><span class="si">{}</span><span class="s1"> to handler </span><span class="si">{}</span><span class="s1">&#39;</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">signal_name</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">handler_name</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Builder.connect_signals"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.connect_signals">[docs]</a>    <span class="k">def</span> <span class="nf">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_target</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Override default signal connector so we can map signals to the methods of (any depth of) object that are properties of self</span>
+        <span class="sd">&quot;&quot;&quot; Signal connector connecting to properties of `base_target`, or properties of its properties, etc.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            base_target (:class:`~pympress.builder.Builder`): The target object, that has functions to be connected to signals loaded in this builder.</span>
+<span class="sd">            base_target (:class:`~pympress.builder.Builder`): The target object, that has functions to be connected to</span>
+<span class="sd">            signals loaded in this builder.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Builder</span><span class="o">.</span><span class="n">connect_signals_full</span><span class="p">(</span><span class="n">base_target</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal_connector</span><span class="p">)</span></div>
 
@@ -340,7 +349,7 @@
         <span class="sd">&quot;&quot;&quot; Loads the UI defined in the file named resource_name using the builder.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            resource_name (`str`): the name of the glade file (basename without extension), identifying which resource to load.</span>
+<span class="sd">            resource_name (`str`): the basename of the glade file (without extension), identifying the resource to load.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">add_from_file</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_ui_resource_file</span><span class="p">(</span><span class="n">resource_name</span><span class="p">))</span>
 
@@ -352,7 +361,8 @@
             <span class="c1"># pass new objects to manual translation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__translate_widget_strings</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
-            <span class="c1"># instrospectively load objects. If we have a self.attr == None and this attr is the name of a built object, link it together.</span>
+            <span class="c1"># Instrospectively load objects. If we have a self.attr == None and this attr is the name of a built object,</span>
+            <span class="c1"># link it together.</span>
             <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Buildable</span><span class="p">):</span>
                 <span class="n">obj_id</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Buildable</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 
@@ -376,10 +386,11 @@
 
 <div class="viewcode-block" id="Builder.load_widgets"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.load_widgets">[docs]</a>    <span class="k">def</span> <span class="nf">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Fill in target with the missing elements introspectively.</span>
-<span class="sd">        This means that all attributes of target that are None at this time must exist under the same name in the builder.</span>
+
+<span class="sd">        This means that all attributes of `target` that are None now must exist under the same name in the builder.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            target (`dict`): An object with None-valued attributes that have the same name as built widgets, loaded from the glade file.</span>
+<span class="sd">            target (`dict`): An object with None-valued properties whose names correspond to ids of built widgets.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_attributes</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">attr</span><span class="p">))</span></div>
@@ -395,7 +406,7 @@
 <span class="sd">            pane_resize_handler (function): callback function to be called when the panes are resized</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `dict`: The mapping of the used :class:`~Gtk.Paned` widgets to their relative handle position (float between 0 and 1)</span>
+<span class="sd">            `dict`: The mapping of the used :class:`~Gtk.Paned` widgets to their relative handle position (in 0..1).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># take apart the previous/default layout</span>
         <span class="n">containers</span> <span class="o">=</span> <span class="p">[]</span>
@@ -469,7 +480,8 @@
 
             <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Box</span><span class="p">):</span>
                 <span class="n">parent</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span> <span class="c1">#it&#39;s a Gtk.Paned</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># it&#39;s a Gtk.Paned</span>
                 <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_child2</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">parent</span><span class="o">.</span><span class="n">pack2</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">:</span>
@@ -487,11 +499,13 @@
 
 
 <div class="viewcode-block" id="Builder.resize_paned"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.resize_paned">[docs]</a>    <span class="k">def</span> <span class="nf">resize_paned</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">paned</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">relpos</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Resize `~paned` to have its handle at `~relpos`, then disconnect this signal handler.</span>
+        <span class="sd">&quot;&quot;&quot; Resize `paned` to have its handle at `relpos`, then disconnect this signal handler.</span>
+
 <span class="sd">        Called from the :func:`Gtk.Widget.signals.size_allocate` signal.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            paned (:class:`~Gtk.Paned`): Panel whose size has just been allocated, and whose handle needs initial placement.</span>
+<span class="sd">            paned (:class:`~Gtk.Paned`): Panel whose size has just been allocated, and whose handle needs initial</span>
+<span class="sd">                                         placement.</span>
 <span class="sd">            rect (:class:`~Gdk.Rectangle`): The rectangle specifying the size that has just been allocated to `~paned`</span>
 <span class="sd">            relpos (`float`): A number between `0.` and `1.` that specifies the handle position</span>
 
@@ -504,7 +518,6 @@
 
         <span class="n">paned</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">paned</span><span class="o">.</span><span class="n">get_name</span><span class="p">()))</span>
         <span class="k">return</span> <span class="kc">True</span></div></div>
-
 </pre></div>
 
            </div>

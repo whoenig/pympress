@@ -171,7 +171,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
 <span class="c1">#       MA 02110-1301, USA.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.util` -- various utility functions</span>
 <span class="sd">-------------------------------------------------</span>
@@ -184,7 +183,8 @@
 
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">importlib</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
     <span class="c1"># doesn’t play too well with cx_Freeze</span>
@@ -202,15 +202,17 @@
         <span class="kn">import</span> <span class="nn">_winreg</span> <span class="k">as</span> <span class="nn">winreg</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="ne">PermissionError</span><span class="p">()</span>
+    <span class="ne">PermissionError</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="k">class</span> <span class="nc">PermissionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-        <span class="k">pass</span>
+    <span class="ne">PermissionError</span> <span class="o">=</span> <span class="ne">OSError</span>
 
 
 
 <div class="viewcode-block" id="get_pympress_meta"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_pympress_meta">[docs]</a><span class="k">def</span> <span class="nf">get_pympress_meta</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; Get metadata (version, etc) from pympress&#39; __init__.py</span>
+    <span class="sd">&quot;&quot;&quot; Get metadata (version, etc) from pympress&#39; __init__.py or git describe.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `dict`: metadata properties (version, contributors) mapped to their values</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s1">&#39;pympress.__init__&#39;</span><span class="p">)</span>
     <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span> <span class="s1">&#39;contributors&#39;</span><span class="p">:</span> <span class="n">module</span><span class="o">.</span><span class="n">__author__</span><span class="p">}</span>
@@ -228,7 +230,7 @@
         <span class="n">git_version</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">)</span>
 
         <span class="c1"># answer format is: {last tag}-{commit count since tag}-g{commit sha1 hash}[-dirty]</span>
-        <span class="n">tag</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">sha</span><span class="p">,</span> <span class="o">*</span><span class="n">dirty</span> <span class="o">=</span> <span class="n">git_version</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">tag</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">sha</span><span class="p">,</span> <span class="n">dirty</span> <span class="o">=</span> <span class="p">(</span><span class="n">git_version</span> <span class="o">+</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">count</span> <span class="o">!=</span> <span class="s1">&#39;0&#39;</span> <span class="ow">or</span> <span class="n">dirty</span><span class="p">:</span>
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">+</span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="n">count</span><span class="p">,</span> <span class="n">sha</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">))</span>
 
@@ -241,6 +243,7 @@
 
 <span class="k">def</span> <span class="nf">__get_resource_path</span><span class="p">(</span><span class="o">*</span><span class="n">path_parts</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return the resource path based on whether its frozen or not.</span>
+
 <span class="sd">    Paths parts given should be relative to the pympress package dir.</span>
 
 <span class="sd">    Args:</span>
@@ -259,6 +262,7 @@
 
 <span class="k">def</span> <span class="nf">__get_resource_list</span><span class="p">(</span><span class="o">*</span><span class="n">path_parts</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return the list of elements in a directory based on whether its frozen or not.</span>
+
 <span class="sd">    Paths parts given should be relative to the pympress package dir.</span>
 
 <span class="sd">    Args:</span>
@@ -276,7 +280,7 @@
 
 
 <div class="viewcode-block" id="get_locale_dir"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_locale_dir">[docs]</a><span class="k">def</span> <span class="nf">get_locale_dir</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; Returns the path to the locale directory</span>
+    <span class="sd">&quot;&quot;&quot; Returns the path to the locale directory.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The path to the locale directory</span>
@@ -416,7 +420,7 @@
     <span class="k">if</span> <span class="n">IS_MAC_OS</span><span class="p">:</span>
         <span class="c1"># On Mac OS X we can use caffeinate to prevent the display from sleeping</span>
         <span class="k">if</span> <span class="n">must_disable</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="o">.</span><span class="n">poll</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="o">.</span><span class="n">poll</span><span class="p">():</span>
                 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;caffeinate&#39;</span><span class="p">,</span> <span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;-w&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="o">.</span><span class="n">poll</span><span class="p">():</span>
@@ -430,12 +434,12 @@
         <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;suspend&quot;</span> <span class="k">if</span> <span class="n">must_disable</span> <span class="k">else</span> <span class="s2">&quot;resume&quot;</span>
         <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;xdg-screensaver </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">window</span><span class="o">.</span><span class="n">get_xid</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not set screensaver status: got status &quot;</span><span class="p">)</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not set screensaver status: got status &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
 
         <span class="c1"># Also manage screen blanking via DPMS</span>
         <span class="k">if</span> <span class="n">must_disable</span><span class="p">:</span>
             <span class="c1"># Get current DPMS status</span>
-            <span class="n">pipe</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;xset q&quot;</span><span class="p">)</span> <span class="c1"># TODO: check if this works on all locales</span>
+            <span class="n">pipe</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;xset q&quot;</span><span class="p">)</span>  <span class="c1"># TODO: check if this works on all locales</span>
             <span class="n">dpms_status</span> <span class="o">=</span> <span class="s2">&quot;Disabled&quot;</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">pipe</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;DPMS is&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -448,7 +452,7 @@
                 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;xset -dpms&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not disable DPMS screen blanking: got status &quot;</span><span class="p">)</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not disable DPMS screen blanking: got status &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -456,13 +460,14 @@
             <span class="c1"># Re-enable DPMS</span>
             <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;xset +dpms&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not enable DPMS screen blanking: got status &quot;</span><span class="p">)</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not enable DPMS screen blanking: got status &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
 
     <span class="k">elif</span> <span class="n">IS_WINDOWS</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">winreg</span><span class="o">.</span><span class="n">OpenKey</span><span class="p">(</span><span class="n">winreg</span><span class="o">.</span><span class="n">HKEY_CURRENT_USER</span><span class="p">,</span> <span class="s1">&#39;Control Panel\Desktop&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">winreg</span><span class="o">.</span><span class="n">KEY_QUERY_VALUE</span><span class="o">|</span><span class="n">winreg</span><span class="o">.</span><span class="n">KEY_SET_VALUE</span><span class="p">)</span> <span class="k">as</span> <span class="n">key</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">winreg</span><span class="o">.</span><span class="n">OpenKey</span><span class="p">(</span><span class="n">winreg</span><span class="o">.</span><span class="n">HKEY_CURRENT_USER</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;Control Panel\Desktop&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                <span class="n">winreg</span><span class="o">.</span><span class="n">KEY_QUERY_VALUE</span> <span class="o">|</span> <span class="n">winreg</span><span class="o">.</span><span class="n">KEY_SET_VALUE</span><span class="p">)</span> <span class="k">as</span> <span class="n">key</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">must_disable</span><span class="p">:</span>
-                    <span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="n">regtype</span><span class="p">)</span> <span class="o">=</span> <span class="n">winreg</span><span class="o">.</span><span class="n">QueryValueEx</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;ScreenSaveActive&quot;</span><span class="p">)</span>
+                    <span class="n">value</span><span class="p">,</span> <span class="n">regtype</span> <span class="o">=</span> <span class="n">winreg</span><span class="o">.</span><span class="n">QueryValueEx</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;ScreenSaveActive&quot;</span><span class="p">)</span>
                     <span class="k">assert</span><span class="p">(</span><span class="n">regtype</span> <span class="o">==</span> <span class="n">winreg</span><span class="o">.</span><span class="n">REG_SZ</span><span class="p">)</span>
                     <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="p">:</span>

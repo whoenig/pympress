@@ -170,7 +170,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.</span>
 <span class="c1">#</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.media_overlays.gif` -- widget to play gif images as videos</span>
 <span class="sd">-------------------------------------------------------------------------</span>
@@ -229,20 +228,21 @@
 
 
 <div class="viewcode-block" id="GifOverlay.set_transform"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.set_transform">[docs]</a>    <span class="k">def</span> <span class="nf">set_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute the transform to scale (not stretch nor crop) the gif</span>
+        <span class="sd">&quot;&quot;&quot; Compute the transform to scale (not stretch nor crop) the gif.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">widget_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">movie_zone</span><span class="o">.</span><span class="n">get_allocated_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">movie_zone</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">())</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">widget_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">widget_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_size</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">dx</span> <span class="o">=</span> <span class="n">widget_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">scale</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">dy</span> <span class="o">=</span> <span class="n">widget_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">scale</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">xx</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">/</span><span class="mi">2</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Matrix</span><span class="p">(</span><span class="n">xx</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GifOverlay.draw"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Simple resized drawing: get the pixbuf, set the transform, draw the image.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">ctx</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">)</span>
@@ -265,6 +265,7 @@
 
 <div class="viewcode-block" id="GifOverlay.do_set_time"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.do_set_time">[docs]</a>    <span class="k">def</span> <span class="nf">do_set_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the player at time t.</span>
+
 <span class="sd">        Should run on the main thread to ensure we avoid vlc plugins&#39; reentrency problems.</span>
 
 <span class="sd">        Args:</span>
@@ -281,7 +282,7 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
-    <span class="c1"># a bunch of inherited functions that do nothing for gifs</span>
+    <span class="c1"># a bunch of inherited functions that do nothing, for gifs</span>
 <div class="viewcode-block" id="GifOverlay.mute"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.mute">[docs]</a>    <span class="k">def</span> <span class="nf">mute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span> <span class="k">pass</span></div>
 <div class="viewcode-block" id="GifOverlay.is_playing"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.is_playing">[docs]</a>    <span class="k">def</span> <span class="nf">is_playing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="kc">True</span></div>
 <div class="viewcode-block" id="GifOverlay.do_stop"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.do_stop">[docs]</a>    <span class="k">def</span> <span class="nf">do_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span></div>
@@ -290,6 +291,8 @@
 
 <div class="viewcode-block" id="GifOverlay.setup_backend"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.setup_backend">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">setup_backend</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the name of this backend.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;GtkImage gif player&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 

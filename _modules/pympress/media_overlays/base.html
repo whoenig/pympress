@@ -174,7 +174,6 @@
 <span class="c1">#       along with this program; if not, write to the Free Software</span>
 <span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.</span>
 <span class="c1">#</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">:mod:`pympress.media_overlays.base` -- widget to play videos with a backend like VLC</span>
 <span class="sd">------------------------------------------------------------------------------------</span>
@@ -185,26 +184,14 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">gi</span>
-<span class="kn">import</span> <span class="nn">cairo</span>
-<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GObject</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">GdkPixbuf</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;GdkX11&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-    <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">GdkX11</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="k">pass</span>
-
 <span class="kn">import</span> <span class="nn">ctypes</span>
 
-<span class="kn">from</span> <span class="nn">pympress.util</span> <span class="kn">import</span> <span class="n">IS_POSIX</span><span class="p">,</span> <span class="n">IS_MAC_OS</span><span class="p">,</span> <span class="n">IS_WINDOWS</span>
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">builder</span>
 
 
 <div class="viewcode-block" id="get_window_handle"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.get_window_handle">[docs]</a><span class="k">def</span> <span class="nf">get_window_handle</span><span class="p">(</span><span class="n">window</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Uses ctypes to call gdk_win32_window_get_handle which is not available</span>
-<span class="sd">    in python gobject introspection porting (yet ?)</span>
+    <span class="sd">&quot;&quot;&quot; Uses ctypes to call gdk_win32_window_get_handle which is not available in python gobject introspection porting.</span>
+
 <span class="sd">    Solution from http://stackoverflow.com/a/27236258/1387346</span>
 
 <span class="sd">    Args:</span>
@@ -284,13 +271,13 @@
 
 
 <div class="viewcode-block" id="VideoOverlay.handle_embed"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.handle_embed">[docs]</a>    <span class="k">def</span> <span class="nf">handle_embed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapped_widget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Handler to embed the video player in the correct window, connected to the :attr:`~.Gtk.Widget.signals.map` signal</span>
+        <span class="sd">&quot;&quot;&quot; Handler to embed the video player in the window, connected to the :attr:`~.Gtk.Widget.signals.map` signal.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="VideoOverlay.format_millis"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.format_millis">[docs]</a>    <span class="k">def</span> <span class="nf">format_millis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">prog</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Callback to format the current timestamp (in milliseconds) as minutes:seconds</span>
+        <span class="sd">&quot;&quot;&quot; Callback to format the current timestamp (in milliseconds) as minutes:seconds.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sc (:class:`~Gtk.Scale`): The scale whose position we are formatting</span>
@@ -333,7 +320,8 @@
 
 
 <div class="viewcode-block" id="VideoOverlay.update_margins_for_page"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.update_margins_for_page">[docs]</a>    <span class="k">def</span> <span class="nf">update_margins_for_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_type</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Recalculate the margins around the media in the event of a page type change.</span>
+
 <span class="sd">        Arguments:</span>
 <span class="sd">            page_type (:class:`~pympress.document.PdfPage`): the part of the page to display</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -402,7 +390,7 @@
 
 
 <div class="viewcode-block" id="VideoOverlay.do_hide"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.do_hide">[docs]</a>    <span class="k">def</span> <span class="nf">do_hide</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove widget from overlays. Needs to be callded via GLib.idle_add</span>
+        <span class="sd">&quot;&quot;&quot; Remove widget from overlays. Needs to be called via :func:`~GLib.idle_add`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: `True` iff this function should be run again (:func:`~GLib.idle_add` convention)</span>
@@ -417,6 +405,7 @@
 
 <div class="viewcode-block" id="VideoOverlay.do_play"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.do_play">[docs]</a>    <span class="k">def</span> <span class="nf">do_play</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start playing the media file.</span>
+
 <span class="sd">        Should run on the main thread to ensure we avoid vlc plugins&#39; reentrency problems.</span>
 
 <span class="sd">        Returns:</span>
@@ -427,6 +416,7 @@
 
 <div class="viewcode-block" id="VideoOverlay.do_play_pause"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.do_play_pause">[docs]</a>    <span class="k">def</span> <span class="nf">do_play_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Toggle pause mode of the media.</span>
+
 <span class="sd">        Should run on the main thread to ensure we avoid vlc plugins&#39; reentrency problems.</span>
 
 <span class="sd">        Returns:</span>
@@ -437,6 +427,7 @@
 
 <div class="viewcode-block" id="VideoOverlay.do_set_time"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.do_set_time">[docs]</a>    <span class="k">def</span> <span class="nf">do_set_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the player at time t.</span>
+
 <span class="sd">        Should run on the main thread to ensure we avoid vlc plugins&#39; reentrency problems.</span>
 
 <span class="sd">        Args:</span>
