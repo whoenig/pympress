@@ -179,7 +179,7 @@
 <span class="sd">PDF documents are supported at the moment, but other formats may be added in the</span>
 <span class="sd">future).</span>
 
-<span class="sd">An important point is that this module is *completely* independant from the GUI:</span>
+<span class="sd">An important point is that this module is *completely* independent from the GUI:</span>
 <span class="sd">there should not be any GUI-related code here, except for page rendering (and</span>
 <span class="sd">only rendering itself: the preparation of the target surface must be done</span>
 <span class="sd">elsewhere).</span>
@@ -537,7 +537,7 @@
             <span class="k">elif</span> <span class="n">dest_name</span> <span class="o">==</span> <span class="s2">&quot;LastPage&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">Link</span><span class="o">.</span><span class="n">build_closure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">goto</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">pages_number</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">dest_name</span> <span class="o">==</span> <span class="s2">&quot;GoToPage&quot;</span><span class="p">:</span>
-                <span class="c1"># Same as the &#39;G&#39; action which allows to pick a page to jump to</span>
+                <span class="c1"># Same as the &#39;G&#39; action which allows one to pick a page to jump to</span>
                 <span class="k">return</span> <span class="n">Link</span><span class="o">.</span><span class="n">build_closure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">start_editing_page_number</span><span class="p">,</span> <span class="p">)</span>
             <span class="k">elif</span> <span class="n">dest_name</span> <span class="o">==</span> <span class="s2">&quot;Find&quot;</span><span class="p">:</span>
                 <span class="c1"># TODO popup a text box and search results with Page.find_text</span>
@@ -1267,10 +1267,10 @@
 
 
 <div class="viewcode-block" id="EmptyDocument.page"><a class="viewcode-back" href="../../pympress.html#pympress.ui.EmptyDocument.page">[docs]</a>    <span class="k">def</span> <span class="nf">page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Retreive a page from the document.</span>
+        <span class="sd">&quot;&quot;&quot; Retrieve a page from the document.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            number (`int`): page number to be retreived</span>
+<span class="sd">            number (`int`): page number to be retrieved</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            :class:`~pympress.document.EmptyPage` or `None`: -1 returns the empty page so we can display something.</span>

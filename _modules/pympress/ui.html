@@ -541,8 +541,8 @@
 <span class="sd">        We tell the local :class:`~pympress.surfacecache.SurfaceCache` cache about it, so that it can</span>
 <span class="sd">        invalidate its internal cache for the specified widget and pre-render next pages at a correct size.</span>
 
-<span class="sd">        Warning: Some not-explicitely sent signals contain wrong values! Just don&#39;t resize in that case,</span>
-<span class="sd">        since these always seem to happen after a correct signal that was sent explicitely.</span>
+<span class="sd">        Warning: Some not-explicitly sent signals contain wrong values! Just don&#39;t resize in that case,</span>
+<span class="sd">        since these always seem to happen after a correct signal that was sent explicitly.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which has been resized</span>
@@ -601,12 +601,12 @@
 <div class="viewcode-block" id="UI.on_pane_event"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_pane_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_pane_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Signal handler for gtk.paned events.</span>
 
-<span class="sd">        This function allows to delay drawing events when resizing, and to speed up redrawing when</span>
+<span class="sd">        This function allows one to delay drawing events when resizing, and to speed up redrawing when</span>
 <span class="sd">        moving the middle pane is done (which happens at the end of a mouse resize)</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured (ignored)</span>
-<span class="sd">            evt (:class:`~Gdk.Event`):  the event that occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred (ignored)</span>
+<span class="sd">            evt (:class:`~Gdk.Event`):  the event that occurred</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">evt</span><span class="p">)</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventButton</span> <span class="ow">and</span> <span class="n">evt</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">BUTTON_RELEASE</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">redraw_panes</span><span class="p">()</span>
@@ -1043,8 +1043,8 @@
         <span class="sd">&quot;&quot;&quot; Manage key presses for both windows.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured (ignored)</span>
-<span class="sd">            event (:class:`~Gdk.Event`):  the event that occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred (ignored)</span>
+<span class="sd">            event (:class:`~Gdk.Event`):  the event that occurred</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
@@ -1138,8 +1138,8 @@
         <span class="sd">&quot;&quot;&quot; Manage scroll events.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured (ignored)</span>
-<span class="sd">            event (:class:`~Gdk.Event`):  the event that occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred (ignored)</span>
+<span class="sd">            event (:class:`~Gdk.Event`):  the event that occurred</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
@@ -1206,8 +1206,8 @@
 <span class="sd">        Handles a click on a slide.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured</span>
-<span class="sd">            event (:class:`~Gdk.Event`):  the event that occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred</span>
+<span class="sd">            event (:class:`~Gdk.Event`):  the event that occurred</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
@@ -1238,8 +1238,8 @@
         <span class="sd">&quot;&quot;&quot; Manage events related to hyperlinks, setting the cursor to a pointer if the hovered region is clickable.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured</span>
-<span class="sd">            event (:class:`~Gdk.Event`):  the event that occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred</span>
+<span class="sd">            event (:class:`~Gdk.Event`):  the event that occurred</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
@@ -1273,7 +1273,7 @@
 <span class="sd">        when leaving fullscreen mode.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether some window&#39;s full screen status got toggled</span>
@@ -1308,8 +1308,8 @@
         <span class="sd">&quot;&quot;&quot; Track whether the preview window is maximized.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occured</span>
-<span class="sd">            event (:class:`~Gtk.Event`):  the event that occured</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget in which the event occurred</span>
+<span class="sd">            event (:class:`~Gtk.Event`):  the event that occurred</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed.</span>
@@ -1321,11 +1321,11 @@
 
 
 <div class="viewcode-block" id="UI.update_frame_position"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.update_frame_position">[docs]</a>    <span class="k">def</span> <span class="nf">update_frame_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Callback to preview the frame alignement, called from the Gtk.SpinButton.</span>
+        <span class="sd">&quot;&quot;&quot; Callback to preview the frame alignment, called from the Gtk.SpinButton.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.SpinButton`): The button updating the slide alignement in the drawing area widget</span>
-<span class="sd">            user_data (`str`): The property being set, either the x or y alignement (resp. xalign and yalign).</span>
+<span class="sd">            widget (:class:`~Gtk.SpinButton`): The button updating the slide alignment in the drawing area widget</span>
+<span class="sd">            user_data (`str`): The property being set, either the x or y alignment (resp. xalign and yalign).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_frame</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="n">user_data</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span></div>
 

@@ -310,8 +310,8 @@ current and the next page, as well as a time counter and a clock.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occured</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -382,8 +382,8 @@ current and the next page, as well as a time counter and a clock.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occured</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -450,8 +450,8 @@ current and the next page, as well as a time counter and a clock.</p>
 <dd><p>Manage “configure” events for all drawing areas, e.g. resizes.</p>
 <p>We tell the local <a class="reference internal" href="#pympress.surfacecache.SurfaceCache" title="pympress.surfacecache.SurfaceCache"><code class="xref py py-class docutils literal notranslate"><span class="pre">SurfaceCache</span></code></a> cache about it, so that it can
 invalidate its internal cache for the specified widget and pre-render next pages at a correct size.</p>
-<p>Warning: Some not-explicitely sent signals contain wrong values! Just don’t resize in that case,
-since these always seem to happen after a correct signal that was sent explicitely.</p>
+<p>Warning: Some not-explicitly sent signals contain wrong values! Just don’t resize in that case,
+since these always seem to happen after a correct signal that was sent explicitly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -520,8 +520,8 @@ be updated, and updates it, using the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured (ignored)</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occured</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred (ignored)</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -550,13 +550,13 @@ be updated, and updates it, using the
 <dt id="pympress.ui.UI.on_pane_event">
 <code class="sig-name descname">on_pane_event</code><span class="sig-paren">(</span><em class="sig-param">widget</em>, <em class="sig-param">evt</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_pane_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.ui.UI.on_pane_event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Signal handler for gtk.paned events.</p>
-<p>This function allows to delay drawing events when resizing, and to speed up redrawing when
+<p>This function allows one to delay drawing events when resizing, and to speed up redrawing when
 moving the middle pane is done (which happens at the end of a mouse resize)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured (ignored)</p></li>
-<li><p><strong>evt</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occured</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred (ignored)</p></li>
+<li><p><strong>evt</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
 </ul>
 </dd>
 </dl>
@@ -569,8 +569,8 @@ moving the middle pane is done (which happens at the end of a mouse resize)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured (ignored)</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occured</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred (ignored)</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -589,8 +589,8 @@ moving the middle pane is done (which happens at the end of a mouse resize)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured</p></li>
-<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – the event that occured</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – the event that occurred</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -906,7 +906,7 @@ The state of the ui and cache are updated accordingly.</p>
 when leaving fullscreen mode.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured</p>
+<dd class="field-odd"><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>whether some window’s full screen status got toggled</p>
@@ -988,12 +988,12 @@ when leaving fullscreen mode.</p>
 <dl class="method">
 <dt id="pympress.ui.UI.update_frame_position">
 <code class="sig-name descname">update_frame_position</code><span class="sig-paren">(</span><em class="sig-param">widget</em>, <em class="sig-param">user_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.update_frame_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.ui.UI.update_frame_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Callback to preview the frame alignement, called from the Gtk.SpinButton.</p>
+<dd><p>Callback to preview the frame alignment, called from the Gtk.SpinButton.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/SpinButton.html#Gtk.SpinButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpinButton</span></code></a>) – The button updating the slide alignement in the drawing area widget</p></li>
-<li><p><strong>user_data</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The property being set, either the x or y alignement (resp. xalign and yalign).</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/SpinButton.html#Gtk.SpinButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpinButton</span></code></a>) – The button updating the slide alignment in the drawing area widget</p></li>
+<li><p><strong>user_data</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The property being set, either the x or y alignment (resp. xalign and yalign).</p></li>
 </ul>
 </dd>
 </dl>
@@ -1013,7 +1013,7 @@ when leaving fullscreen mode.</p>
 <p>This module contains several classes that are used for managing documents (only
 PDF documents are supported at the moment, but other formats may be added in the
 future).</p>
-<p>An important point is that this module is <em>completely</em> independant from the GUI:
+<p>An important point is that this module is <em>completely</em> independent from the GUI:
 there should not be any GUI-related code here, except for page rendering (and
 only rendering itself: the preparation of the target surface must be done
 elsewhere).</p>
@@ -1400,10 +1400,10 @@ a page that has already been loaded.</p>
 <dl class="method">
 <dt id="pympress.document.EmptyDocument.page">
 <code class="sig-name descname">page</code><span class="sig-paren">(</span><em class="sig-param">number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#EmptyDocument.page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.EmptyDocument.page" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retreive a page from the document.</p>
+<dd><p>Retrieve a page from the document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – page number to be retreived</p>
+<dd class="field-odd"><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – page number to be retrieved</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>-1 returns the empty page so we can display something.</p>
@@ -2072,7 +2072,7 @@ placement.</p></li>
 <dt id="pympress.builder.Builder.signal_resolver">
 <em class="property">static </em><code class="sig-name descname">signal_resolver</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">attr_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/builder.html#Builder.signal_resolver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.builder.Builder.signal_resolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dynamically resolves a signal that is target.a.b.c() when attr_list is [‘a’, ‘b’, ‘c’].</p>
-<p>This allows to specify multi-level signals in the XML files, instead of targeting everything at the main UI
+<p>This allows one to specify multi-level signals in the XML files, instead of targeting everything at the main UI
 object.</p>
 <p>Also, resolving signals dynamically means the object properties of the top-level object can be replaced, and the
 signal will still connect to something meaningful. The downside is that this connection is done at runtime, thus
@@ -2802,7 +2802,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f2e08369940 (GdkPixbuf at 0x56116ce994c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f4f7663c480 (GdkPixbuf at 0x555d298e2cc0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -3011,8 +3011,8 @@ behaviour), otherwise pass the key presses on to the button for normal behaviour
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occured</p></li>
-<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code> or None) – the event that occured, None if tf we called from a menu item</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code> or None) – the event that occurred, None if tf we called from a menu item</p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – name of the key in the casae of a key press</p></li>
 </ul>
 </dd>
@@ -3196,7 +3196,7 @@ targeted talk duration.</p>
 <dl class="method">
 <dt id="pympress.editable_label.PageNumber.enable_labels">
 <code class="sig-name descname">enable_labels</code><span class="sig-paren">(</span><em class="sig-param">enable</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/editable_label.html#PageNumber.enable_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.editable_label.PageNumber.enable_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allow to use or ignore labels.</p>
+<dd><p>Allow one to use or ignore labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>enable</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether to enable labels</p>
@@ -3715,7 +3715,7 @@ to fall back to the user profile location.</p>
 </dl>
 <p>Layout must have all self.placeable_widgets (leaves of the tree, as <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) and only allowed properties
 on the nodes of the tree (as <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>).</p>
-<p>Contraints on the only allowed properties of the nodes are:
+<p>Constraints on the only allowed properties of the nodes are:
 - resizeable: <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> (optional, defaults to no),
 - orientation: <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, either “vertical” or “horizontal” (mandatory)
 - children: <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of size &gt;= 2, containing <code class="xref py py-obj docutils literal notranslate"><span class="pre">str`s</span> <span class="pre">or</span> <span class="pre">`dict`s</span> <span class="pre">(mandatory)</span>
