@@ -485,11 +485,11 @@ since these always seem to happen after a correct signal that was sent explicitl
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – The widget on which the dragged item was dropped</p></li>
 <li><p><strong>drag_context</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/DragContext.html#Gdk.DragContext" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DragContext</span></code></a>) – </p></li>
-<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – </p></li>
-<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – </p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – position of the drop</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – position of the drop</p></li>
 <li><p><strong>data</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/SelectionData.html#Gtk.SelectionData" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectionData</span></code></a>) – container for the dropped data</p></li>
-<li><p><strong>info</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – </p></li>
-<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – </p></li>
+<li><p><strong>info</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – info on the target</p></li>
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – time of the drop</p></li>
 </ul>
 </dd>
 </dl>
@@ -1849,8 +1849,8 @@ i.e. the second pair of coordinates is taken from the opposite corner.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x1</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – x coordinate on the screen, on a scale 0..1</p></li>
-<li><p><strong>y1</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – y coordinate on the screen, on a scale 0..1</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – x coordinate on the screen, on a scale 0..1</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – y coordinate on the screen, on a scale 0..1</p></li>
 <li><p><strong>x2</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – second x coordinate on the screen, from the other side, on a scale 0..1</p></li>
 <li><p><strong>y2</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – second y coordinate on the screen, from the other side, on a scale 0..1</p></li>
 </ul>
@@ -1873,8 +1873,8 @@ i.e. the second pair of coordinates is taken from the opposite corner.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x1</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – x coordinate on the page, on a scale 0..1</p></li>
-<li><p><strong>y1</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – y coordinate on the page, on a scale 0..1</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – x coordinate on the page, on a scale 0..1</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – y coordinate on the page, on a scale 0..1</p></li>
 <li><p><strong>x2</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – second x coordinate on the page, from the other side, on a scale 0..1</p></li>
 <li><p><strong>y2</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – second y coordinate on the page, from the other side, on a scale 0..1</p></li>
 </ul>
@@ -2147,6 +2147,7 @@ structures, and creates a new thread for prerendering pages for this widget.</p>
 <li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – The widget for which we need to cache</p></li>
 <li><p><strong>wtype</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – type of document handled by the widget (see <a class="reference internal" href="#pympress.surfacecache.SurfaceCache.surface_type" title="pympress.surfacecache.SurfaceCache.surface_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">surface_type</span></code></a>)</p></li>
 <li><p><strong>prerender_enabled</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether this widget is initially in the list of widgets to prerender</p></li>
+<li><p><strong>zoomed</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether we will cache a zoomed portion of the widget</p></li>
 </ul>
 </dd>
 </dl>
@@ -2802,7 +2803,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f670451e600 (GdkPixbuf at 0x55f74bf94cc0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f1fc63387c0 (GdkPixbuf at 0x562fc5fab8c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -3998,7 +3999,10 @@ of all the resizeable items (if and only if resizeable).</p>
 <dd><p>Stops playing a media and hides the player. Used as a callback.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>media_id</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – A unique idientifier of the media to start playing</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>media_id</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – A unique identifier of the media to start playing</p></li>
+<li><p><strong>button</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Button.html#Gtk.Button" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a>) – the button clicked to cause the media to stop, if any.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -4021,7 +4025,10 @@ of all the resizeable items (if and only if resizeable).</p>
 <dd><p>Starts playing a media. Used as a callback.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>media_id</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – A unique idientifier of the media to start playing</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>media_id</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – A unique identifier of the media to start playing</p></li>
+<li><p><strong>button</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Button.html#Gtk.Button" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a>) – the button clicked to cause the media to play, if any.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -4188,7 +4195,7 @@ of all the resizeable items (if and only if resizeable).</p>
 <p>Call this when the page_number module is initialized, but before needing the callback.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>builder</strong> (<a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><em>builder.Builder</em></a>) – The builder from which to load widgets for scribble</p>
+<dd class="field-odd"><p><strong>scribble_builder</strong> (<a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><em>builder.Builder</em></a>) – The builder from which to load widgets for scribble</p>
 </dd>
 </dl>
 </dd></dl>

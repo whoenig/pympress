@@ -271,6 +271,7 @@
 <span class="sd">            widget (:class:`~Gtk.Widget`):  The widget for which we need to cache</span>
 <span class="sd">            wtype (`int`):  type of document handled by the widget (see :attr:`surface_type`)</span>
 <span class="sd">            prerender_enabled (`bool`):  whether this widget is initially in the list of widgets to prerender</span>
+<span class="sd">            zoomed (`bool`): whether we will cache a zoomed portion of the widget</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">widget_name</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;_zoomed&#39;</span> <span class="k">if</span> <span class="n">zoomed</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">widget_name</span><span class="p">,</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()):</span>

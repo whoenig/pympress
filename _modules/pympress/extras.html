@@ -492,7 +492,8 @@
         <span class="sd">&quot;&quot;&quot; Starts playing a media. Used as a callback.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            media_id (`int`): A unique idientifier of the media to start playing</span>
+<span class="sd">            media_id (`int`): A unique identifier of the media to start playing</span>
+<span class="sd">            button (:class:`~Gtk.Button`): the button clicked to cause the media to play, if any.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">media_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">:</span>
             <span class="n">c</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]</span>
@@ -505,7 +506,8 @@
         <span class="sd">&quot;&quot;&quot; Stops playing a media and hides the player. Used as a callback.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            media_id (`int`): A unique idientifier of the media to start playing</span>
+<span class="sd">            media_id (`int`): A unique identifier of the media to start playing</span>
+<span class="sd">            button (:class:`~Gtk.Button`): the button clicked to cause the media to stop, if any.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">media_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">:</span>
             <span class="n">c</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]</span>
@@ -695,7 +697,7 @@
 <span class="sd">        Call this when the page_number module is initialized, but before needing the callback.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            builder (builder.Builder): The builder from which to load widgets for scribble</span>
+<span class="sd">            scribble_builder (builder.Builder): The builder from which to load widgets for scribble</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_scribble_zoomout_sensitive</span> <span class="o">=</span> <span class="n">scribble_builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;zoom_stop_button.set_sensitive&#39;</span><span class="p">)</span></div>
 

@@ -753,11 +753,11 @@
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`): The widget on which the dragged item was dropped</span>
 <span class="sd">            drag_context (:class:`~Gdk.DragContext`):</span>
-<span class="sd">            x (`float`):</span>
-<span class="sd">            y (`float`):</span>
+<span class="sd">            x (`float`): position of the drop</span>
+<span class="sd">            y (`float`):  position of the drop</span>
 <span class="sd">            data (:class:`~Gtk.SelectionData`): container for the dropped data</span>
-<span class="sd">            info (`int`):</span>
-<span class="sd">            time (`int`):</span>
+<span class="sd">            info (`int`): info on the target</span>
+<span class="sd">            time (`int`): time of the drop</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">received</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">received</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
