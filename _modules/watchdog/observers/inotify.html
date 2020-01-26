@@ -277,8 +277,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_inotify</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">queue_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">full_events</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="c1">#If &quot;full_events&quot; is true, then the method will report unmatched move events as seperate events</span>
-        <span class="c1">#This behavior is by default only called by a InotifyFullEmitter</span>
+        <span class="c1"># If &quot;full_events&quot; is true, then the method will report unmatched move events as separate events</span>
+        <span class="c1"># This behavior is by default only called by a InotifyFullEmitter</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inotify</span><span class="o">.</span><span class="n">read_event</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">event</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -298,7 +298,7 @@
 
             <span class="n">src_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_decode_path</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">src_path</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">is_moved_to</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">full_events</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">full_events</span><span class="p">:</span>
                     <span class="bp">cls</span> <span class="o">=</span> <span class="n">DirMovedEvent</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">is_directory</span> <span class="k">else</span> <span class="n">FileMovedEvent</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">queue_event</span><span class="p">(</span><span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">src_path</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -352,9 +352,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_queue</span><span class="p">,</span> <span class="n">watch</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">DEFAULT_EMITTER_TIMEOUT</span><span class="p">):</span>
         <span class="n">InotifyEmitter</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_queue</span><span class="p">,</span> <span class="n">watch</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
-        
+
     <span class="k">def</span> <span class="nf">queue_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">InotifyEmitter</span><span class="o">.</span><span class="n">queue_events</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">full_events</span><span class="o">=</span><span class="n">events</span><span class="p">)</span>
+
 
 <span class="k">class</span> <span class="nc">InotifyObserver</span><span class="p">(</span><span class="n">BaseObserver</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -367,7 +368,7 @@
             <span class="n">BaseObserver</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">emitter_class</span><span class="o">=</span><span class="n">InotifyFullEmitter</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">BaseObserver</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">emitter_class</span><span class="o">=</span><span class="n">InotifyEmitter</span><span class="p">,</span>
-                              <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                                  <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 </pre></div>
 
            </div>

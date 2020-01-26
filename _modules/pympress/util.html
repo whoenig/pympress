@@ -201,6 +201,9 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">_winreg</span> <span class="k">as</span> <span class="nn">winreg</span>
 
+<span class="k">if</span> <span class="n">IS_POSIX</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gio</span>
+
 <span class="k">try</span><span class="p">:</span>
     <span class="ne">PermissionError</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
@@ -423,39 +426,23 @@
                 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
                 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">elif</span> <span class="n">IS_POSIX</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">window</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;X11Window&#39;</span><span class="p">:</span>
-        <span class="c1"># On Linux, set screensaver with xdg-screensaver</span>
-        <span class="c1"># (compatible with xscreensaver, gnome-screensaver and ksaver or whatever)</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;suspend&quot;</span> <span class="k">if</span> <span class="n">must_disable</span> <span class="k">else</span> <span class="s2">&quot;resume&quot;</span>
-        <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;xdg-screensaver </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">window</span><span class="o">.</span><span class="n">get_xid</span><span class="p">()))</span>
-        <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not set screensaver status: got status &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">IS_POSIX</span><span class="p">:</span>
+        <span class="c1"># On Linux and Wayland we can use a dbus interface to tell the screensaver</span>
+        <span class="c1"># to not lock the screen, should work on all freedesktop compliant desktops</span>
+        <span class="c1"># eg. Gnome, KDE,...</span>
+        <span class="n">bus</span> <span class="o">=</span> <span class="n">Gio</span><span class="o">.</span><span class="n">bus_get_sync</span><span class="p">(</span><span class="n">Gio</span><span class="o">.</span><span class="n">BusType</span><span class="o">.</span><span class="n">SESSION</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">iface</span> <span class="o">=</span> <span class="n">Gio</span><span class="o">.</span><span class="n">DBusProxy</span><span class="o">.</span><span class="n">new_sync</span><span class="p">(</span><span class="n">bus</span><span class="p">,</span> <span class="n">Gio</span><span class="o">.</span><span class="n">DBusProxyFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                       <span class="s1">&#39;org.freedesktop.ScreenSaver&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;/org/freedesktop/ScreenSaver&#39;</span><span class="p">,</span>
+                                       <span class="s1">&#39;org.freedesktop.ScreenSaver&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="c1"># Also manage screen blanking via DPMS</span>
-        <span class="k">if</span> <span class="n">must_disable</span><span class="p">:</span>
-            <span class="c1"># Get current DPMS status</span>
-            <span class="n">pipe</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">popen</span><span class="p">(</span><span class="s2">&quot;xset q&quot;</span><span class="p">)</span>  <span class="c1"># TODO: check if this works on all locales</span>
-            <span class="n">dpms_status</span> <span class="o">=</span> <span class="s2">&quot;Disabled&quot;</span>
-            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">pipe</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;DPMS is&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">dpms_status</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                    <span class="k">break</span>
-            <span class="n">pipe</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-            <span class="c1"># Set the new value correctly</span>
-            <span class="k">if</span> <span class="n">dpms_status</span> <span class="o">==</span> <span class="s2">&quot;Enabled&quot;</span><span class="p">:</span>
-                <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;xset -dpms&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not disable DPMS screen blanking: got status &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="k">elif</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="p">:</span>
-            <span class="c1"># Re-enable DPMS</span>
-            <span class="n">status</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;xset +dpms&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Could not enable DPMS screen blanking: got status &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">must_disable</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="p">:</span>
+            <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dbus_cookie</span> <span class="o">=</span> <span class="n">iface</span><span class="o">.</span><span class="n">Inhibit</span><span class="p">(</span><span class="s2">&quot;(ss)&quot;</span><span class="p">,</span> <span class="s2">&quot;pympress&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Fullscreen Presentation running&quot;</span><span class="p">))</span>
+            <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">must_disable</span> <span class="ow">and</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span><span class="p">:</span>
+            <span class="n">iface</span><span class="o">.</span><span class="n">UnInhibit</span><span class="p">(</span><span class="s2">&quot;(u)&quot;</span><span class="p">,</span> <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dbus_cookie</span><span class="p">)</span>
+            <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dbus_cookie</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">elif</span> <span class="n">IS_WINDOWS</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -478,7 +465,7 @@
 
 <span class="c1">#: remember DPMS setting before we change it</span>
 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">None</span>
-
+<span class="n">set_screensaver</span><span class="o">.</span><span class="n">dbus_cookie</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="c1">##</span>
 <span class="c1"># Local Variables:</span>

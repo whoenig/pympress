@@ -266,6 +266,14 @@
     <span class="n">is_directory</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="sd">&quot;&quot;&quot;True if event was emitted for a directory; False otherwise.&quot;&quot;&quot;</span>
 
+    <span class="n">is_synthetic</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    True if event was synthesized; False otherwise.</span>
+
+<span class="sd">    These are events that weren&#39;t actually broadcast by the OS, but</span>
+<span class="sd">    are presumed to have happened based on other, actual events.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_path</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_src_path</span> <span class="o">=</span> <span class="n">src_path</span>
 
@@ -742,11 +750,15 @@
         <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">directories</span><span class="p">:</span>
             <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
             <span class="n">renamed_path</span> <span class="o">=</span> <span class="n">full_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">dest_dir_path</span><span class="p">,</span> <span class="n">src_dir_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">src_dir_path</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="k">yield</span> <span class="n">DirMovedEvent</span><span class="p">(</span><span class="n">renamed_path</span><span class="p">,</span> <span class="n">full_path</span><span class="p">)</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">DirMovedEvent</span><span class="p">(</span><span class="n">renamed_path</span><span class="p">,</span> <span class="n">full_path</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">is_synthetic</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">yield</span> <span class="n">event</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
             <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
             <span class="n">renamed_path</span> <span class="o">=</span> <span class="n">full_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">dest_dir_path</span><span class="p">,</span> <span class="n">src_dir_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">src_dir_path</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="k">yield</span> <span class="n">FileMovedEvent</span><span class="p">(</span><span class="n">renamed_path</span><span class="p">,</span> <span class="n">full_path</span><span class="p">)</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">FileMovedEvent</span><span class="p">(</span><span class="n">renamed_path</span><span class="p">,</span> <span class="n">full_path</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">is_synthetic</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">yield</span> <span class="n">event</span>
 
 
 <span class="k">def</span> <span class="nf">generate_sub_created_events</span><span class="p">(</span><span class="n">src_dir_path</span><span class="p">):</span>
@@ -762,9 +774,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">directories</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">src_dir_path</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">directory</span> <span class="ow">in</span> <span class="n">directories</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">DirCreatedEvent</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">directory</span><span class="p">))</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">DirCreatedEvent</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">directory</span><span class="p">))</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">is_synthetic</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">yield</span> <span class="n">event</span>
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">FileCreatedEvent</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+            <span class="n">event</span> <span class="o">=</span> <span class="n">FileCreatedEvent</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">is_synthetic</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">yield</span> <span class="n">event</span>
 </pre></div>
 
            </div>
