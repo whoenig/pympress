@@ -172,7 +172,7 @@ Pympress has inline sphinx documentation ([Google style](http://www.sphinx-doc.o
 ## Translations
 
 ![Czech: 80%](https://img.shields.io/badge/%F0%9F%87%A8%F0%9F%87%BF%20Czech-80%25-6f0)
-![French: 80%](https://img.shields.io/badge/%F0%9F%87%AB%F0%9F%87%B7%20French-80%25-6f0)
+![French: 81%](https://img.shields.io/badge/%F0%9F%87%AB%F0%9F%87%B7%20French-81%25-6f0)
 ![German: 80%](https://img.shields.io/badge/%F0%9F%87%A9%F0%9F%87%AA%20German-80%25-6f0)
 ![Polish: 68%](https://img.shields.io/badge/%F0%9F%87%B5%F0%9F%87%B1%20Polish-68%25-af0)
 ![Spanish: 68%](https://img.shields.io/badge/%F0%9F%87%AA%F0%9F%87%B8%20Spanish-68%25-af0)
