@@ -23,10 +23,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -480,14 +480,12 @@
 <span class="sd">            :class:`FileSystemEvent`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">on_any_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-        <span class="n">_method_map</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">EVENT_TYPE_MODIFIED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_modified</span><span class="p">,</span>
-            <span class="n">EVENT_TYPE_MOVED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_moved</span><span class="p">,</span>
+        <span class="p">{</span>
             <span class="n">EVENT_TYPE_CREATED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_created</span><span class="p">,</span>
             <span class="n">EVENT_TYPE_DELETED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_deleted</span><span class="p">,</span>
-        <span class="p">}</span>
-        <span class="n">event_type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">event_type</span>
-        <span class="n">_method_map</span><span class="p">[</span><span class="n">event_type</span><span class="p">](</span><span class="n">event</span><span class="p">)</span>
+            <span class="n">EVENT_TYPE_MODIFIED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_modified</span><span class="p">,</span>
+            <span class="n">EVENT_TYPE_MOVED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_moved</span><span class="p">,</span>
+        <span class="p">}[</span><span class="n">event</span><span class="o">.</span><span class="n">event_type</span><span class="p">](</span><span class="n">event</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">on_any_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Catch-all event handler.</span>
@@ -603,15 +601,7 @@
                            <span class="n">included_patterns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patterns</span><span class="p">,</span>
                            <span class="n">excluded_patterns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ignore_patterns</span><span class="p">,</span>
                            <span class="n">case_sensitive</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">case_sensitive</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">on_any_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-            <span class="n">_method_map</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">EVENT_TYPE_MODIFIED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_modified</span><span class="p">,</span>
-                <span class="n">EVENT_TYPE_MOVED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_moved</span><span class="p">,</span>
-                <span class="n">EVENT_TYPE_CREATED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_created</span><span class="p">,</span>
-                <span class="n">EVENT_TYPE_DELETED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_deleted</span><span class="p">,</span>
-            <span class="p">}</span>
-            <span class="n">event_type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">event_type</span>
-            <span class="n">_method_map</span><span class="p">[</span><span class="n">event_type</span><span class="p">](</span><span class="n">event</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PatternMatchingEventHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">RegexMatchingEventHandler</span><span class="p">(</span><span class="n">FileSystemEventHandler</span><span class="p">):</span>
@@ -686,15 +676,7 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">on_any_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-            <span class="n">_method_map</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">EVENT_TYPE_MODIFIED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_modified</span><span class="p">,</span>
-                <span class="n">EVENT_TYPE_MOVED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_moved</span><span class="p">,</span>
-                <span class="n">EVENT_TYPE_CREATED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_created</span><span class="p">,</span>
-                <span class="n">EVENT_TYPE_DELETED</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_deleted</span><span class="p">,</span>
-            <span class="p">}</span>
-            <span class="n">event_type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">event_type</span>
-            <span class="n">_method_map</span><span class="p">[</span><span class="n">event_type</span><span class="p">](</span><span class="n">event</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">RegexMatchingEventHandler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">LoggingEventHandler</span><span class="p">(</span><span class="n">FileSystemEventHandler</span><span class="p">):</span>
