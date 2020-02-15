@@ -184,7 +184,7 @@
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Pango</span>
 
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
@@ -317,44 +317,21 @@
 <span class="sd">    Args:</span>
 <span class="sd">        annotations (`list`): A list of strings, that are the annotations to be displayed</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#: The containing widget for the annotations</span>
-    <span class="n">scrollable_treelist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: Making the annotations list scroll if it&#39;s too long</span>
+    <span class="c1">#: The containing :class:`~Gtk.TextView` widget for the annotations</span>
+    <span class="n">annotations_textview</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~Gtk.ScrolledWindow` making the annotations list scroll if it&#39;s too long</span>
     <span class="n">scrolled_window</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: :class:`~Gtk.CellRendererText` Text renderer for the annotations</span>
-    <span class="n">annotation_renderer</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Annotations</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">scrolled_window</span><span class="o">.</span><span class="n">set_hexpand</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
 
 <div class="viewcode-block" id="Annotations.add_annotations"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.add_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotations</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add annotations to be displayed (typically on going to a new slide).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">prev_annots</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrollable_treelist</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">prev_annots</span><span class="p">:</span>
-            <span class="n">prev_annots</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="n">list_annot</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ListStore</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">:</span>
-            <span class="n">list_annot</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;● &#39;</span> <span class="o">+</span> <span class="n">annot</span><span class="p">,))</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">scrollable_treelist</span><span class="o">.</span><span class="n">set_model</span><span class="p">(</span><span class="n">list_annot</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Annotations.on_configure_annot"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.on_configure_annot">[docs]</a>    <span class="k">def</span> <span class="nf">on_configure_annot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Adjust wrap width in annotations when they are resized.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which was resized.</span>
-<span class="sd">            event (:class:`~Gdk.Event`):  the GTK event.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">annotation_renderer</span><span class="o">.</span><span class="n">props</span><span class="o">.</span><span class="n">wrap_width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_allocated_width</span><span class="p">()</span> <span class="o">-</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scrolled_window</span><span class="o">.</span><span class="n">queue_resize</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scrollable_treelist</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">queue_resize</span><span class="p">()</span></div>
+        <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_textview</span><span class="o">.</span><span class="n">get_buffer</span><span class="p">()</span>
+        <span class="n">buf</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">annotations</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Annotations.on_scroll"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.on_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">on_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>

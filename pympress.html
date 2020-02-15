@@ -2803,7 +2803,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f2312cae3c0 (GdkPixbuf at 0x560724d280c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f3a586d8cc0 (GdkPixbuf at 0x5568400368c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -3789,23 +3789,9 @@ of all the resizeable items (if and only if resizeable).</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pympress.extras.Annotations.annotation_renderer">
-<code class="sig-name descname">annotation_renderer</code><em class="property"> = None</em><a class="headerlink" href="#pympress.extras.Annotations.annotation_renderer" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/CellRendererText.html#Gtk.CellRendererText" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellRendererText</span></code></a> Text renderer for the annotations</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pympress.extras.Annotations.on_configure_annot">
-<code class="sig-name descname">on_configure_annot</code><span class="sig-paren">(</span><em class="sig-param">widget</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.on_configure_annot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.extras.Annotations.on_configure_annot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adjust wrap width in annotations when they are resized.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget which was resized.</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event.</p></li>
-</ul>
-</dd>
-</dl>
+<dt id="pympress.extras.Annotations.annotations_textview">
+<code class="sig-name descname">annotations_textview</code><em class="property"> = None</em><a class="headerlink" href="#pympress.extras.Annotations.annotations_textview" title="Permalink to this definition">¶</a></dt>
+<dd><p>The containing <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/TextView.html#Gtk.TextView" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextView</span></code></a> widget for the annotations</p>
 </dd></dl>
 
 <dl class="method">
@@ -3829,15 +3815,9 @@ of all the resizeable items (if and only if resizeable).</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pympress.extras.Annotations.scrollable_treelist">
-<code class="sig-name descname">scrollable_treelist</code><em class="property"> = None</em><a class="headerlink" href="#pympress.extras.Annotations.scrollable_treelist" title="Permalink to this definition">¶</a></dt>
-<dd><p>The containing widget for the annotations</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="pympress.extras.Annotations.scrolled_window">
 <code class="sig-name descname">scrolled_window</code><em class="property"> = None</em><a class="headerlink" href="#pympress.extras.Annotations.scrolled_window" title="Permalink to this definition">¶</a></dt>
-<dd><p>Making the annotations list scroll if it’s too long</p>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ScrolledWindow.html#Gtk.ScrolledWindow" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScrolledWindow</span></code></a> making the annotations list scroll if it’s too long</p>
 </dd></dl>
 
 </dd></dl>

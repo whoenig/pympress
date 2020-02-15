@@ -592,10 +592,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timeout</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timeout</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="c1"># Temporarily, while p_frame_annot&#39;s configure-event is not working</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">on_configure_annot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_frame_annot</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timeout</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 
 <div class="viewcode-block" id="UI.on_pane_event"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_pane_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_pane_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
