@@ -863,10 +863,10 @@
     <span class="sd">&quot;&quot;&quot; A class with only static methods that wraps object watchdogs, to trigger callbacks when a file changes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: A :class:`~watchdog.observers.Observer` to watch when the file changes</span>
-    <span class="n">observer</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">()</span>
+    <span class="n">observer</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: A :class:`~watchdog.events.FileSystemEventHandler` to get notified when the file changes</span>
-    <span class="n">monitor</span> <span class="o">=</span> <span class="n">FileSystemEventHandler</span><span class="p">()</span>
+    <span class="n">monitor</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1"># `int` that is a GLib timeout id to delay the callback</span>
     <span class="n">timeout</span> <span class="o">=</span> <span class="mi">0</span>
@@ -924,6 +924,10 @@
     <span class="k">def</span> <span class="nf">start_daemon</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start the watchdog observer thread.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span> <span class="o">=</span> <span class="n">Observer</span><span class="p">()</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">monitor</span> <span class="o">=</span> <span class="n">FileSystemEventHandler</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
@@ -940,7 +944,10 @@
             <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
         <span class="k">while</span> <span class="n">wait</span> <span class="ow">and</span> <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div></div>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">monitor</span> <span class="o">=</span> <span class="kc">None</span></div></div>
 </pre></div>
 
            </div>
