@@ -279,7 +279,7 @@
     <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
     <span class="n">notes_pos</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">for</span> <span class="n">opt</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">opts</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">opt</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">opts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">opt</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;-h&quot;</span><span class="p">,</span> <span class="s2">&quot;--help&quot;</span><span class="p">):</span>
             <span class="n">usage</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
@@ -338,6 +338,7 @@
 
     <span class="k">try</span><span class="p">:</span>
         <span class="n">opts</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">getopt</span><span class="o">.</span><span class="n">getopt</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="s2">&quot;hn:t:&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;help&quot;</span><span class="p">,</span> <span class="s2">&quot;notes=&quot;</span><span class="p">,</span> <span class="s2">&quot;talk-time=&quot;</span><span class="p">,</span> <span class="s2">&quot;log=&quot;</span><span class="p">])</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">getopt</span><span class="o">.</span><span class="n">GetoptError</span><span class="p">:</span>
         <span class="n">usage</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -347,6 +348,9 @@
 
     <span class="c1"># Create windows</span>
     <span class="n">gui</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">UI</span><span class="p">()</span>
+
+    <span class="c1"># Connect proper exit function to interrupt</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">gui</span><span class="o">.</span><span class="n">save_and_quit</span><span class="p">)</span>
 
     <span class="c1"># pass command line args</span>
     <span class="k">if</span> <span class="n">ett</span><span class="p">:</span>
