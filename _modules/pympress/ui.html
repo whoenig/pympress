@@ -53,7 +53,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.2
+		v1.5.3
 	</div>
 
 	
@@ -256,6 +256,8 @@
     <span class="n">prev_button</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~Gtk.ToolButton` big button for touch screens, go to next slide</span>
     <span class="n">next_button</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~Gtk.ToolButton` big button for touch screens, go toggle the pointer</span>
+    <span class="n">laser_button</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~Gtk.ToolButton` big button for touch screens, go to scribble on screen</span>
     <span class="n">highlight_button</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -380,6 +382,7 @@
         <span class="c1"># Adjust default visibility of items</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prev_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">laser_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">highlight_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_frame_annot</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_annotations</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">activate_pointermode</span><span class="p">()</span>
@@ -1575,6 +1578,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">prev_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">laser_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">highlight_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;show_bigbuttons&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span> <span class="k">else</span> <span class="s1">&#39;off&#39;</span><span class="p">)</span></div></div>
 
@@ -1598,7 +1602,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2009-2011, Thomas Jost; 2015-2019 Cimbali
+        &copy; Copyright 2009-2011, Thomas Jost; 2015-2020 Cimbali
 
     </p>
   </div>

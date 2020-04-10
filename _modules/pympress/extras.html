@@ -53,7 +53,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.2
+		v1.5.3
 	</div>
 
 	
@@ -559,7 +559,8 @@
                     <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">GstOverlay</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Video support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GStreamer&#39;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GStreamer&#39;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 
         <span class="k">try</span><span class="p">:</span>
@@ -576,8 +577,9 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">types_list</span><span class="p">:</span>
                     <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">VlcOverlay</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">)</span>
 
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;VLC&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;VLC&#39;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="Media.backend_version"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.backend_version">[docs]</a>    <span class="nd">@classmethod</span>
@@ -960,7 +962,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2009-2011, Thomas Jost; 2015-2019 Cimbali
+        &copy; Copyright 2009-2011, Thomas Jost; 2015-2020 Cimbali
 
     </p>
   </div>

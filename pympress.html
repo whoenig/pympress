@@ -54,7 +54,7 @@
 	<a href="index.html" class="icon icon-home"> Docs home</a>
 	<img src="_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.2
+		v1.5.3
 	</div>
 
 	
@@ -399,6 +399,12 @@ current and the next page, as well as a time counter and a clock.</p>
 <dt id="pympress.ui.UI.laser">
 <code class="sig-name descname">laser</code><em class="property"> = None</em><a class="headerlink" href="#pympress.ui.UI.laser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Software-implemented laser pointer, <a class="reference internal" href="#pympress.pointer.Pointer" title="pympress.pointer.Pointer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pointer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.laser_button">
+<code class="sig-name descname">laser_button</code><em class="property"> = None</em><a class="headerlink" href="#pympress.ui.UI.laser_button" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go toggle the pointer</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2803,7 +2809,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f235609c2c0 (GdkPixbuf at 0x56379321a4c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7fcdb8a54540 (GdkPixbuf at 0x55b305d068c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -2874,7 +2880,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py method">
 <dt id="pympress.pointer.Pointer.toggle_pointermode">
-<code class="sig-name descname">toggle_pointermode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.toggle_pointermode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.toggle_pointermode" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">toggle_pointermode</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/pointer.html#Pointer.toggle_pointermode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.pointer.Pointer.toggle_pointermode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback for shortcut to switch on/off continuous pointer.</p>
 </dd></dl>
 
@@ -5150,7 +5156,7 @@ of all the resizeable items (if and only if resizeable).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2009-2011, Thomas Jost; 2015-2019 Cimbali
+        &copy; Copyright 2009-2011, Thomas Jost; 2015-2020 Cimbali
 
     </p>
   </div>
