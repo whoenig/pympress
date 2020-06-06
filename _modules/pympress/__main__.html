@@ -222,22 +222,28 @@
     <span class="ne">ModuleNotFoundError</span> <span class="o">=</span> <span class="ne">ImportError</span>
 
 
-<span class="c1"># Load python bindings for gobject introspections, aka pygobject, aka gi.</span>
-<span class="c1"># This is a dependency that is not specified in the setup.py, so we need to start here</span>
-<span class="c1"># see https://github.com/Cimbali/pympress/issues/100</span>
+<span class="c1"># Load python bindings for gobject introspections, aka pygobject, aka gi, and pycairo.</span>
+<span class="c1"># These are dependencies that are not specified in the setup.py, so we need to start here.</span>
+<span class="c1"># They are not specified because:</span>
+<span class="c1"># - installing those via pip may require compiling (if no compatible wheels exist),</span>
+<span class="c1"># - compiling requires a compiling toolchain, development packages of the libraries, etc.,</span>
+<span class="c1"># - all of this makes more sense to be handled by the OS package manager,</span>
+<span class="c1"># - it is hard to make pretty error messages pointing this out at `pip install` time,</span>
+<span class="c1">#   as they would have to be printed when the dependency resolution happens.</span>
+<span class="c1"># See https://github.com/Cimbali/pympress/issues/100</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">gi</span>
+    <span class="kn">import</span> <span class="nn">gi</span><span class="o">,</span> <span class="nn">cairo</span>
     <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
     <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
 <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Gobject Introspections module is missing&#39;</span><span class="p">,</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections module is missing, &#39;</span> <span class="o">+</span>
-                   <span class="s1">&#39;make sure Gtk and pygobject are installed on your system.&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Gobject Introspections and/or pycairo module is missing&#39;</span><span class="p">,</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections and/or pycairo module is missing, &#39;</span> <span class="o">+</span>
+                   <span class="s1">&#39;make sure Gtk, pygobject and pycairo are installed on your system.&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;For instructions, refer to https://github.com/Cimbali/pympress/blob/master/README.md#dependencies&#39;</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;If using a virtualenv or anaconda, you can either allow system site packages, &#39;</span> <span class="o">+</span>
-            <span class="s1">&#39;or run: pip install pygobject&#39;</span><span class="p">))</span>
+            <span class="s1">&#39;or run: pip install pygobject pycairo&#39;</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pip will then download and compile pygobject, &#39;</span> <span class="o">+</span>
-            <span class="s1">&#39;for which you need the Gtk headers (or development package).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="s1">&#39;for which you need the Gtk and cairo headers (or development packages).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
