@@ -225,7 +225,7 @@
 <span class="c1"># Load python bindings for gobject introspections, aka pygobject, aka gi, and pycairo.</span>
 <span class="c1"># These are dependencies that are not specified in the setup.py, so we need to start here.</span>
 <span class="c1"># They are not specified because:</span>
-<span class="c1"># - installing those via pip may require compiling (if no compatible wheels exist),</span>
+<span class="c1"># - installing those via pip requires compiling (always for pygobject, if no compatible wheels exist for cairo),</span>
 <span class="c1"># - compiling requires a compiling toolchain, development packages of the libraries, etc.,</span>
 <span class="c1"># - all of this makes more sense to be handled by the OS package manager,</span>
 <span class="c1"># - it is hard to make pretty error messages pointing this out at `pip install` time,</span>
@@ -239,11 +239,12 @@
     <span class="n">logger</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="s1">&#39;Gobject Introspections and/or pycairo module is missing&#39;</span><span class="p">,</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;ERROR: Gobject Introspections and/or pycairo module is missing, &#39;</span> <span class="o">+</span>
                    <span class="s1">&#39;make sure Gtk, pygobject and pycairo are installed on your system.&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;For instructions, refer to https://github.com/Cimbali/pympress/blob/master/README.md#dependencies&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;If using a virtualenv or anaconda, you can either allow system site packages, &#39;</span> <span class="o">+</span>
-            <span class="s1">&#39;or run: pip install pygobject pycairo&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pip will then download and compile pygobject, &#39;</span> <span class="o">+</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Try your operating system’s package manager, or try running: pip install pygobject pycairo&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pip will then download and compile pygobject and pycairo, &#39;</span> <span class="o">+</span>
             <span class="s1">&#39;for which you need the Gtk and cairo headers (or development packages).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;For instructions, refer to https://github.com/Cimbali/pympress/blob/master/README.md#dependencies&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;If using a virtualenv or anaconda, you can also try allowing system site packages.&#39;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">()</span>
     <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 
@@ -255,24 +256,30 @@
 <div class="viewcode-block" id="usage"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.usage">[docs]</a><span class="k">def</span> <span class="nf">usage</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Display how to use the command line options.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Usage: </span><span class="si">{}</span><span class="s1"> [options] &lt;presentation_file&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Options:&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    -h, --help                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;This help&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    -t mm[:ss], --talk-time=mm[:ss]  &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;The estimated (intended) talk time in minutes&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;(and optionally seconds)&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    -n position, --notes=position    &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set the position of notes on the pdf page (none, left, right, top, or bottom).&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Overrides the detection from the file.&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    --log=level                      &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set level of verbosity in log file:&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;                                       &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, or </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;CRITICAL&#39;</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">()</span></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;</span><span class="si">{usage}</span><span class="s1"></span>
+
+<span class="si">{options}</span><span class="s1"></span>
+
+<span class="s1">    -h, --help                       </span><span class="si">{help}</span><span class="s1"></span>
+<span class="s1">    -t mm[:ss], --talk-time=mm[:ss]  </span><span class="si">{talk_time}</span><span class="s1"></span>
+<span class="s1">                                         </span><span class="si">{talk_time_secs}</span><span class="s1"></span>
+<span class="s1">    -n position, --notes=position    </span><span class="si">{notes}</span><span class="s1"></span>
+<span class="s1">                                         </span><span class="si">{notes_position}</span><span class="s1"></span>
+<span class="s1">                                         </span><span class="si">{notes_override}</span><span class="s1"></span>
+<span class="s1">    --log=level                      </span><span class="si">{log_level}</span><span class="s1"></span>
+<span class="s1">                                         </span><span class="si">{log_levels_list}</span><span class="s1"></span>
+<span class="s1">&#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">usage</span>           <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Usage: </span><span class="si">{}</span><span class="s1"> [options] &lt;presentation_file&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+        <span class="n">options</span>         <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Options:&#39;</span><span class="p">),</span>
+        <span class="n">help</span>            <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;This help&#39;</span><span class="p">),</span>
+        <span class="n">talk_time</span>       <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;The estimated (intended) talk time in minutes&#39;</span><span class="p">),</span>
+        <span class="n">talk_time_secs</span>  <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;(and optionally seconds)&#39;</span><span class="p">),</span>
+        <span class="n">notes</span>           <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set the position of notes on the pdf page&#39;</span><span class="p">),</span>
+        <span class="n">notes_position</span>  <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;(none, left, right, top, or bottom).&#39;</span><span class="p">),</span>
+        <span class="n">notes_override</span>  <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Overrides the detection from the file.&#39;</span><span class="p">),</span>
+        <span class="n">log_level</span>       <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set level of verbosity in log file:&#39;</span><span class="p">),</span>
+        <span class="n">log_levels_list</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, or </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;CRITICAL&#39;</span><span class="p">),</span>
+    <span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="parse_opts"><a class="viewcode-back" href="../../pympress.html#pympress.__main__.parse_opts">[docs]</a><span class="k">def</span> <span class="nf">parse_opts</span><span class="p">(</span><span class="n">opts</span><span class="p">):</span>

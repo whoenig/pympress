@@ -201,9 +201,6 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">_winreg</span> <span class="k">as</span> <span class="nn">winreg</span>
 
-<span class="k">if</span> <span class="n">IS_POSIX</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gio</span>
-
 <span class="k">try</span><span class="p">:</span>
     <span class="ne">PermissionError</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
@@ -427,6 +424,9 @@
                 <span class="n">set_screensaver</span><span class="o">.</span><span class="n">dpms_was_enabled</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">elif</span> <span class="n">IS_POSIX</span><span class="p">:</span>
+        <span class="c1"># Import here because util should be imported without depending on gi</span>
+        <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gio</span>
+
         <span class="c1"># On Linux and Wayland we can use a dbus interface to tell the screensaver</span>
         <span class="c1"># to not lock the screen, should work on all freedesktop compliant desktops</span>
         <span class="c1"># eg. Gnome, KDE,...</span>
