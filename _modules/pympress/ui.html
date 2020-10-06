@@ -998,7 +998,7 @@
                 <span class="k">return</span>
 
             <span class="c1"># Cache miss: render the page, and save it to the cache</span>
-            <span class="n">pb</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">create_similar_surface</span><span class="p">(</span><span class="n">cairo</span><span class="o">.</span><span class="n">CONTENT_COLOR</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span>
+            <span class="n">pb</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">create_similar_image_surface</span><span class="p">(</span><span class="n">cairo</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">RGB24</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
             <span class="n">cairo_prerender</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">pb</span><span class="p">)</span>
             <span class="n">cairo_prerender</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">zoom_matrix</span><span class="p">)</span>

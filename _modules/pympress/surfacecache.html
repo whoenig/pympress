@@ -231,8 +231,8 @@
     <span class="c1">#: popped from the start of the cache.</span>
     <span class="n">surface_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="c1">#: `dict` containing functions that return a :class:`~cairo.Surface` given a :class:`~cairo.Context`,</span>
-    <span class="c1">#: width `int` and height `int`, see :meth:`~cairo.Surface.create_similar`</span>
+    <span class="c1">#: `dict` containing functions that return a :class:`~cairo.Surface` given a :format:`~cairo.Format`,</span>
+    <span class="c1">#: width `int` and height `int`, see :meth:`~Gtk.Window.create_similar_image_surface`</span>
     <span class="n">surface_factory</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1">#: Size of the different managed widgets, as a `dict` of tuples</span>
@@ -281,7 +281,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_cache</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_size</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">wtype</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">create_similar_surface</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">create_similar_image_surface</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">prerender_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">zoomed</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">enable_prerender</span><span class="p">(</span><span class="n">widget_name</span><span class="p">)</span></div>
 
@@ -449,7 +449,7 @@
 
         <span class="c1"># Render to a ImageSurface</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">](</span><span class="n">cairo</span><span class="o">.</span><span class="n">CONTENT_COLOR</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span>
+            <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">](</span><span class="n">cairo</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">RGB24</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Widget </span><span class="si">{}</span><span class="s1"> was not mapped when rendering&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">widget_name</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>

@@ -367,6 +367,7 @@
             <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">DROP_FINISHED</span><span class="p">:</span> <span class="s1">&#39;dnd&#39;</span><span class="p">,</span>
             <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">CLIENT_EVENT</span><span class="p">:</span> <span class="s1">&#39;client&#39;</span><span class="p">,</span>
             <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">VISIBILITY_NOTIFY</span><span class="p">:</span> <span class="s1">&#39;visibility&#39;</span><span class="p">,</span>
+            <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">SCROLL</span><span class="p">:</span> <span class="s1">&#39;scroll&#39;</span><span class="p">,</span>
             <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">EXPOSE</span><span class="p">:</span> <span class="s1">&#39;expose&#39;</span><span class="p">,</span>
             <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">MAP</span><span class="p">:</span> <span class="s1">&#39;any&#39;</span><span class="p">,</span>
             <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">UNMAP</span><span class="p">:</span> <span class="s1">&#39;any&#39;</span><span class="p">,</span>
@@ -450,9 +451,6 @@
         <span class="k">for</span> <span class="n">method_info</span> <span class="ow">in</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">Event</span><span class="o">.</span><span class="n">__info__</span><span class="o">.</span><span class="n">get_methods</span><span class="p">():</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">method_info</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
             <span class="n">event_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-            <span class="c1"># python2 we need to use the __func__ attr to avoid internal</span>
-            <span class="c1"># instance checks</span>
-            <span class="n">event_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">event_method</span><span class="p">,</span> <span class="s1">&#39;__func__&#39;</span><span class="p">,</span> <span class="n">event_method</span><span class="p">)</span>
 
             <span class="c1"># use the _gsuccess_mask decorator if this method is whitelisted</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">gsuccess_mask_funcs</span><span class="p">:</span>
