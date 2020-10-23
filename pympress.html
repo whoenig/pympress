@@ -410,6 +410,12 @@ current and the next page, as well as a time counter and a clock.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.ui.UI.layout_name">
+<code class="sig-name descname">layout_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">notes_mode</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.layout_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.ui.UI.layout_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the layout made for the selected notes_mode</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pympress.ui.UI.load_icons">
 <code class="sig-name descname">load_icons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.load_icons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.ui.UI.load_icons" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the icon list for both windows.</p>
@@ -1079,6 +1085,20 @@ starts at 0.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.document.Document.current_notes_page">
+<code class="sig-name descname">current_notes_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.current_notes_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.current_notes_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the current page</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pympress.document.Page" title="pympress.document.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pympress.document.Document.current_page">
 <code class="sig-name descname">current_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.current_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.current_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current page.</p>
@@ -1306,6 +1326,29 @@ starts at 0.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="pympress.document.Document.notes_after">
+<code class="sig-name descname">notes_after</code><em class="property"> = False</em><a class="headerlink" href="#pympress.document.Document.notes_after" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> indicating whether the second half of pages are in fact notes pages</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.document.Document.notes_page">
+<code class="sig-name descname">notes_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.notes_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.notes_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the specified page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – number of the page to return</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the wanted page, or <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#None" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> if it does not exist</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pympress.document.Page" title="pympress.document.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="pympress.document.Document.page">
 <code class="sig-name descname">page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.page" title="Permalink to this definition">¶</a></dt>
@@ -1387,6 +1430,17 @@ a page that has already been loaded.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.document.Document.set_notes_after">
+<code class="sig-name descname">set_notes_after</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">notes_after</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.set_notes_after"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.Document.set_notes_after" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set whether there are notes pages after normal pages (aka Libreoffice notes mode)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>notes_after</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – Whether there are notes pages</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pympress.document.Document.start_editing_page_number">
 <code class="sig-name descname">start_editing_page_number</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.document.Document.start_editing_page_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">start_editing()</span></code></p>
@@ -1405,6 +1459,23 @@ a page that has already been loaded.</p>
 <em class="property">class </em><code class="sig-prename descclassname">pympress.document.</code><code class="sig-name descname">EmptyDocument</code><a class="reference internal" href="_modules/pympress/document.html#EmptyDocument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.EmptyDocument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pympress.document.Document" title="pympress.document.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.document.Document</span></code></a></p>
 <p>A dummy document, placeholder for when no document is open.</p>
+<dl class="py method">
+<dt id="pympress.document.EmptyDocument.notes_page">
+<code class="sig-name descname">notes_page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#EmptyDocument.notes_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.EmptyDocument.notes_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a page from the document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – page number to be retrieved</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>-1 returns the empty page so we can display something.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pympress.document.EmptyPage" title="pympress.document.EmptyPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmptyPage</span></code></a> or <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#None" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="pympress.document.EmptyDocument.page">
 <code class="sig-name descname">page</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#EmptyDocument.page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.EmptyDocument.page" title="Permalink to this definition">¶</a></dt>
@@ -1792,6 +1863,23 @@ if one exists, <a class="reference external" href="https://docs.python.org/3.4/l
 <em class="property">class </em><code class="sig-prename descclassname">pympress.document.</code><code class="sig-name descname">PdfPage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#PdfPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.document.PdfPage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.4/library/enum.html#enum.IntEnum" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.IntEnum</span></code></a></p>
 <p>Represents the part of a PDF page that we want to draw.</p>
+<dl class="py attribute">
+<dt id="pympress.document.PdfPage.AFTER">
+<code class="sig-name descname">AFTER</code><em class="property"> = 6</em><a class="headerlink" href="#pympress.document.PdfPage.AFTER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full page + draw another page for notes, which is after the slides</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.document.PdfPage.BEFORE">
+<code class="sig-name descname">BEFORE</code><em class="property"> = 7</em><a class="headerlink" href="#pympress.document.PdfPage.BEFORE" title="Permalink to this definition">¶</a></dt>
+<dd><p>for a notes page, the slide page is BEFORE by half a document</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Complemntary of AFTER</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt id="pympress.document.PdfPage.BOTTOM">
 <code class="sig-name descname">BOTTOM</code><em class="property"> = 2</em><a class="headerlink" href="#pympress.document.PdfPage.BOTTOM" title="Permalink to this definition">¶</a></dt>
@@ -2811,7 +2899,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f88b22b4540 (GdkPixbuf at 0x560d1479c8c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f5448167900 (GdkPixbuf at 0x5575743954c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -3617,7 +3705,7 @@ Sorted on the timestamps.</p>
 
 <dl class="py attribute">
 <dt id="pympress.config.Config.layout">
-<code class="sig-name descname">layout</code><em class="property"> = {'highlight': {'children': ['highlight', {'resizeable': True, 'orientation': 'vertical', 'children': ['next', 'annotations'], 'proportions': [0.55, 0.45]}], 'orientation': 'horizontal', 'proportions': [0.67, 0.33], 'resizeable': True}, 'notes': {'children': ['notes', {'resizeable': False, 'children': ['current', 'next'], 'orientation': 'vertical'}], 'orientation': 'horizontal', 'proportions': [0.6, 0.4], 'resizeable': True}, 'plain': {'children': ['current', {'resizeable': True, 'children': ['next', 'annotations'], 'proportions': [0.55, 0.44999999999999996], 'orientation': 'vertical'}], 'orientation': 'horizontal', 'proportions': [0.6697916666666667, 0.3302083333333333], 'resizeable': True}}</em><a class="headerlink" href="#pympress.config.Config.layout" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">layout</code><em class="property"> = {'highlight': {'children': ['highlight', {'resizeable': True, 'orientation': 'vertical', 'children': ['next', 'annotations'], 'proportions': [0.55, 0.45]}], 'orientation': 'horizontal', 'proportions': [0.67, 0.33], 'resizeable': True}, 'note_pages': {'children': ['notes', {'resizeable': False, 'children': ['next', 'annotations'], 'orientation': 'vertical'}], 'orientation': 'horizontal', 'proportions': [0.6, 0.4], 'resizeable': True}, 'notes': {'children': ['notes', {'resizeable': False, 'children': ['current', 'next'], 'orientation': 'vertical'}], 'orientation': 'horizontal', 'proportions': [0.6, 0.4], 'resizeable': True}, 'plain': {'children': ['current', {'resizeable': True, 'children': ['next', 'annotations'], 'proportions': [0.55, 0.44999999999999996], 'orientation': 'vertical'}], 'orientation': 'horizontal', 'proportions': [0.6697916666666667, 0.3302083333333333], 'resizeable': True}}</em><a class="headerlink" href="#pympress.config.Config.layout" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>-tree of presenter layouts for various modes</p>
 </dd></dl>
 
