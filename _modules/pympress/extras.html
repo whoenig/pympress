@@ -966,6 +966,9 @@
 <span class="sd">            Args:</span>
 <span class="sd">                wait (`bool`): whether to wait for the thread to have joined before returning</span>
 <span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span>
+
             <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">unschedule_all</span><span class="p">()</span>
             <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
