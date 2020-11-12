@@ -2490,6 +2490,17 @@ widget names and its values are document types from ui.</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt id="pympress.scribble.Scribbler.adjust_buttons">
+<code class="sig-name descname">adjust_buttons</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.adjust_buttons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.adjust_buttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Properly enable and disable buttons based on scribblings lists.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.c_da">
+<code class="sig-name descname">c_da</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.c_da" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pympress.scribble.Scribbler.clear_scribble">
 <code class="sig-name descname">clear_scribble</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.clear_scribble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.clear_scribble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback for the scribble clear button, to remove all scribbles.</p>
@@ -2538,15 +2549,45 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.scribble.Scribbler.get_current_scribble">
+<code class="sig-name descname">get_current_scribble</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.get_current_scribble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.get_current_scribble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pympress.scribble.Scribbler.get_slide_point">
 <code class="sig-name descname">get_slide_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.get_slide_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>callback, to be connected to <a class="reference internal" href="#pympress.extras.Zoom.get_slide_point" title="pympress.extras.Zoom.get_slide_point"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_slide_point()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.scribble.Scribbler.load_preset">
+<code class="sig-name descname">load_preset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">widget</span></em>, <em class="sig-param"><span class="n">event</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.load_preset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.load_preset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the preset color of a given number or designed by a given widget, as an event handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget which has received the event, or an <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> for the selected preset</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the preset was loaded</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.mouse_pos">
+<code class="sig-name descname">mouse_pos</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.mouse_pos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pympress.scribble.Scribbler.nav_scribble">
 <code class="sig-name descname">nav_scribble</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">ctrl_pressed</span></em>, <em class="sig-param"><span class="n">command</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.nav_scribble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.nav_scribble" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles an key press event: undo or disable scribbling.</p>
+<dd><p>Handles a key press event: undo or disable scribbling.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -2563,6 +2604,11 @@ widget names and its values are document types from ui.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.next_render">
+<code class="sig-name descname">next_render</code><em class="property"> = 0</em><a class="headerlink" href="#pympress.scribble.Scribbler.next_render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.off_render">
@@ -2590,6 +2636,34 @@ widget names and its values are document types from ui.</p>
 <dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.on_draw" title="pympress.ui.UI.on_draw"><code class="xref py py-func docutils literal notranslate"><span class="pre">on_draw()</span></code></a></p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.on_eraser_button_draw">
+<code class="sig-name descname">on_eraser_button_draw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">widget</span></em>, <em class="sig-param"><span class="n">cairo_context</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.on_eraser_button_draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.on_eraser_button_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle drawing the eraser button.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget to update</p></li>
+<li><p><strong>cairo_context</strong> (<a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/context.html#cairo.Context" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>) – the Cairo context (or <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#None" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> if called directly)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.on_preset_button_draw">
+<code class="sig-name descname">on_preset_button_draw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">widget</span></em>, <em class="sig-param"><span class="n">cairo_context</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.on_preset_button_draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.on_preset_button_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle drawing the marker/pencil buttons, with appropriate thickness and color.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget to update</p></li>
+<li><p><strong>cairo_context</strong> (<a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/context.html#cairo.Context" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>) – the Cairo context (or <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#None" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> if called directly)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.p_central">
 <code class="sig-name descname">p_central</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.p_central" title="Permalink to this definition">¶</a></dt>
@@ -2597,10 +2671,37 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.scribble.Scribbler.parse_color">
+<em class="property">static </em><code class="sig-name descname">parse_color</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.parse_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.parse_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a string to a Gdk object in a single function call</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – A string describing a color</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new color object parsed from the string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/RGBA.html#Gdk.RGBA" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RGBA</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.points_to_curves">
+<code class="sig-name descname">points_to_curves</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.points_to_curves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.points_to_curves" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="pympress.scribble.Scribbler.pop_scribble">
 <code class="sig-name descname">pop_scribble</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.pop_scribble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.pop_scribble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback for the scribble undo button, to undo the last scribble.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.prerender">
+<code class="sig-name descname">prerender</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.prerender"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.prerender" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.pres_highlight">
@@ -2609,10 +2710,26 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pympress.scribble.Scribbler.redo_scribble">
+<code class="sig-name descname">redo_scribble</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.redo_scribble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.redo_scribble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for the scribble undo button, to undo the last scribble.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pympress.scribble.Scribbler.redraw_current_slide">
 <code class="sig-name descname">redraw_current_slide</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.redraw_current_slide" title="Permalink to this definition">¶</a></dt>
 <dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.redraw_current_slide" title="pympress.ui.UI.redraw_current_slide"><code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></a></p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.render_scribble">
+<code class="sig-name descname">render_scribble</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cairo_context</span></em>, <em class="sig-param"><span class="n">color</span></em>, <em class="sig-param"><span class="n">width</span></em>, <em class="sig-param"><span class="n">points</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.render_scribble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.render_scribble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.reset_scribble_cache">
+<code class="sig-name descname">reset_scribble_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.reset_scribble_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.reset_scribble_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.resize_cache">
@@ -2627,10 +2744,26 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_cache">
+<code class="sig-name descname">scribble_cache</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_clear">
+<code class="sig-name descname">scribble_clear</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_clear" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Button.html#Gtk.Button" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a> for removing all drawn scribbles</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.scribble_color">
 <code class="sig-name descname">scribble_color</code><em class="property"> = Gdk.RGBA(red=1.000000, green=1.000000, blue=1.000000, alpha=1.000000)</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_color" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/RGBA.html#Gdk.RGBA" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RGBA</span></code></a> current color of the scribbling tool</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_color_selector">
+<code class="sig-name descname">scribble_color_selector</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_color_selector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.scribble_drawing">
@@ -2669,10 +2802,38 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_preset_buttons">
+<code class="sig-name descname">scribble_preset_buttons</code><em class="property"> = []</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_preset_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_redo">
+<code class="sig-name descname">scribble_redo</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_redo" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Button.html#Gtk.Button" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a> for drawing the last removed scribble</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_redo_list">
+<code class="sig-name descname">scribble_redo_list</code><em class="property"> = []</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_redo_list" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of undone scribbles to possibly redo</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_undo">
+<code class="sig-name descname">scribble_undo</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_undo" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Button.html#Gtk.Button" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a> for removing the last drawn scribble</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.scribble_width">
 <code class="sig-name descname">scribble_width</code><em class="property"> = 1</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_width" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> current stroke width of the scribbling tool</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_width_selector">
+<code class="sig-name descname">scribble_width_selector</code><em class="property"> = None</em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_width_selector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.scribbling_mode">
@@ -2768,6 +2929,12 @@ widget names and its values are document types from ui.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.update_active_color_width">
+<code class="sig-name descname">update_active_color_width</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.update_active_color_width"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.scribble.Scribbler.update_active_color_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update modifications to the active scribble color and width, on the pen button and config object</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2899,7 +3066,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7fdedb137e00 (GdkPixbuf at 0x562795e118c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7fc9876ce600 (GdkPixbuf at 0x556007fc6cc0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -3741,7 +3908,7 @@ that can be dynamically rearranged, mapping to their names</p>
 
 <dl class="py attribute">
 <dt id="pympress.config.Config.shortcuts">
-<code class="sig-name descname">shortcuts</code><em class="property"> = {(accelerator_key=32, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=32, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=97, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'annotations', (accelerator_key=98, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'blank_screen', (accelerator_key=102, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=102, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_presenter', (accelerator_key=103, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'goto_page', (accelerator_key=104, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'highlight', (accelerator_key=106, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'jumpto_label', (accelerator_key=108, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'toggle_pointermode', (accelerator_key=108, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=110, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'notes_mode', (accelerator_key=111, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'open_file', (accelerator_key=112, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=113, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'quit', (accelerator_key=114, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'reset_timer', (accelerator_key=115, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'swap_screens', (accelerator_key=116, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'talk_time', (accelerator_key=117, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'unzoom', (accelerator_key=119, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'close_file', (accelerator_key=122, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'zoom', (accelerator_key=122, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'undo_scribble', (accelerator_key=65288, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'hist_back', (accelerator_key=65288, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'hist_forward', (accelerator_key=65293, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65299, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=65307, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'cancel', (accelerator_key=65360, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'first', (accelerator_key=65361, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65361, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65362, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65362, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65363, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65363, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65364, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65364, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65365, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65365, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65366, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65366, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65367, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'last', (accelerator_key=65421, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65474, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=65480, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content'}</em><a class="headerlink" href="#pympress.config.Config.shortcuts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">shortcuts</code><em class="property"> = {(accelerator_key=32, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=32, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=48, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_0', (accelerator_key=49, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_1', (accelerator_key=50, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_2', (accelerator_key=51, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_3', (accelerator_key=52, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_4', (accelerator_key=53, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_5', (accelerator_key=54, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_6', (accelerator_key=55, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_7', (accelerator_key=56, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_8', (accelerator_key=57, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'scribble_preset_9', (accelerator_key=97, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'annotations', (accelerator_key=98, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'blank_screen', (accelerator_key=102, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=102, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_presenter', (accelerator_key=103, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'goto_page', (accelerator_key=104, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'highlight', (accelerator_key=106, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'jumpto_label', (accelerator_key=108, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'toggle_pointermode', (accelerator_key=108, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=110, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'notes_mode', (accelerator_key=111, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'open_file', (accelerator_key=112, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=113, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'quit', (accelerator_key=114, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'reset_timer', (accelerator_key=114, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'redo_scribble', (accelerator_key=115, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'swap_screens', (accelerator_key=116, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'talk_time', (accelerator_key=117, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'unzoom', (accelerator_key=119, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'close_file', (accelerator_key=122, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'zoom', (accelerator_key=122, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'undo_scribble', (accelerator_key=65288, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'hist_back', (accelerator_key=65288, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'hist_forward', (accelerator_key=65293, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65299, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'pause_timer', (accelerator_key=65307, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'cancel', (accelerator_key=65360, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'first', (accelerator_key=65361, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65361, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65362, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65362, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65363, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65363, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65364, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65364, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65365, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'prev', (accelerator_key=65365, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'prev_label', (accelerator_key=65366, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'next', (accelerator_key=65366, accelerator_mods=&lt;flags GDK_CONTROL_MASK of type Gdk.ModifierType&gt;): 'next_label', (accelerator_key=65367, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'last', (accelerator_key=65421, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'validate', (accelerator_key=65474, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content', (accelerator_key=65480, accelerator_mods=&lt;flags 0 of type Gdk.ModifierType&gt;): 'fullscreen_content'}</em><a class="headerlink" href="#pympress.config.Config.shortcuts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map of (keyval, Gdk.ModifierType) to string, which representing the shortcuts for each command</p>
 </dd></dl>
 
