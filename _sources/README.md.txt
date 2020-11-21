@@ -280,6 +280,8 @@ Agnieszka,
 Alexandre Almeida,
 [FriedrichFröbel](https://github.com/FriedrichFroebel),
 [Jaroslav Svoboda](https://github.com/multiflexi),
+Jeertmans,
+Nico,
 and <!-- last translator --> Cimbali.
 
 ## Packages
