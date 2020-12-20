@@ -31,7 +31,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -193,6 +192,7 @@
 
 <span class="kn">import</span> <span class="nn">os.path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">gc</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
@@ -476,8 +476,8 @@
         <span class="c1"># If multiple monitors, apply windows to monitors according to config</span>
         <span class="n">screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">get_screen</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">screen</span><span class="o">.</span><span class="n">get_n_monitors</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">c_monitor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;monitor&#39;</span><span class="p">)</span>
-            <span class="n">p_monitor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;monitor&#39;</span><span class="p">)</span>
+            <span class="n">p_monitor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;monitor&#39;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">c_monitor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;monitor&#39;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="p">(</span><span class="n">p_monitor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">screen</span><span class="o">.</span><span class="n">get_n_monitors</span><span class="p">())</span>
             <span class="n">p_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">)</span>
             <span class="n">c_full</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;start_fullscreen&#39;</span><span class="p">)</span>
 
@@ -697,6 +697,7 @@
 <span class="sd">            page (`int`): the page at which to start the presentation</span>
 <span class="sd">            reloading (`bool`): whether we are reloading or detecting stuff from the document</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">run_gc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">doc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docpath</span><span class="p">)</span>
 
@@ -737,7 +738,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span><span class="o">.</span><span class="n">delta</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span><span class="o">.</span><span class="n">reset_timer</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">on_page_change</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">on_page_change</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Now that all references to the old document have been replaced or removed, manually</span>
+        <span class="c1"># collect garbage to delete objects and release file handles / close file descriptors</span>
+        <span class="k">if</span> <span class="n">run_gc</span><span class="p">:</span>
+            <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="UI.reload_document"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.reload_document">[docs]</a>    <span class="k">def</span> <span class="nf">reload_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

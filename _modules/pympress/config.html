@@ -31,7 +31,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -353,6 +352,48 @@
 <span class="sd">            `list`: a config value split into a list.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span></div>
+
+
+<div class="viewcode-block" id="Config.getint"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.getint">[docs]</a>    <span class="k">def</span> <span class="nf">getint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Wrapper for :meth:`~configparser.Configparser.getint()` to handle parsing errors when a fallback is given.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;fallback&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error parsing option from config file </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> &quot;</span><span class="si">{}</span><span class="s1">&quot; to int&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))),</span>
+                           <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fallback&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Config.getfloat"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.getfloat">[docs]</a>    <span class="k">def</span> <span class="nf">getfloat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Wrapper for :meth:`~configparser.Configparser.getfloat()` to handle parsing errors when a fallback is given.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">getfloat</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;fallback&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error parsing option from config file </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> &quot;</span><span class="si">{}</span><span class="s1">&quot; to float&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))),</span>
+                           <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fallback&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Config.getboolean"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.getboolean">[docs]</a>    <span class="k">def</span> <span class="nf">getboolean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Wrapper for :meth:`~configparser.Configparser.getboolean()` to handle parsing errors when a fallback is given.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;fallback&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="k">raise</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error parsing option from config file </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1"> &quot;</span><span class="si">{}</span><span class="s1">&quot; to bool&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">))),</span>
+                           <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fallback&#39;</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="Config.save_config"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Config.save_config">[docs]</a>    <span class="k">def</span> <span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

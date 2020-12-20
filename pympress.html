@@ -31,7 +31,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -3066,7 +3065,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7f80b0ac2c80 (GdkPixbuf at 0x56177d0e8cc0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pointer</code><em class="property"> = &lt;GdkPixbuf.Pixbuf object at 0x7ff5078e7380 (GdkPixbuf at 0x55b91ef990c0)&gt;</em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -3853,6 +3852,24 @@ Sorted on the timestamps.</p>
 <dt id="pympress.config.Config.get_layout">
 <code class="sig-name descname">get_layout</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layout_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.get_layout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.config.Config.get_layout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Getter for the <code class="xref py py-obj docutils literal notranslate"><span class="pre">layout_name</span></code> layout.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.config.Config.getboolean">
+<code class="sig-name descname">getboolean</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.getboolean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.config.Config.getboolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-meth docutils literal notranslate"><span class="pre">getboolean()</span></code> to handle parsing errors when a fallback is given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.config.Config.getfloat">
+<code class="sig-name descname">getfloat</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.getfloat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.config.Config.getfloat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-meth docutils literal notranslate"><span class="pre">getfloat()</span></code> to handle parsing errors when a fallback is given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.config.Config.getint">
+<code class="sig-name descname">getint</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.getint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pympress.config.Config.getint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <code class="xref py py-meth docutils literal notranslate"><span class="pre">getint()</span></code> to handle parsing errors when a fallback is given.</p>
 </dd></dl>
 
 <dl class="py method">

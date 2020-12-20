@@ -31,7 +31,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -945,14 +944,14 @@
 <span class="sd">            :class:`~pympress.document.PdfPage`: the notes mode</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cur_page</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">page</span><span class="o">.</span><span class="n">can_render</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span>
 
         <span class="n">ar</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">()</span>
 
         <span class="c1"># Check whether we have N slides with one aspect ratio then N slides with a different aspect ratio</span>
         <span class="c1"># that is the sign if Libreoffice notes pages</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_pages</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_pages</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_pages</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">half_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nb_pages</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="n">ar_slides</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">()</span>
             <span class="n">ar_notes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">half_doc</span><span class="p">)</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">()</span>
