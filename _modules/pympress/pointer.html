@@ -56,7 +56,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.3
+		v1.6.0-beta5
 	</div>
 
 	
@@ -191,7 +191,7 @@
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GdkPixbuf</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GdkPixbuf</span><span class="p">,</span> <span class="n">GLib</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span><span class="p">,</span> <span class="n">extras</span>
 
@@ -240,6 +240,8 @@
 
     <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.redraw_current_slide`</span>
     <span class="n">redraw_current_slide</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="c1">#: callback, to be connected to :meth:`~pympress.app.Pympress.set_action_state`</span>
+    <span class="n">set_action_state</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Pointer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -248,9 +250,10 @@
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_current_slide</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;redraw_current_slide&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_action_state</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;app.set_action_state&#39;</span><span class="p">)</span>
 
         <span class="n">default_mode</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer_mode&#39;</span><span class="p">)</span>
-        <span class="n">default_color</span> <span class="o">=</span> <span class="s1">&#39;pointer_&#39;</span> <span class="o">+</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer&#39;</span><span class="p">)</span>
+        <span class="n">default_color</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer&#39;</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">default_mode</span> <span class="o">=</span> <span class="n">PointerMode</span><span class="p">[</span><span class="n">default_mode</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
@@ -258,19 +261,12 @@
             <span class="n">default_mode</span> <span class="o">=</span> <span class="n">PointerMode</span><span class="o">.</span><span class="n">MANUAL</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_pointermode</span><span class="p">(</span><span class="n">default_mode</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">radio_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;continuous&#39;</span><span class="p">,</span> <span class="s1">&#39;manual&#39;</span><span class="p">,</span> <span class="s1">&#39;disabled&#39;</span><span class="p">]:</span>
-            <span class="n">radio</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;pointermode_&#39;</span> <span class="o">+</span> <span class="n">radio_name</span><span class="p">)</span>
-            <span class="n">radio</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s1">&#39;pointermode_&#39;</span> <span class="o">+</span> <span class="n">radio_name</span><span class="p">)</span>
-            <span class="n">radio</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="n">radio_name</span> <span class="o">==</span> <span class="n">default_mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pointermode_radios</span><span class="p">[</span><span class="n">radio_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">radio</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">load_pointer</span><span class="p">(</span><span class="n">default_color</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">radio_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pointer_red&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer_blue&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer_green&#39;</span><span class="p">]:</span>
-            <span class="n">radio</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">radio_name</span><span class="p">)</span>
-            <span class="n">radio</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">radio_name</span><span class="p">)</span>
-            <span class="n">radio</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="n">radio_name</span> <span class="o">==</span> <span class="n">default_color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+            <span class="s1">&#39;pointer-color&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">change_pointercolor</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">default_color</span><span class="p">,</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">str</span><span class="p">),</span>
+            <span class="s1">&#39;pointer-mode&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">change_pointermode</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">default_mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">str</span><span class="p">),</span>
+        <span class="p">})</span>
 
 
 <div class="viewcode-block" id="Pointer.load_pointer"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.load_pointer">[docs]</a>    <span class="k">def</span> <span class="nf">load_pointer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -279,25 +275,26 @@
 <span class="sd">        Args:</span>
 <span class="sd">            name (`str`): Name of the pointer to load</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pointer_red&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer_green&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer_blue&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">GdkPixbuf</span><span class="o">.</span><span class="n">Pixbuf</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_icon_path</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">GdkPixbuf</span><span class="o">.</span><span class="n">Pixbuf</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_icon_path</span><span class="p">(</span><span class="s1">&#39;pointer_&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Wrong color name&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Pointer.change_pointercolor"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.change_pointercolor">[docs]</a>    <span class="k">def</span> <span class="nf">change_pointercolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Callback for a radio item selection as pointer color.</span>
+<div class="viewcode-block" id="Pointer.change_pointercolor"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.change_pointercolor">[docs]</a>    <span class="k">def</span> <span class="nf">change_pointercolor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Callback for a radio item selection as pointer mode (continuous, manual, none).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.RadioMenuItem`): the selected radio item in the pointer type selection menu</span>
+<span class="sd">            action (:class:`~Gio.Action`): The action activatd</span>
+<span class="sd">            target (:class:`~GLib.Variant`): The selected mode</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
-            <span class="k">assert</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;pointer_&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">load_pointer</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer&#39;</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;pointer_&#39;</span><span class="p">):])</span></div>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_string</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_pointer</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;pointer&#39;</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+        <span class="n">action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">target</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Pointer.activate_pointermode"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.activate_pointermode">[docs]</a>    <span class="k">def</span> <span class="nf">activate_pointermode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Pointer.activate_pointermode"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.activate_pointermode">[docs]</a>    <span class="k">def</span> <span class="nf">activate_pointermode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Activate the pointer as given by mode.</span>
 
 <span class="sd">        Depending on the given mode, shows or hides the laser pointer and the normal mouse pointer.</span>
@@ -320,7 +317,8 @@
             <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">continue</span>
 
-            <span class="n">pointer_coordinates</span> <span class="o">=</span> <span class="n">slide_widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">get_pointer</span><span class="p">()</span>
+            <span class="n">window</span> <span class="o">=</span> <span class="n">slide_widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span>
+            <span class="n">pointer_coordinates</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get_pointer</span><span class="p">()</span> <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">pointer_coordinates</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">ww</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">pointer_coordinates</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">wh</span> \
                     <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer_mode</span> <span class="o">==</span> <span class="n">PointerMode</span><span class="o">.</span><span class="n">CONTINUOUS</span><span class="p">:</span>
@@ -334,23 +332,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_current_slide</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="Pointer.change_pointermode"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.change_pointermode">[docs]</a>    <span class="k">def</span> <span class="nf">change_pointermode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+<div class="viewcode-block" id="Pointer.change_pointermode"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.change_pointermode">[docs]</a>    <span class="k">def</span> <span class="nf">change_pointermode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Callback for a radio item selection as pointer mode (continuous, manual, none).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.RadioMenuItem`): the selected radio item in the pointer type selection menu</span>
+<span class="sd">            action (:class:`~Gio.Action`): The action activatd</span>
+<span class="sd">            target (:class:`~GLib.Variant`): The selected mode</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_active</span><span class="p">():</span>
-            <span class="n">mode</span> <span class="o">=</span> <span class="n">PointerMode</span><span class="p">[</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;pointermode_&#39;</span><span class="p">):]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">activate_pointermode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Pointer.toggle_pointermode"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.toggle_pointermode">[docs]</a>    <span class="k">def</span> <span class="nf">toggle_pointermode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Callback for shortcut to switch on/off continuous pointer.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_pointer_mode</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer_mode</span> <span class="o">==</span> <span class="n">PointerMode</span><span class="o">.</span><span class="n">CONTINUOUS</span> <span class="k">else</span> <span class="n">PointerMode</span><span class="o">.</span><span class="n">CONTINUOUS</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">target</span><span class="o">.</span><span class="n">get_string</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;toggle&#39;</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">old_pointer_mode</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointer_mode</span> <span class="o">==</span> <span class="n">PointerMode</span><span class="o">.</span><span class="n">CONTINUOUS</span> <span class="k">else</span> <span class="n">PointerMode</span><span class="o">.</span><span class="n">CONTINUOUS</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">PointerMode</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">get_string</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activate_pointermode</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pointermode_radios</span><span class="p">[</span><span class="n">mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+        <span class="n">action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_string</span><span class="p">(</span><span class="n">mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span></div>
 
 
 <div class="viewcode-block" id="Pointer.render_pointer"><a class="viewcode-back" href="../../pympress.html#pympress.pointer.Pointer.render_pointer">[docs]</a>    <span class="k">def</span> <span class="nf">render_pointer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cairo_context</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">):</span>

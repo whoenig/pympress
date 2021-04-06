@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>pympress.app &mdash; Pympress developer documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/pympress.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+	<a href="https://github.com/Cimbali/pympress/" class="fa fa-github"> Pympress on GitHub</a>
+	<br />
+	<a href="../../index.html" class="icon icon-home"> Docs home</a>
+	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
+	<div class="version">
+		v1.6.0-beta5
+	</div>
+
+	
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+	
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html"> What is Pympress?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#installing-github-version-badge">Installing </a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#usage">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#dependencies">Dependencies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html#contributing">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../options.html">Configuration file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pympress.html">Module documentation</a></li>
+</ul>
+
+            
+          
+	<hr style="border: 0; height: 0; border-top: 1px solid rgba(0, 0, 0, 0.1); border-bottom: 1px solid rgba(255, 255, 255, 0.3); width:80%; margin: 10px auto;" />
+	<a href="../../genindex.html">Index</a>
+	<a href="../../py-modindex.html">Module index</a>
+
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Pympress</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>pympress.app</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for pympress.app</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1">#       pympress</span>
+<span class="c1">#</span>
+<span class="c1">#       Copyright 2009, 2010 Thomas Jost &lt;thomas.jost@gmail.com&gt;</span>
+<span class="c1">#       Copyright 2015 Cimbali &lt;me@cimba.li&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#       This program is free software; you can redistribute it and/or modify</span>
+<span class="c1">#       it under the terms of the GNU General Public License as published by</span>
+<span class="c1">#       the Free Software Foundation; either version 2 of the License, or</span>
+<span class="c1">#       (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1">#       This program is distributed in the hope that it will be useful,</span>
+<span class="c1">#       but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1">#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1">#       GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1">#       You should have received a copy of the GNU General Public License</span>
+<span class="c1">#       along with this program; if not, write to the Free Software</span>
+<span class="c1">#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,</span>
+<span class="c1">#       MA 02110-1301, USA.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:mod:`pympress.app` -- The Gtk.Application managing the lifetime and CLI</span>
+<span class="sd">------------------------------------------------------------------------</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+
+<span class="kn">import</span> <span class="nn">gi</span>
+<span class="kn">import</span> <span class="nn">cairo</span>
+<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Gio</span>
+
+<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">extras</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">builder</span>
+
+
+<div class="viewcode-block" id="Pympress"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress">[docs]</a><span class="k">class</span> <span class="nc">Pympress</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Class representing the single pympress Gtk application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#: The :class:`~pympress.ui.UI` object that is the interface of pympress</span>
+    <span class="n">gui</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The :class:`~pympress.config.Config` object that holds pympress conferences</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The log level to use</span>
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
+    <span class="c1">#: The notes positioning, to pass to the UI when it is created</span>
+    <span class="n">notes_pos</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># long_name:  (short_name (int), flags (GLib.OptionFlags), arg (GLib.OptionArg)</span>
+        <span class="s1">&#39;talk-time&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">STRING</span><span class="p">),</span>
+        <span class="s1">&#39;notes&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">STRING</span><span class="p">),</span>
+        <span class="s1">&#39;log&#39;</span><span class="p">:</span>        <span class="p">(</span><span class="mi">0</span><span class="p">,</span>        <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">STRING</span><span class="p">),</span>
+        <span class="s1">&#39;version&#39;</span><span class="p">:</span>    <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;pause&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;reset&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;next&#39;</span><span class="p">:</span>       <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;prev&#39;</span><span class="p">:</span>       <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;first&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;last&#39;</span><span class="p">:</span>       <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;blank&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+        <span class="s1">&#39;quit&#39;</span><span class="p">:</span>       <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">),</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionFlags</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">OptionArg</span><span class="o">.</span><span class="n">NONE</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">option_descriptions</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1">#  long_name: (description, arg_description)</span>
+        <span class="s1">&#39;talk-time&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;The estimated (intended) talk time in minutes&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+                      <span class="n">_</span><span class="p">(</span><span class="s1">&#39;(and optionally seconds)&#39;</span><span class="p">),</span> <span class="s1">&#39;mm[:ss]&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;notes&#39;</span><span class="p">:</span>     <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set the position of notes on the pdf page&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+                      <span class="n">_</span><span class="p">(</span><span class="s1">&#39;(none, left, right, top, bottom, or after).&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+                      <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Overrides the detection from the file.&#39;</span><span class="p">),</span> <span class="s1">&#39;&lt;position&gt;&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;log&#39;</span><span class="p">:</span>       <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Set level of verbosity in log file:&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
+                      <span class="n">_</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1">, or </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">,</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR&#39;</span><span class="p">,</span> <span class="s1">&#39;CRITICAL&#39;</span><span class="p">),</span> <span class="s1">&#39;&lt;level&gt;&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;version&#39;</span><span class="p">:</span>   <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Print version and exit&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;pause&#39;</span><span class="p">:</span>     <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Toggle pause of talk timer&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;reset&#39;</span><span class="p">:</span>     <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Reset talk timer&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;next&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Next slide&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;prev&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Previous slide&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;first&#39;</span><span class="p">:</span>     <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;First slide&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;last&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Last slide&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;blank&#39;</span><span class="p">:</span>     <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Blank/unblank content screen&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;quit&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Close opened pympress instance&#39;</span><span class="p">),</span> <span class="kc">None</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">version_string</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+        <span class="s1">&#39;Pympress:&#39;</span><span class="p">,</span> <span class="n">util</span><span class="o">.</span><span class="n">get_pympress_meta</span><span class="p">()[</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;; Python:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
+        <span class="s1">&#39;; OS:&#39;</span><span class="p">,</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span> <span class="n">platform</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span>
+        <span class="s1">&#39;; Gtk </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">get_major_version</span><span class="p">(),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">get_minor_version</span><span class="p">(),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">get_micro_version</span><span class="p">()),</span>
+        <span class="s1">&#39;; GLib </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">MAJOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MINOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MICRO_VERSION</span><span class="p">),</span>
+        <span class="s1">&#39;; Poppler&#39;</span><span class="p">,</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_version</span><span class="p">(),</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">value_nick</span><span class="p">,</span>
+        <span class="s1">&#39;; Cairo&#39;</span><span class="p">,</span> <span class="n">cairo</span><span class="o">.</span><span class="n">cairo_version_string</span><span class="p">(),</span> <span class="s1">&#39;, pycairo&#39;</span><span class="p">,</span> <span class="n">cairo</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+        <span class="s1">&#39;; Media:&#39;</span><span class="p">,</span> <span class="n">extras</span><span class="o">.</span><span class="n">Media</span><span class="o">.</span><span class="n">backend_version</span><span class="p">()</span>
+    <span class="p">])</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application_id</span><span class="o">=</span><span class="s1">&#39;io.github.pympress&#39;</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">Gio</span><span class="o">.</span><span class="n">ApplicationFlags</span><span class="o">.</span><span class="n">HANDLES_OPEN</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_is_remote</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">UI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+
+        <span class="c1"># Connect proper exit function to interrupt</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_main_option</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="n">opt</span><span class="p">],</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">option_descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]))</span>
+
+
+<div class="viewcode-block" id="Pympress.quit"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.quit">[docs]</a>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Quit and ignore other arguments e.g. sent by signals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Pympress.do_startup"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.do_startup">[docs]</a>    <span class="k">def</span> <span class="nf">do_startup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Common start-up tasks for primary and remote instances.</span>
+
+<span class="sd">        NB. super(self) causes segfaults, Gtk.Application needs to be used as base.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">()</span>
+
+        <span class="c1"># prefere X11 on posix systems because Wayland still has some shortcomings for us,</span>
+        <span class="c1"># specifically libVLC and the ability to disable screensavers</span>
+        <span class="k">if</span> <span class="n">util</span><span class="o">.</span><span class="n">IS_POSIX</span><span class="p">:</span>
+            <span class="n">Gdk</span><span class="o">.</span><span class="n">set_allowed_backends</span><span class="p">(</span><span class="s1">&#39;x11,*&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_string</span><span class="p">)</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_startup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pympress.do_activate"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.do_activate">[docs]</a>    <span class="k">def</span> <span class="nf">do_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">GLib</span><span class="o">.</span><span class="n">get_current_time</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot; Activate: show UI windows.</span>
+
+<span class="sd">        Build them if they do not exist, otherwise bring to front.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Activating on non-remote ?!&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_is_remote</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">present_with_time</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pympress.set_action_enabled"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.set_action_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">set_action_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse an action name and set its enabled state to True or False.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (`str`): the name of the stateful action</span>
+<span class="sd">            value (`bool`): wheether the action should be enabled or disabled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">set_enabled</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pympress.set_action_state"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.set_action_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_action_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse an action name and set its state wrapped in a :class:`~GLib.Variant`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (`str`): the name of the stateful action</span>
+<span class="sd">            value (`str`, `int`, `bool` or `float`): the value to set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">_glib_type_strings</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)],</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Pympress.get_action_state"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.get_action_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_action_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse an action name and return its unwrapped state from the :class:`~GLib.Variant`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (`str`): the name of the stateful action</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `str`, `int`, `bool` or `float`: the value contained in the action</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">_glib_type_getters</span><span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">get_type_string</span><span class="p">()](</span><span class="n">state</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pympress.activate_action"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.activate_action">[docs]</a>    <span class="k">def</span> <span class="nf">activate_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse an action name and activate it, with parameter wrapped in a :class:`~GLib.Variant` if it is not None.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (`str`): the name of the stateful action</span>
+<span class="sd">            parameter: an object or None to pass as a parameter to the action, wrapped in a GLib.Variant</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">_glib_type_strings</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">parameter</span><span class="p">)],</span> <span class="n">parameter</span><span class="p">)</span>
+
+        <span class="n">Gio</span><span class="o">.</span><span class="n">ActionGroup</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parameter</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pympress.do_open"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.do_open">[docs]</a>    <span class="k">def</span> <span class="nf">do_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">n_files</span><span class="p">,</span> <span class="n">hint</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle opening files. In practice we only open once, the last one.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            files (`list` of :class:`~Gio.File`s): representing an array of files to open</span>
+<span class="sd">            n_files (`int`): the number of files passed.</span>
+<span class="sd">            hint (`str`): a hint, such as view, edit, etc. Should always be the empty string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">n_files</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_activate</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">GLib</span><span class="o">.</span><span class="n">get_current_time</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">files</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_uri</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="Pympress.do_shutdown"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.do_shutdown">[docs]</a>    <span class="k">def</span> <span class="nf">do_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Perform various cleanups and save preferences.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Pympress.do_handle_local_options"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.do_handle_local_options">[docs]</a>    <span class="k">def</span> <span class="nf">do_handle_local_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opts_variant_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse command line options, returned as a VariantDict</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `tuple`: estimated talk time, log level, notes positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert GVariantDict -&gt; GVariant -&gt; dict</span>
+        <span class="n">opts</span> <span class="o">=</span> <span class="n">opts_variant_dict</span><span class="o">.</span><span class="n">end</span><span class="p">()</span><span class="o">.</span><span class="n">unpack</span><span class="p">()</span>
+
+        <span class="n">simple_actions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;pause&#39;</span><span class="p">:</span> <span class="s1">&#39;pause-timer&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;reset&#39;</span><span class="p">:</span> <span class="s1">&#39;reset-timer&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;next&#39;</span><span class="p">:</span> <span class="s1">&#39;next-page&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;prev&#39;</span><span class="p">:</span> <span class="s1">&#39;prev-page&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;blank&#39;</span><span class="p">:</span> <span class="s1">&#39;blank-screen&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;quit&#39;</span><span class="p">:</span> <span class="s1">&#39;quit&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;first&#39;</span><span class="p">:</span> <span class="s1">&#39;first-page&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;last&#39;</span><span class="p">:</span> <span class="s1">&#39;last-page&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">opt</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">opts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_string</span><span class="p">)</span>
+                <span class="k">return</span> <span class="mi">0</span>
+
+            <span class="k">elif</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+                <span class="n">numeric_level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">arg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">numeric_level</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">numeric_level</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Invalid log level </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">, try one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">arg</span><span class="p">,</span> <span class="s2">&quot;DEBUG, INFO, WARNING, ERROR, CRITICAL&quot;</span>
+                    <span class="p">))</span>
+
+            <span class="k">elif</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;notes&quot;</span><span class="p">:</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">lower</span><span class="p">()[:</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="o">==</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="o">==</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="o">==</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="o">==</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">arg</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;talk-time&quot;</span><span class="p">:</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Invalid time (mm or mm:ss expected), got </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="mi">2</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;set-talk-time&#39;</span><span class="p">,</span> <span class="n">m</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="n">s</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">simple_actions</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="n">simple_actions</span><span class="p">[</span><span class="n">opt</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2009-2011, Thomas Jost; 2015-2020 Cimbali.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

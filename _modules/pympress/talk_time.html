@@ -56,7 +56,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.3
+		v1.6.0-beta5
 	</div>
 
 	
@@ -303,47 +303,55 @@
 <span class="sd">        builder (builder.Builder): The builder from which to load widgets.</span>
 <span class="sd">        ett (`int`): the estimated time for the talk, in seconds.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#: Elapsed time :class:`~Gtk.Label`.</span>
+    <span class="c1">#: Elapsed time :class:`~Gtk.Label`</span>
     <span class="n">label_time</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: Clock :class:`~Gtk.Label`.</span>
+    <span class="c1">#: Clock :class:`~Gtk.Label`</span>
     <span class="n">label_clock</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: Time at which the counter was started, `int` in seconds as returned by :func:`~time.time()`.</span>
-    <span class="n">start_time</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="c1">#: Time elapsed since the beginning of the presentation, `int` in seconds.</span>
-    <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="c1">#: Timer paused status, `bool`.</span>
+    <span class="c1">#: Time at which the counter was started, `int` in seconds as returned by :func:`~time.time()`</span>
+    <span class="n">restart_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: Time elapsed since the beginning of the presentation, `int` in seconds</span>
+    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: Timer paused status, `bool`</span>
     <span class="n">paused</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1">#: :class:`~TimeLabelColorer` that handles setting the colors of :attr:`label_time`</span>
     <span class="n">label_colorer</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: :class:`~Gtk.CheckMenuItem` that shows whether the time is toggled</span>
-    <span class="n">pres_pause</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: :class:`~pympress.editable_label.EstimatedTalkTime` that handles changing the ett</span>
     <span class="n">ett</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">ett</span><span class="p">):</span>
+    <span class="c1">#: The pause-timer :class:`~Gio.Action`</span>
+    <span class="n">pause_action</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: The :class:`~pympress.extras.TimingReport`, needs to know when the slides change</span>
+    <span class="n">timing_tracker</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">ett</span><span class="p">,</span> <span class="n">timing_tracker</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TimeCounter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span> <span class="o">=</span> <span class="n">TimeLabelColorer</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;label_time&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ett</span> <span class="o">=</span> <span class="n">ett</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timing_tracker</span> <span class="o">=</span> <span class="n">timing_tracker</span>
 
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+            <span class="s1">&#39;pause-timer&#39;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">switch_pause</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">),</span>
+            <span class="s1">&#39;reset-timer&#39;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reset_timer</span><span class="p">),</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pause_action</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_application</span><span class="p">()</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;pause-timer&#39;</span><span class="p">)</span>
 
         <span class="c1"># Setup timer for clocks</span>
         <span class="n">GLib</span><span class="o">.</span><span class="n">timeout_add</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TimeCounter.switch_pause"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeCounter.switch_pause">[docs]</a>    <span class="k">def</span> <span class="nf">switch_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TimeCounter.switch_pause"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeCounter.switch_pause">[docs]</a>    <span class="k">def</span> <span class="nf">switch_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Switch the timer between paused mode and running (normal) mode.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the clock&#39;s pause was toggled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">CheckMenuItem</span><span class="p">)</span> <span class="ow">and</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_active</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">unpause</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -361,9 +369,12 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">paused</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pause_action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_boolean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">restart_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timing_tracker</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pres_pause</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -376,20 +387,36 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restart_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">paused</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pause_action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_boolean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pres_pause</span><span class="o">.</span><span class="n">set_active</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="TimeCounter.reset_timer"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeCounter.reset_timer">[docs]</a>    <span class="k">def</span> <span class="nf">reset_timer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reset the timer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timing_tracker</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_time</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">restart_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TimeCounter.current_time"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeCounter.current_time">[docs]</a>    <span class="k">def</span> <span class="nf">current_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the time elapsed in the presentation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `int`: the time since the presentation started in seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Time elapsed since the beginning of the presentation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">+</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">restart_time</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TimeCounter.update_time"><a class="viewcode-back" href="../../pympress.html#pympress.talk_time.TimeCounter.update_time">[docs]</a>    <span class="k">def</span> <span class="nf">update_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -402,17 +429,19 @@
         <span class="n">clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &quot;%H:%M:%S&quot;</span>
 
         <span class="c1"># Time elapsed since the beginning of the presentation</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
-        <span class="n">elapsed</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:02}</span><span class="s2">:</span><span class="si">{:02}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">),</span> <span class="mi">60</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
-            <span class="n">elapsed</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;(paused)&quot;</span><span class="p">)</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_time</span><span class="p">()</span>
+        <span class="n">display_time</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:02}</span><span class="s2">:</span><span class="si">{:02}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">elapsed</span><span class="p">),</span> <span class="mi">60</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">label_time</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">elapsed</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+            <span class="n">display_time</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;(paused)&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_time</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">display_time</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_clock</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">clock</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timing_tracker</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">elapsed</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ett</span><span class="o">.</span><span class="n">est_time</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span><span class="o">.</span><span class="n">update_time_color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ett</span><span class="o">.</span><span class="n">est_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span><span class="o">.</span><span class="n">update_time_color</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ett</span><span class="o">.</span><span class="n">est_time</span> <span class="o">-</span> <span class="n">elapsed</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span><span class="o">.</span><span class="n">default_color</span><span class="p">()</span>
 

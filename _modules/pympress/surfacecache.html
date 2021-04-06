@@ -56,7 +56,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.3
+		v1.6.0-beta5
 	</div>
 
 	
@@ -195,6 +195,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
@@ -285,7 +286,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_cache</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_size</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">wtype</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">create_similar_image_surface</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_surface</span><span class="p">,</span> <span class="n">widget</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">prerender_enabled</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">zoomed</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">enable_prerender</span><span class="p">(</span><span class="n">widget_name</span><span class="p">)</span></div>
 
@@ -409,6 +410,23 @@
                 <span class="n">pc</span><span class="o">.</span><span class="n">popitem</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
 
 
+    <span class="k">def</span> <span class="nf">_create_surface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Given a widget, create a cairo Image surface with appropriate size and scaling.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`): the widget for which we’re caching data.</span>
+<span class="sd">            fmt (:class:`~cairo.Format`): the format for the new surface</span>
+<span class="sd">            width (`int`): width of the new surface</span>
+<span class="sd">            height (`int`): height of the new surface</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~cairo.ImageSurface`: a new image surface</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get_scale_factor</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">window</span><span class="o">.</span><span class="n">create_similar_image_surface</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">width</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="n">height</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+
+
 <div class="viewcode-block" id="SurfaceCache.prerender"><a class="viewcode-back" href="../../pympress.html#pympress.surfacecache.SurfaceCache.prerender">[docs]</a>    <span class="k">def</span> <span class="nf">prerender</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_nb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Queue a page for prerendering.</span>
 
@@ -449,6 +467,8 @@
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_lock</span><span class="p">:</span>
             <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page_nb</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
             <span class="n">pw</span><span class="p">,</span> <span class="n">ph</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get_size</span><span class="p">(</span><span class="n">wtype</span><span class="p">)</span>
 
         <span class="c1"># Render to a ImageSurface</span>

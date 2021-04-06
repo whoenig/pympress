@@ -56,7 +56,7 @@
 	<a href="../../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.3
+		v1.6.0-beta5
 	</div>
 
 	
@@ -194,6 +194,7 @@
 <span class="kn">import</span> <span class="nn">ctypes</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">builder</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">GLib</span>
 
 
 <div class="viewcode-block" id="get_window_handle"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.get_window_handle">[docs]</a><span class="k">def</span> <span class="nf">get_window_handle</span><span class="p">(</span><span class="n">window</span><span class="p">):</span>
@@ -242,15 +243,6 @@
     <span class="c1">#: `bool` that tracks whether we should play automatically</span>
     <span class="n">autoplay</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="c1">#: callback, to be connected to :meth:`~pympress.extras.Media.play`, curryfied with the correct media_id</span>
-    <span class="n">play</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: callback, to be connected to :meth:`~pympress.extras.Media.hide`, curryfied with the correct media_id</span>
-    <span class="n">hide</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: callback, to be connected to :meth:`~pympress.extras.Media.play_pause`, curryfied with the correct media_id</span>
-    <span class="n">play_pause</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: callback, to be connected to :meth:`~pympress.extras.Media.set_time`, curryfied with the correct media_id</span>
-    <span class="n">set_time</span> <span class="o">=</span> <span class="kc">None</span>
-
     <span class="c1">#: `bool` that tracks whether the user is dragging the position</span>
     <span class="n">dragging_position</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="c1">#: `bool` that tracks whether the playback was paused when the user started dragging the position</span>
@@ -260,7 +252,10 @@
     <span class="c1">#: `float` holding the max time in s</span>
     <span class="n">maxval</span> <span class="o">=</span> <span class="mi">1</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">callback_getter</span><span class="p">):</span>
+    <span class="c1">#: :class:`~Gio.ActionMap` containing the actios for this video overlay</span>
+    <span class="n">action_map</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_map</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">VideoOverlay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">container</span>
@@ -270,11 +265,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">load_ui</span><span class="p">(</span><span class="s1">&#39;media_overlay&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">show_controls</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">play</span> <span class="o">=</span> <span class="n">callback_getter</span><span class="p">(</span><span class="s1">&#39;play&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hide</span> <span class="o">=</span> <span class="n">callback_getter</span><span class="p">(</span><span class="s1">&#39;hide&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">play_pause</span> <span class="o">=</span> <span class="n">callback_getter</span><span class="p">(</span><span class="s1">&#39;play_pause&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_time</span> <span class="o">=</span> <span class="n">callback_getter</span><span class="p">(</span><span class="s1">&#39;set_time&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># medias, here the actions are scoped to the current widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span> <span class="o">=</span> <span class="n">action_map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">media_overlay</span><span class="o">.</span><span class="n">insert_action_group</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="VideoOverlay.handle_embed"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.handle_embed">[docs]</a>    <span class="k">def</span> <span class="nf">handle_embed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapped_widget</span><span class="p">):</span>
@@ -323,7 +318,7 @@
 <span class="sd">            sc (:class:`~Gtk.Scale`): The scale whose position we are updating</span>
 <span class="sd">            val (`float`): The position of the :class:`~Gtk.Scale`, which is the number of seconds elapsed in the video</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;set_time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_double</span><span class="p">(</span><span class="n">val</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="VideoOverlay.update_margins_for_page"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.update_margins_for_page">[docs]</a>    <span class="k">def</span> <span class="nf">update_margins_for_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_type</span><span class="p">):</span>

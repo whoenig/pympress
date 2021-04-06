@@ -56,7 +56,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.3
+		v1.6.0-beta5
 	</div>
 
 	
@@ -356,16 +356,17 @@
     <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;pixmaps&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_ui_resource_file"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_ui_resource_file">[docs]</a><span class="k">def</span> <span class="nf">get_ui_resource_file</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="get_ui_resource_file"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_ui_resource_file">[docs]</a><span class="k">def</span> <span class="nf">get_ui_resource_file</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="s1">&#39;.glade&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Load an UI definition file from pympress&#39; resources.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name (`str`): The name of the UI to load</span>
+<span class="sd">        ext (`str`): The extension of the file</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        `str`: The full path to the glade file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.glade&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="list_icons"><a class="viewcode-back" href="../../pympress.html#pympress.util.list_icons">[docs]</a><span class="k">def</span> <span class="nf">list_icons</span><span class="p">():</span>
@@ -412,12 +413,11 @@
         <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;xdg-open&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="set_screensaver"><a class="viewcode-back" href="../../pympress.html#pympress.util.set_screensaver">[docs]</a><span class="k">def</span> <span class="nf">set_screensaver</span><span class="p">(</span><span class="n">must_disable</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
+<div class="viewcode-block" id="set_screensaver"><a class="viewcode-back" href="../../pympress.html#pympress.util.set_screensaver">[docs]</a><span class="k">def</span> <span class="nf">set_screensaver</span><span class="p">(</span><span class="n">must_disable</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Enable or disable the screensaver.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        must_disable (`bool`):  if `True`, indicates that the screensaver must be disabled; otherwise it will be enabled</span>
-<span class="sd">        window (:class:`~Gdk.Window`): The window on the screen where the screensaver is to be suspended.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">IS_MAC_OS</span><span class="p">:</span>
         <span class="c1"># On Mac OS X we can use caffeinate to prevent the display from sleeping</span>

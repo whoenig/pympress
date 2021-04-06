@@ -283,6 +283,7 @@ Alexandre Almeida,
 Jeertmans,
 Lorenzo. pacchiardi,
 Nico,
+Ogawa,
 Saulpierotti,
 and <!-- last translator --> Cimbali.
 

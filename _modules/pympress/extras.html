@@ -56,7 +56,7 @@
 	<a href="../../index.html" class="icon icon-home"> Docs home</a>
 	<img src="../../_static/pympress.png" class="logo" alt="Logo"/>
 	<div class="version">
-		v1.5.3
+		v1.6.0-beta5
 	</div>
 
 	
@@ -191,13 +191,13 @@
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Gio</span>
 
 <span class="kn">import</span> <span class="nn">mimetypes</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">document</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">config</span>
-<span class="kn">from</span> <span class="nn">pympress.media_overlays.base</span> <span class="kn">import</span> <span class="n">VideoOverlay</span>
 
 
 <div class="viewcode-block" id="TimingReport"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport">[docs]</a><span class="k">class</span> <span class="nc">TimingReport</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
@@ -206,18 +206,31 @@
     <span class="c1">#: `list` of time at which each page was reached</span>
     <span class="n">page_time</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1">#: `int` the time at which the clock was reset</span>
-    <span class="n">reset_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-    <span class="c1">#: The :class:`~Gtk.TreeView` containing the timing data to display in the dialog.</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1">#: The :class:`~Gtk.TreeView` containing the timing data to display in the dialog</span>
     <span class="n">timing_treeview</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: A :class:`~Gtk.Dialog` to contain the timing to show.</span>
+    <span class="c1">#: A :class:`~Gtk.Dialog` to contain the timing to show</span>
     <span class="n">time_report_dialog</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: `bool` marking whether next page transition should reset the history of page timings</span>
+    <span class="n">clear_on_next_transition</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">#: A `dict` containing the structure of the current document</span>
+    <span class="n">doc_structure</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1">#: A `list` with the page label of each page of the current document</span>
+    <span class="n">page_labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#: `bool` tracking whether a document is opened</span>
+    <span class="n">document_open</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TimingReport</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_ui</span><span class="p">(</span><span class="s1">&#39;time_report_dialog&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_report_dialog</span><span class="o">.</span><span class="n">set_transient_for</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">p_win</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_report_dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_CLOSE</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">parent</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+            <span class="s1">&#39;timing-report&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_report</span><span class="p">),</span>
+        <span class="p">})</span>
 
 
 <div class="viewcode-block" id="TimingReport.transition"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.transition">[docs]</a>    <span class="k">def</span> <span class="nf">transition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
@@ -227,16 +240,21 @@
 <span class="sd">            page (`int`): the page number of the current slide</span>
 <span class="sd">            time (`int`): the number of seconds elapsed since the beginning of the presentation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_open</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clear_on_next_transition</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_on_next_transition</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">[:]</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">page</span><span class="p">,</span> <span class="n">time</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="TimingReport.reset"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reset_time</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A timer reset. Clear the history as soon as we start changing pages again.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">=</span> <span class="n">reset_time</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">reset_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_on_next_transition</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="TimingReport.format_time"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.format_time">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -249,18 +267,35 @@
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">secs</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="TimingReport.show"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_time</span><span class="p">,</span> <span class="n">doc_structure</span><span class="p">,</span> <span class="n">page_labels</span><span class="p">):</span>
+<div class="viewcode-block" id="TimingReport.set_document_metadata"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.set_document_metadata">[docs]</a>    <span class="k">def</span> <span class="nf">set_document_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_structure</span><span class="p">,</span> <span class="n">page_labels</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Show the popup with the timing infortmation.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            current_time (`int`): the number of seconds elapsed since the beginning of the presentation</span>
 <span class="sd">            doc_structure (`dict`): the structure of the document</span>
 <span class="sd">            page_labels (`list`): the page labels for each of the pages</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span> <span class="k">for</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">current_time</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_time</span><span class="p">]</span>
-        <span class="n">durations</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">s</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">times</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">document_open</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
 
-        <span class="n">infos</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">time</span> <span class="k">for</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">),</span> <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="c1"># Do not update if we only close the document.</span>
+        <span class="c1"># That way, the report is still accessible when the document is closed.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_open</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_structure</span> <span class="o">=</span> <span class="n">doc_structure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span> <span class="o">=</span> <span class="n">page_labels</span>
+
+        <span class="c1"># Clear the report when there is a new document opened.</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">[:]</span></div>
+
+
+<div class="viewcode-block" id="TimingReport.show_report"><a class="viewcode-back" href="../../pympress.html#pympress.extras.TimingReport.show_report">[docs]</a>    <span class="k">def</span> <span class="nf">show_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Show the popup with the timing infortmation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span> <span class="k">for</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">]</span>
+        <span class="n">durations</span> <span class="o">=</span> <span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="n">times</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">]))</span>
+
+        <span class="n">min_time</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">time</span> <span class="k">for</span> <span class="n">page</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_time</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">infos</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">min_time</span><span class="p">,</span> <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
         <span class="n">infos</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Full presentation&#39;</span>
 
         <span class="k">for</span> <span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">start_time</span><span class="p">),</span> <span class="n">duration</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_time</span><span class="p">,</span> <span class="n">durations</span><span class="p">):</span>
@@ -270,7 +305,7 @@
             <span class="n">infos</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">duration</span>
 
             <span class="c1"># lookup the position of the page in the document structure (section etc)</span>
-            <span class="n">lookup</span> <span class="o">=</span> <span class="n">doc_structure</span>
+            <span class="n">lookup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_structure</span>
             <span class="n">cur_info_pos</span> <span class="o">=</span> <span class="n">infos</span>
             <span class="k">while</span> <span class="n">lookup</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -288,7 +323,8 @@
                 <span class="n">cur_info_pos</span> <span class="o">=</span> <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="c1"># add the actual page as a leaf node</span>
-            <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;slide #&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">page_labels</span><span class="p">[</span><span class="n">page</span><span class="p">],</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span><span class="p">[</span><span class="n">page</span><span class="p">]</span> <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;None&#39;</span>
+            <span class="n">cur_info_pos</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;page&#39;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;slide #&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">label</span><span class="p">,</span>
                                              <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">start_time</span><span class="p">})</span>
 
 
@@ -301,7 +337,10 @@
         <span class="n">dfs_info</span> <span class="o">=</span> <span class="p">[(</span><span class="kc">None</span><span class="p">,</span> <span class="n">infos</span><span class="p">)]</span>
         <span class="k">while</span> <span class="n">dfs_info</span><span class="p">:</span>
             <span class="n">first_it</span><span class="p">,</span> <span class="n">first</span> <span class="o">=</span> <span class="n">dfs_info</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-            <span class="n">last_col</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">page_labels</span><span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]],</span> <span class="n">first</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">page_labels</span><span class="p">))</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">first</span><span class="p">[</span><span class="s1">&#39;page&#39;</span><span class="p">]</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span><span class="p">[</span><span class="n">page</span><span class="p">]</span> <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;None&#39;</span>
+
+            <span class="n">last_col</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span><span class="p">))</span>
             <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_time</span><span class="p">(</span><span class="n">first</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]),</span> <span class="n">last_col</span><span class="p">]</span>
             <span class="n">it</span> <span class="o">=</span> <span class="n">treemodel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_it</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
 
@@ -428,13 +467,16 @@
                                    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mime_type</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
                     <span class="k">continue</span>
 
-                <span class="k">def</span> <span class="nf">get_curryfied_callback</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">media_id</span> <span class="o">=</span> <span class="n">media_id</span><span class="p">):</span>
-                    <span class="sd">&quot;&quot;&quot; Return a callback for signal &#39;name&#39; that has the value &#39;media_id&#39; pre-set, and remembered by this closure.</span>
-<span class="sd">                    &quot;&quot;&quot;</span>
-                    <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">VideoOverlay</span><span class="o">.</span><span class="n">find_callback_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)(</span><span class="n">media_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+                <span class="n">action_group</span> <span class="o">=</span> <span class="n">Gio</span><span class="o">.</span><span class="n">SimpleActionGroup</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
+                <span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+                    <span class="s1">&#39;play&#39;</span><span class="p">:</span>     <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">play</span><span class="p">,</span> <span class="n">media_id</span><span class="p">)),</span>
+                    <span class="s1">&#39;stop&#39;</span><span class="p">:</span>     <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hide</span><span class="p">,</span> <span class="n">media_id</span><span class="p">)),</span>
+                    <span class="s1">&#39;pause&#39;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">play_pause</span><span class="p">,</span> <span class="n">media_id</span><span class="p">)),</span>
+                    <span class="s1">&#39;set_time&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_time</span><span class="p">,</span> <span class="n">media_id</span><span class="p">),</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+                <span class="p">},</span> <span class="n">action_group</span><span class="p">)</span>
 
-                <span class="n">v_da_c</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_overlay</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">get_curryfied_callback</span><span class="p">)</span>
-                <span class="n">v_da_p</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_overlay</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">get_curryfied_callback</span><span class="p">)</span>
+                <span class="n">v_da_c</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_overlay</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_group</span><span class="p">)</span>
+                <span class="n">v_da_p</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_overlay</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_group</span><span class="p">)</span>
 
                 <span class="n">v_da_c</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
                 <span class="n">v_da_p</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
@@ -446,11 +488,11 @@
 
             <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">autoplay</span><span class="p">:</span>
-                    <span class="n">w</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">media_id</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_double</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
                     <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="Media.resize"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Media.resize"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Resize all media overlays that are a child of an overlay.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">needs_resizing</span> <span class="o">=</span> <span class="p">(</span><span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;presenter&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">which</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -470,12 +512,13 @@
                 <span class="n">widget</span><span class="o">.</span><span class="n">update_margins_for_page</span><span class="p">(</span><span class="n">page_type</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Media.play"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.play">[docs]</a>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">button</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Media.play"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.play">[docs]</a>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">gaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Starts playing a media. Used as a callback.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            media_id (`int`): A unique identifier of the media to start playing</span>
-<span class="sd">            button (:class:`~Gtk.Button`): the button clicked to cause the media to play, if any.</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            param (:class:`~GLib.Variant`): the parameter as a variant, or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">media_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">:</span>
             <span class="n">c</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]</span>
@@ -484,12 +527,13 @@
             <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">do_play</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]))</span></div>
 
 
-<div class="viewcode-block" id="Media.hide"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">button</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Media.hide"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.hide">[docs]</a>    <span class="k">def</span> <span class="nf">hide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">gaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stops playing a media and hides the player. Used as a callback.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            media_id (`int`): A unique identifier of the media to start playing</span>
-<span class="sd">            button (:class:`~Gtk.Button`): the button clicked to cause the media to stop, if any.</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            param (:class:`~GLib.Variant`): the parameter as a variant, or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">media_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">:</span>
             <span class="n">c</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]</span>
@@ -505,22 +549,26 @@
             <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_shown</span><span class="p">():</span> <span class="n">p</span><span class="o">.</span><span class="n">do_hide</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="Media.play_pause"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.play_pause">[docs]</a>    <span class="k">def</span> <span class="nf">play_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="Media.play_pause"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.play_pause">[docs]</a>    <span class="k">def</span> <span class="nf">play_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">gaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Toggles playing and pausing a media. Used as a callback.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            media_id (`int`): A unique idientifier of the media to start playing</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            param (:class:`~GLib.Variant`): the parameter as a variant, or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">do_play_pause</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]))</span></div>
 
 
-<div class="viewcode-block" id="Media.set_time"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.set_time">[docs]</a>    <span class="k">def</span> <span class="nf">set_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="Media.set_time"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.set_time">[docs]</a>    <span class="k">def</span> <span class="nf">set_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">media_id</span><span class="p">,</span> <span class="n">gaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set the player of a given media at time t. Used as a callback.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            media_id (`int`): A unique idientifier of the media to start playing</span>
-<span class="sd">            t (`float`): the timestamp, in s</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            param (:class:`~GLib.Variant`): A wrapped float containing the time to which we have to go.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get_double</span><span class="p">()</span>
         <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">do_set_time</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]))</span></div>
 
 
@@ -641,7 +689,9 @@
             <span class="bp">cls</span><span class="o">.</span><span class="n">_populate_cursors</span><span class="p">()</span>
             <span class="n">cursor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_cursors</span><span class="p">[</span><span class="n">cursor_name</span><span class="p">]</span>
 
-        <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span></div></div>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="n">cursor</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Zoom"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom">[docs]</a><span class="k">class</span> <span class="nc">Zoom</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -656,12 +706,10 @@
     <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.</span>
     <span class="n">shift</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-    <span class="c1">#: a callback for the :func:`~Gtk.Button.set_sensitive` function of the zoom-out button in the scribble interface</span>
-    <span class="n">set_scribble_zoomout_sensitive</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
-    <span class="c1">#: :class:`~Gtk.MenuItem` that is clicked to stop zooming</span>
-    <span class="n">menu_zoom_out</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~Gtk.Box` in the Presenter window, used to reliably set cursors.</span>
     <span class="n">p_central</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: callback, to be connected to :meth:`~pympress.app.Pympress.set_action_enabled`</span>
+    <span class="n">set_action_enabled</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.redraw_current_slide`</span>
     <span class="n">redraw_current_slide</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
@@ -674,17 +722,12 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_current_slide</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;redraw_current_slide&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_cache</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;clear_zoom_cache&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_action_enabled</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;app.set_action_enabled&#39;</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Zoom.delayed_callback_connection"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.delayed_callback_connection">[docs]</a>    <span class="k">def</span> <span class="nf">delayed_callback_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scribble_builder</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Connect callbacks later than at init, due to circular dependencies.</span>
-
-<span class="sd">        Call this when the page_number module is initialized, but before needing the callback.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            scribble_builder (builder.Builder): The builder from which to load widgets for scribble</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_scribble_zoomout_sensitive</span> <span class="o">=</span> <span class="n">scribble_builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;zoom_stop_button.set_sensitive&#39;</span><span class="p">)</span></div>
+        <span class="n">builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+            <span class="s1">&#39;zoom&#39;</span><span class="p">:</span>   <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_zooming</span><span class="p">),</span>
+            <span class="s1">&#39;unzoom&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stop_zooming</span><span class="p">),</span>
+        <span class="p">})</span>
 
 
 <div class="viewcode-block" id="Zoom.start_zooming"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.start_zooming">[docs]</a>    <span class="k">def</span> <span class="nf">start_zooming</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -700,7 +743,7 @@
 
 
 <div class="viewcode-block" id="Zoom.stop_zooming"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.stop_zooming">[docs]</a>    <span class="k">def</span> <span class="nf">stop_zooming</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Cancel the zooming, if it was enabled.</span>
+        <span class="sd">&quot;&quot;&quot; Cancel the zooming, reset the zoom level to full page.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
@@ -710,8 +753,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">zoom_points</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mf">1.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_scribble_zoomout_sensitive</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">menu_zoom_out</span><span class="o">.</span><span class="n">set_sensitive</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_action_enabled</span><span class="p">(</span><span class="s1">&#39;unzoom&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_current_slide</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
@@ -719,27 +761,19 @@
         <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="Zoom.nav_zoom"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.nav_zoom">[docs]</a>    <span class="k">def</span> <span class="nf">nav_zoom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ctrl_pressed</span><span class="p">,</span> <span class="n">command</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Handles an key press event: stop trying to select an area to zoom.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            name (`str`): The name of the key pressed</span>
-<span class="sd">            ctrl_pressed (`bool`): whether the ctrl modifier key was pressed</span>
-<span class="sd">            command (`str`): the name of the command in case this function is called by on_navigation</span>
+<div class="viewcode-block" id="Zoom.try_cancel"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.try_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">try_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Cancel the zoom selection, if it was enabled.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `bool`: whether the event was consumed</span>
+<span class="sd">            `bool`: `True` if the zoom was cancelled, `False` if a zoom selection was not in progress.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom_selecting</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">elif</span> <span class="n">command</span> <span class="o">==</span> <span class="s1">&#39;cancel&#39;</span><span class="p">:</span>
-            <span class="n">Cursor</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">zoom_selecting</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">zoom_points</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">return</span> <span class="kc">True</span>
-
-        <span class="k">return</span> <span class="kc">False</span></div>
+        <span class="n">Cursor</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom_selecting</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom_points</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="Zoom.get_slide_point"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Zoom.get_slide_point">[docs]</a>    <span class="k">def</span> <span class="nf">get_slide_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
@@ -827,8 +861,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">zoom_selecting</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">redraw_current_slide</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_scribble_zoomout_sensitive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">menu_zoom_out</span><span class="o">.</span><span class="n">set_sensitive</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action_enabled</span><span class="p">(</span><span class="s1">&#39;unzoom&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="kc">True</span>
 
@@ -889,7 +922,8 @@
         <span class="n">stop_daemon</span> <span class="o">=</span> <span class="n">nop</span>
 
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Building FileWatcher&#39;</span><span class="p">))</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Building FileWatcher&#39;</span><span class="p">))</span>
+
 <div class="viewcode-block" id="FileWatcher"><a class="viewcode-back" href="../../pympress.html#pympress.extras.FileWatcher">[docs]</a>    <span class="k">class</span> <span class="nc">FileWatcher</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A class with only static methods that wraps object watchdogs, to trigger callbacks when a file changes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -913,7 +947,7 @@
             <span class="bp">cls</span><span class="o">.</span><span class="n">start_daemon</span><span class="p">()</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
 
-            <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">7</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file:///&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">:])</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">on_modified</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">src_path</span> <span class="o">==</span> <span class="n">path</span> <span class="k">else</span> <span class="kc">None</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">cls</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
