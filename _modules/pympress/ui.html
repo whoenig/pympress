@@ -333,6 +333,14 @@
             <span class="n">Gtk</span><span class="o">.</span><span class="n">STYLE_PROVIDER_PRIORITY_APPLICATION</span>
         <span class="p">)</span>
 
+        <span class="c1"># We may want some additional CSS changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">css_provider</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">CssProvider</span><span class="p">()</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">StyleContext</span><span class="o">.</span><span class="n">add_provider_for_screen</span><span class="p">(</span>
+            <span class="n">Gdk</span><span class="o">.</span><span class="n">Screen</span><span class="o">.</span><span class="n">get_default</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">css_provider</span><span class="p">,</span>
+            <span class="n">Gtk</span><span class="o">.</span><span class="n">STYLE_PROVIDER_PRIORITY_APPLICATION</span>
+        <span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">show_annotations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;show_annotations&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;notes position&#39;</span><span class="p">,</span> <span class="s1">&#39;horizontal&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;show_bigbuttons&#39;</span><span class="p">)</span>
@@ -653,8 +661,18 @@
             <span class="n">ch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">off_render</span><span class="o">.</span><span class="n">set_size_request</span><span class="p">(</span><span class="n">cw</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span>
 
+            <span class="bp">self</span><span class="o">.</span><span class="n">adjust_bottom_bar_font</span><span class="p">()</span>
+
         <span class="k">elif</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="n">geom</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UI.adjust_bottom_bar_font"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.adjust_bottom_bar_font">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_bottom_bar_font</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Scale baseline font size of bottom bar, clipped to 6px..13px. Fonts are then scaled by CSS em indications.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
+        <span class="n">font_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="n">ww</span> <span class="o">/</span> <span class="mi">120</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span> <span class="k">else</span> <span class="n">ww</span> <span class="o">/</span> <span class="mi">75</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">css_provider</span><span class="o">.</span><span class="n">load_from_data</span><span class="p">(</span><span class="s1">&#39;#bottom {{ font-size: </span><span class="si">{:.1f}</span><span class="s1">px; }}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="UI.redraw_panes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.redraw_panes">[docs]</a>    <span class="k">def</span> <span class="nf">redraw_panes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1685,11 +1703,18 @@
         <span class="sd">&quot;&quot;&quot; Toggle the display of big buttons (nice for touch screens).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">:</span>
+            <span class="c1"># potentially reduce font</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adjust_bottom_bar_font</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">prev_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">next_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">laser_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">highlight_button</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">:</span>
+            <span class="c1"># potentially increase font</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adjust_bottom_bar_font</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;show_bigbuttons&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span> <span class="k">else</span> <span class="s1">&#39;off&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">set_action_state</span><span class="p">(</span><span class="s1">&#39;big-buttons&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_bigbuttons</span><span class="p">)</span></div></div>

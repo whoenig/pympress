@@ -499,6 +499,10 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                 <span class="k">return</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribble_cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_render</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">return</span>
+
         <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribble_cache</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribble_cache</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span>
 
         <span class="n">monitor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="o">.</span><span class="n">get_display</span><span class="p">()</span><span class="o">.</span><span class="n">get_monitor_at_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="o">.</span><span class="n">get_parent_window</span><span class="p">())</span><span class="o">.</span><span class="n">get_geometry</span><span class="p">()</span>
