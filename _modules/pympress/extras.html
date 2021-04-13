@@ -652,17 +652,17 @@
         <span class="sd">&quot;&quot;&quot; Returns a class of type :attr:`~_backend`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;mime_type&#39;</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;image/gif&#39;</span><span class="p">,</span> <span class="s1">&#39;image/svg+xml&#39;</span><span class="p">}:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">[</span><span class="s1">&#39;gif&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="s1">&#39;gif&#39;</span><span class="p">]</span>
 
         <span class="c1"># Search for specific mime type</span>
         <span class="k">for</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mime_types</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">mime_type</span> <span class="ow">in</span> <span class="n">mime_types</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
 
         <span class="c1"># Search for empty list, meaning fallback</span>
         <span class="k">for</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mime_types</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mime_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="kc">None</span></div></div>
 
