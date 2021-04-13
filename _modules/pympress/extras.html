@@ -216,7 +216,7 @@
 
     <span class="c1">#: A `dict` containing the structure of the current document</span>
     <span class="n">doc_structure</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1">#: A `list` with the page label of each page of the current document</span>
+    <span class="c1">#: A `list` with the page label of each page of the current document</span>
     <span class="n">page_labels</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1">#: `bool` tracking whether a document is opened</span>
     <span class="n">document_open</span> <span class="o">=</span> <span class="kc">False</span>
@@ -412,21 +412,51 @@
     <span class="c1">#: :class:`~Gtk.Overlay` for the Presenter window.</span>
     <span class="n">p_overlay</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: static `bool` tracking whether we&#39;ve already done the one-time setup</span>
-    <span class="n">_backends_setup</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="c1">#: `dict` containing the mapping from mime types (as `str`)</span>
-    <span class="c1">#: to classes inheriting from :class:`~pympress.media_overlays.base.VideoOverlay`</span>
-    <span class="n">_backends</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1"># `list` of info on backend versions</span>
-    <span class="n">_backend_versions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#: `list` with the backend modules that were correctly loaded</span>
+    <span class="n">loaded</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#: `dict` containing backends and their mappings to mime type lists for which they are enabled.</span>
+    <span class="c1">#: A default backend is marked by an empty list.</span>
+    <span class="n">types_list</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Media</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_backends</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_backends</span><span class="p">()</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span> <span class="o">=</span> <span class="p">{</span><span class="n">backend</span><span class="p">:</span> <span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="s1">&#39;mime_types&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">backend</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span>
+                                    <span class="k">if</span> <span class="n">backend</span> <span class="o">!=</span> <span class="s1">&#39;gif&#39;</span> <span class="ow">and</span> <span class="n">conf</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="s1">&#39;enabled&#39;</span><span class="p">)}</span>
+
+        <span class="n">builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+            <span class="s1">&#39;use-gst-backend&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">toggle</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;gst&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="s1">&#39;gst&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span><span class="p">),</span>
+            <span class="s1">&#39;use-vlc-backend&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">toggle</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s1">&#39;vlc&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="s1">&#39;vlc&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span><span class="p">),</span>
+        <span class="p">})</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">c_overlay</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_overlay</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Media.toggle"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.toggle">[docs]</a>    <span class="k">def</span> <span class="nf">toggle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Toggle a backend (if it was loaded correctly)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call, which identifies which backend</span>
+<span class="sd">            param (:class:`~GLib.Variant`): an optional parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">gaction</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
+            <span class="k">return</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected backend&#39;</span><span class="p">)</span>
+
+        <span class="n">enable</span> <span class="o">=</span> <span class="n">backend</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span>
+
+        <span class="k">if</span> <span class="n">enable</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="s1">&#39;mime_types&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span>
+
+        <span class="n">gaction</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_boolean</span><span class="p">(</span><span class="n">enable</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="s1">&#39;enabled&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span> <span class="k">if</span> <span class="n">enable</span> <span class="k">else</span> <span class="s1">&#39;off&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Media.remove_media_overlays"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.remove_media_overlays">[docs]</a>    <span class="k">def</span> <span class="nf">remove_media_overlays</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -572,89 +602,59 @@
         <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">do_set_time</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]))</span></div>
 
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_setup_backends</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">conf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_setup_backends</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Load the backends for video overlays.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends_setup</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="bp">cls</span><span class="o">.</span><span class="n">_backends_setup</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">conf</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">Config</span><span class="p">()</span>
-
+        <span class="n">backend_versions</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">pympress.media_overlays.gif_backend</span> <span class="kn">import</span> <span class="n">GifOverlay</span>
-
-            <span class="n">version</span> <span class="o">=</span> <span class="n">GifOverlay</span><span class="o">.</span><span class="n">setup_backend</span><span class="p">()</span>
-
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="s1">&#39;image/gif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GifOverlay</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GifOverlay</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_backend_versions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+            <span class="n">backend_versions</span><span class="p">[</span><span class="s1">&#39;gif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GifOverlay</span><span class="o">.</span><span class="n">setup_backend</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Video support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Overlay&#39;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GdkPixbuf&#39;</span><span class="p">))</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;gst&#39;</span><span class="p">,</span> <span class="s1">&#39;enabled&#39;</span><span class="p">):</span>
-                <span class="kn">from</span> <span class="nn">pympress.media_overlays.gst_backend</span> <span class="kn">import</span> <span class="n">GstOverlay</span>
-
-                <span class="n">version</span> <span class="o">=</span> <span class="n">GstOverlay</span><span class="o">.</span><span class="n">setup_backend</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;gst&#39;</span><span class="p">,</span> <span class="s1">&#39;init_options&#39;</span><span class="p">))</span>
-
-                <span class="n">types_list</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;gst&#39;</span><span class="p">,</span> <span class="s1">&#39;mime_types&#39;</span><span class="p">)</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">mt</span><span class="p">:</span> <span class="n">GstOverlay</span> <span class="k">for</span> <span class="n">mt</span> <span class="ow">in</span> <span class="n">types_list</span><span class="p">})</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">_backend_versions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
-
-                <span class="c1"># make GstOverlay the default</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">types_list</span><span class="p">:</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">GstOverlay</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">)</span>
+            <span class="kn">from</span> <span class="nn">pympress.media_overlays.gst_backend</span> <span class="kn">import</span> <span class="n">GstOverlay</span>
+            <span class="n">gst_version</span> <span class="o">=</span> <span class="n">GstOverlay</span><span class="o">.</span><span class="n">setup_backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;gst&#39;</span><span class="p">,</span> <span class="s1">&#39;init_options&#39;</span><span class="p">))</span>
+            <span class="n">backend_versions</span><span class="p">[</span><span class="s1">&#39;gst&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gst_version</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GStreamer&#39;</span><span class="p">))</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;GStreamer&#39;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;vlc&#39;</span><span class="p">,</span> <span class="s1">&#39;enabled&#39;</span><span class="p">):</span>
-                <span class="kn">from</span> <span class="nn">pympress.media_overlays.vlc_backend</span> <span class="kn">import</span> <span class="n">VlcOverlay</span>
-
-                <span class="n">version</span> <span class="o">=</span> <span class="n">VlcOverlay</span><span class="o">.</span><span class="n">setup_backend</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;vlc&#39;</span><span class="p">,</span> <span class="s1">&#39;init_options&#39;</span><span class="p">))</span>
-
-                <span class="n">types_list</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;vlc&#39;</span><span class="p">,</span> <span class="s1">&#39;mime_types&#39;</span><span class="p">)</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">mt</span><span class="p">:</span> <span class="n">VlcOverlay</span> <span class="k">for</span> <span class="n">mt</span> <span class="ow">in</span> <span class="n">types_list</span><span class="p">})</span>
-                <span class="bp">cls</span><span class="o">.</span><span class="n">_backend_versions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
-
-                <span class="c1"># make VlcOverlay the (new) default</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">types_list</span><span class="p">:</span>
-                    <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">VlcOverlay</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">)</span>
+            <span class="kn">from</span> <span class="nn">pympress.media_overlays.vlc_backend</span> <span class="kn">import</span> <span class="n">VlcOverlay</span>
+            <span class="n">vlc_version</span> <span class="o">=</span> <span class="n">VlcOverlay</span><span class="o">.</span><span class="n">setup_backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s1">&#39;vlc&#39;</span><span class="p">,</span> <span class="s1">&#39;init_options&#39;</span><span class="p">))</span>
+            <span class="n">backend_versions</span><span class="p">[</span><span class="s1">&#39;vlc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vlc_version</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Video support using </span><span class="si">{}</span><span class="s2"> is disabled.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;VLC&#39;</span><span class="p">))</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support using </span><span class="si">{}</span><span class="s1"> is disabled.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;VLC&#39;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Caused by &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support loaded: &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">backend_versions</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">backend_versions</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
 
-<div class="viewcode-block" id="Media.backend_version"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.backend_version">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">backend_version</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns which backend is used.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            `str`: The name and version of the backend(s).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">_setup_backends</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_backend_versions</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Media.get_factory"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.get_factory">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_factory</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">):</span>
+<div class="viewcode-block" id="Media.get_factory"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.get_factory">[docs]</a>    <span class="k">def</span> <span class="nf">get_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns a class of type :attr:`~_backend`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">_setup_backends</span><span class="p">()</span>
-        <span class="k">try</span><span class="p">:</span>  <span class="c1"># NB don&#39;t get(mime_type, None) so that a default can be set</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="n">mime_type</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div></div>
+        <span class="k">if</span> <span class="s1">&#39;mime_type&#39;</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;image/gif&#39;</span><span class="p">,</span> <span class="s1">&#39;image/svg+xml&#39;</span><span class="p">}:</span>
+            <span class="k">return</span> <span class="n">GifOverlay</span>
+
+        <span class="c1"># Search for specific mime type</span>
+        <span class="k">for</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mime_types</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">mime_type</span> <span class="ow">in</span> <span class="n">mime_types</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">backend</span>
+
+        <span class="c1"># Search for empty list, meaning fallback</span>
+        <span class="k">for</span> <span class="n">backend</span><span class="p">,</span> <span class="n">mime_types</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mime_types</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">backend</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 

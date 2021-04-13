@@ -104,6 +104,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#pympress-util-various-utility-functions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.util</span></code> – various utility functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pympress-media-overlays-base-widget-to-play-videos-with-a-backend-like-vlc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.media_overlays.base</span></code> – widget to play videos with a backend like VLC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pympress-media-overlays-gif-widget-to-play-gif-images-as-videos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.media_overlays.gif</span></code> – widget to play gif images as videos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pympress-media-overlays-gst-widget-to-play-videos-using-gstreamer-s-gst"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.media_overlays.gst</span></code> – widget to play videos using Gstreamer’s Gst</a></li>
 </ul>
 </li>
 </ul>
@@ -232,7 +233,7 @@
 
 <dl class="py method">
 <dt id="pympress.app.Pympress.do_activate">
-<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1617908187.147821</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1618335650.557261</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -360,7 +361,7 @@
 
 <dl class="py attribute">
 <dt id="pympress.app.Pympress.version_string">
-<code class="sig-name descname"><span class="pre">version_string</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.0-beta6</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.4</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.4.0-1043-azure</span> <span class="pre">#45-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Fri</span> <span class="pre">Mar</span> <span class="pre">19</span> <span class="pre">17:33:38</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.0</span> <span class="pre">;</span> <span class="pre">Media:</span> <span class="pre">GtkImage</span> <span class="pre">gif</span> <span class="pre">player'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">version_string</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.0-beta6</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.4</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.4.0-1043-azure</span> <span class="pre">#45-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Fri</span> <span class="pre">Mar</span> <span class="pre">19</span> <span class="pre">17:33:38</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.0'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -3355,7 +3356,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f2010a2aa40</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x558c2dad05e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fd7cc3db6c0</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x56352e302de0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -4205,7 +4206,7 @@ Sorted on the timestamps.</p>
 
 <dl class="py attribute">
 <dt id="pympress.config.Config.layout">
-<code class="sig-name descname"><span class="pre">layout</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'highlight':</span> <span class="pre">{'children':</span> <span class="pre">['highlight',</span> <span class="pre">{'resizeable':</span> <span class="pre">True,</span> <span class="pre">'orientation':</span> <span class="pre">'vertical',</span> <span class="pre">'children':</span> <span class="pre">['next',</span> <span class="pre">'annotations'],</span> <span class="pre">'proportions':</span> <span class="pre">[0.55,</span> <span class="pre">0.45]}],</span> <span class="pre">'orientation':</span> <span class="pre">'horizontal',</span> <span class="pre">'proportions':</span> <span class="pre">[0.67,</span> <span class="pre">0.33],</span> <span class="pre">'resizeable':</span> <span class="pre">True},</span> <span class="pre">'note_pages':</span> <span class="pre">{'children':</span> <span class="pre">['notes',</span> <span class="pre">{'resizeable':</span> <span class="pre">False,</span> <span class="pre">'children':</span> <span class="pre">['next',</span> <span class="pre">'annotations'],</span> <span class="pre">'orientation':</span> <span class="pre">'vertical'}],</span> <span class="pre">'orientation':</span> <span class="pre">'horizontal',</span> <span class="pre">'proportions':</span> <span class="pre">[0.6,</span> <span class="pre">0.4],</span> <span class="pre">'resizeable':</span> <span class="pre">True},</span> <span class="pre">'notes':</span> <span class="pre">{'children':</span> <span class="pre">['notes',</span> <span class="pre">{'resizeable':</span> <span class="pre">False,</span> <span class="pre">'children':</span> <span class="pre">['current',</span> <span class="pre">'next'],</span> <span class="pre">'orientation':</span> <span class="pre">'vertical'}],</span> <span class="pre">'orientation':</span> <span class="pre">'horizontal',</span> <span class="pre">'proportions':</span> <span class="pre">[0.6,</span> <span class="pre">0.4],</span> <span class="pre">'resizeable':</span> <span class="pre">True},</span> <span class="pre">'plain':</span> <span class="pre">{'children':</span> <span class="pre">['current',</span> <span class="pre">{'resizeable':</span> <span class="pre">True,</span> <span class="pre">'children':</span> <span class="pre">['next',</span> <span class="pre">'annotations'],</span> <span class="pre">'proportions':</span> <span class="pre">[0.55,</span> <span class="pre">0.44999999999999996],</span> <span class="pre">'orientation':</span> <span class="pre">'vertical'}],</span> <span class="pre">'orientation':</span> <span class="pre">'horizontal',</span> <span class="pre">'proportions':</span> <span class="pre">[0.6697916666666667,</span> <span class="pre">0.3302083333333333],</span> <span class="pre">'resizeable':</span> <span class="pre">True}}</span></em><a class="headerlink" href="#pympress.config.Config.layout" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">layout</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.config.Config.layout" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>-tree of presenter layouts for various modes</p>
 </dd></dl>
 
@@ -4252,7 +4253,7 @@ that can be dynamically rearranged, mapping to their names</p>
 
 <dl class="py attribute">
 <dt id="pympress.config.Config.shortcuts">
-<code class="sig-name descname"><span class="pre">shortcuts</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'annotations':</span> <span class="pre">['a'],</span> <span class="pre">'blank-screen':</span> <span class="pre">['b'],</span> <span class="pre">'cancel-input':</span> <span class="pre">['Escape'],</span> <span class="pre">'close-file':</span> <span class="pre">['&lt;ctrl&gt;w'],</span> <span class="pre">'content-fullscreen':</span> <span class="pre">['F11',</span> <span class="pre">'f',</span> <span class="pre">'F5',</span> <span class="pre">'&lt;ctrl&gt;l'],</span> <span class="pre">'edit-talk-time':</span> <span class="pre">['t'],</span> <span class="pre">'first-page':</span> <span class="pre">['Home'],</span> <span class="pre">'goto-page':</span> <span class="pre">['g'],</span> <span class="pre">'highlight':</span> <span class="pre">['h'],</span> <span class="pre">'highlight-redo':</span> <span class="pre">['&lt;ctrl&gt;r'],</span> <span class="pre">'highlight-undo':</span> <span class="pre">['&lt;ctrl&gt;z'],</span> <span class="pre">'highlight-use-pen::1':</span> <span class="pre">['1'],</span> <span class="pre">'highlight-use-pen::2':</span> <span class="pre">['2'],</span> <span class="pre">'highlight-use-pen::3':</span> <span class="pre">['3'],</span> <span class="pre">'highlight-use-pen::4':</span> <span class="pre">['4'],</span> <span class="pre">'highlight-use-pen::5':</span> <span class="pre">['5'],</span> <span class="pre">'highlight-use-pen::6':</span> <span class="pre">['6'],</span> <span class="pre">'highlight-use-pen::7':</span> <span class="pre">['7'],</span> <span class="pre">'highlight-use-pen::8':</span> <span class="pre">['8'],</span> <span class="pre">'highlight-use-pen::9':</span> <span class="pre">['9'],</span> <span class="pre">'highlight-use-pen::eraser':</span> <span class="pre">['0'],</span> <span class="pre">'hist-back':</span> <span class="pre">['&lt;alt&gt;Left'],</span> <span class="pre">'hist-forward':</span> <span class="pre">['&lt;alt&gt;Right'],</span> <span class="pre">'jumpto-label':</span> <span class="pre">['j'],</span> <span class="pre">'last-page':</span> <span class="pre">['End'],</span> <span class="pre">'next-label':</span> <span class="pre">['&lt;ctrl&gt;Right',</span> <span class="pre">'&lt;ctrl&gt;Down',</span> <span class="pre">'&lt;ctrl&gt;Page_Down',</span> <span class="pre">'&lt;ctrl&gt;space'],</span> <span class="pre">'next-page':</span> <span class="pre">['Right',</span> <span class="pre">'Down',</span> <span class="pre">'Page_Down',</span> <span class="pre">'space'],</span> <span class="pre">'notes-mode':</span> <span class="pre">['n'],</span> <span class="pre">'pause-timer':</span> <span class="pre">['p',</span> <span class="pre">'Pause'],</span> <span class="pre">'pick-file':</span> <span class="pre">['o'],</span> <span class="pre">'pointer-mode::toggle':</span> <span class="pre">['l'],</span> <span class="pre">'presenter-fullscreen':</span> <span class="pre">['&lt;ctrl&gt;f'],</span> <span class="pre">'prev-label':</span> <span class="pre">['&lt;ctrl&gt;Left',</span> <span class="pre">'&lt;ctrl&gt;Up',</span> <span class="pre">'&lt;ctrl&gt;Page_Up'],</span> <span class="pre">'prev-page':</span> <span class="pre">['Left',</span> <span class="pre">'Up',</span> <span class="pre">'Page_Up'],</span> <span class="pre">'quit':</span> <span class="pre">['q'],</span> <span class="pre">'reset-timer':</span> <span class="pre">['r'],</span> <span class="pre">'swap-screens':</span> <span class="pre">['s'],</span> <span class="pre">'unzoom':</span> <span class="pre">['u'],</span> <span class="pre">'validate-input':</span> <span class="pre">['Return',</span> <span class="pre">'KP_Enter'],</span> <span class="pre">'zoom':</span> <span class="pre">['z']}</span></em><a class="headerlink" href="#pympress.config.Config.shortcuts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">shortcuts</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.config.Config.shortcuts" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> mapping accelerator keys to actions</p>
 </dd></dl>
 
@@ -4560,20 +4561,6 @@ of all the resizeable items (if and only if resizeable).</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="pympress.extras.Media.backend_version">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">backend_version</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Media.backend_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Media.backend_version" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns which backend is used.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The name and version of the backend(s).</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt id="pympress.extras.Media.c_overlay">
 <code class="sig-name descname"><span class="pre">c_overlay</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Media.c_overlay" title="Permalink to this definition">¶</a></dt>
@@ -4582,7 +4569,7 @@ of all the resizeable items (if and only if resizeable).</p>
 
 <dl class="py method">
 <dt id="pympress.extras.Media.get_factory">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">get_factory</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mime_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Media.get_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Media.get_factory" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_factory</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mime_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Media.get_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Media.get_factory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a class of type <code class="xref py py-attr docutils literal notranslate"><span class="pre">_backend</span></code>.</p>
 </dd></dl>
 
@@ -4605,6 +4592,12 @@ of all the resizeable items (if and only if resizeable).</p>
 <dt id="pympress.extras.Media.hide_all">
 <code class="sig-name descname"><span class="pre">hide_all</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Media.hide_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Media.hide_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stops all playing medias and hides the players. Used before exit.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.extras.Media.loaded">
+<code class="sig-name descname"><span class="pre">loaded</span></code><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#pympress.extras.Media.loaded" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> with the backend modules that were correctly loaded</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -4690,6 +4683,27 @@ of all the resizeable items (if and only if resizeable).</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pympress.extras.Media.toggle">
+<code class="sig-name descname"><span class="pre">toggle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Media.toggle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Media.toggle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle a backend (if it was loaded correctly)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call, which identifies which backend</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – an optional parameter</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.extras.Media.types_list">
+<code class="sig-name descname"><span class="pre">types_list</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.extras.Media.types_list" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> containing backends and their mappings to mime type lists for which they are enabled.
+A default backend is marked by an empty list.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -4738,7 +4752,7 @@ of all the resizeable items (if and only if resizeable).</p>
 <dl class="py attribute">
 <dt id="pympress.extras.TimingReport.page_labels">
 <code class="sig-name descname"><span class="pre">page_labels</span></code><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#pympress.extras.TimingReport.page_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> with the page label of each page of the current document</p>
+<dd><p>A <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> with the page label of each page of the current document</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -5189,7 +5203,7 @@ of all the resizeable items (if and only if resizeable).</p>
 
 <dl class="py method">
 <dt id="pympress.media_overlays.base.VideoOverlay.do_hide">
-<code class="sig-name descname"><span class="pre">do_hide</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/base.html#VideoOverlay.do_hide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay.do_hide" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">do_hide</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/base.html#VideoOverlay.do_hide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay.do_hide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove widget from overlays. Needs to be called via <a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/functions.html#GLib.idle_add" title="(in GLib 2.0 v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">idle_add()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -5603,6 +5617,170 @@ of all the resizeable items (if and only if resizeable).</p>
 <dt id="pympress.media_overlays.gif_backend.GifOverlay.transform">
 <code class="sig-name descname"><span class="pre">transform</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.media_overlays.gif_backend.GifOverlay.transform" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/matrix.html#cairo.Matrix" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Matrix</span></code></a> defining the zoom &amp; shift to scale the gif</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-pympress.media_overlays.gst_backend"></span><div class="section" id="pympress-media-overlays-gst-widget-to-play-videos-using-gstreamer-s-gst">
+<h3><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.media_overlays.gst</span></code> – widget to play videos using Gstreamer’s Gst<a class="headerlink" href="#pympress-media-overlays-gst-widget-to-play-videos-using-gstreamer-s-gst" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pympress.media_overlays.gst_backend.</span></code><code class="sig-name descname"><span class="pre">GstOverlay</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pympress.media_overlays.base.VideoOverlay" title="pympress.media_overlays.base.VideoOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.media_overlays.base.VideoOverlay</span></code></a></p>
+<p>Simple Gstramer widget.</p>
+<p>Wraps a simple gstreamer playbin.</p>
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.do_play">
+<code class="sig-name descname"><span class="pre">do_play</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.do_play"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.do_play" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start playing the media file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff this function should be run again (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/functions.html#GLib.idle_add" title="(in GLib 2.0 v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">idle_add()</span></code></a> convention)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.do_play_pause">
+<code class="sig-name descname"><span class="pre">do_play_pause</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.do_play_pause"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.do_play_pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle pause mode of the media.</p>
+<p>Should run on the main thread to ensure we avoid vlc plugins’ reentrency problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff this function should be run again (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/functions.html#GLib.idle_add" title="(in GLib 2.0 v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">idle_add()</span></code></a> convention)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.do_set_time">
+<code class="sig-name descname"><span class="pre">do_set_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.do_set_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.do_set_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the player at time t.</p>
+<p>Should run on the main thread to ensure we avoid vlc plugins’ reentrency problems.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>t</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – the timestamp, in s</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff this function should be run again (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/functions.html#GLib.idle_add" title="(in GLib 2.0 v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">idle_add()</span></code></a> convention)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.do_stop">
+<code class="sig-name descname"><span class="pre">do_stop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.do_stop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.do_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops playing in the backend player.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.do_update_duration">
+<code class="sig-name descname"><span class="pre">do_update_duration</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.do_update_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.do_update_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transmit the change of file duration to the UI to adjust the scroll bar.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.do_update_time">
+<code class="sig-name descname"><span class="pre">do_update_time</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.do_update_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.do_update_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start playing the media file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff this function should be run again (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/functions.html#GLib.idle_add" title="(in GLib 2.0 v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">idle_add()</span></code></a> convention)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.is_playing">
+<code class="sig-name descname"><span class="pre">is_playing</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.is_playing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.is_playing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the media is currently playing (and not paused).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff the media is playing.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.mute">
+<code class="sig-name descname"><span class="pre">mute</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.mute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.mute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mutes or unmutes the player.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff this player should be muted</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.muted">
+<code class="sig-name descname"><span class="pre">muted</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.muted" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> indicating whether the player starts or is muted</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.on_play">
+<code class="sig-name descname"><span class="pre">on_play</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.on_play"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.on_play" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the scroll bar updating process.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.on_sync_message">
+<code class="sig-name descname"><span class="pre">on_sync_message</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.on_sync_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.on_sync_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle sync messages, in particular the one requesting the window handle (e.g. X11 window id)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.playbin">
+<code class="sig-name descname"><span class="pre">playbin</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.playbin" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Playbin</span></code> to be play videos</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.set_file">
+<code class="sig-name descname"><span class="pre">set_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.set_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.set_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the media file to be played by the widget.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The path to the media file path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.setup_backend">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">setup_backend</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gst_opts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gst_backend.html#GstOverlay.setup_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.setup_backend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare/check the Gst backend.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the version of Gst used by the backend</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.media_overlays.gst_backend.GstOverlay.uri">
+<code class="sig-name descname"><span class="pre">uri</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.media_overlays.gst_backend.GstOverlay.uri" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> holding the path to the current file</p>
 </dd></dl>
 
 </dd></dl>

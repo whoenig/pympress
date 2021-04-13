@@ -209,7 +209,7 @@
     <span class="n">transform</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">callback_getter</span><span class="p">):</span>
-        <span class="c1"># override: no toolbar or interactive stuff for a gif, replace the whole widget area with a Gtk.Image</span>
+        <span class="c1"># override: no toolbar or interactive stuff for a gif, replace the whole widget area with a GdkPixbuf</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">GifOverlay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">callback_getter</span><span class="p">)</span>
 
         <span class="c1"># we&#39;ll manually draw on the movie zone</span>
@@ -300,7 +300,7 @@
     <span class="k">def</span> <span class="nf">setup_backend</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns the name of this backend.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;GtkImage gif player&#39;</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;GdkPixbuf gif player&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

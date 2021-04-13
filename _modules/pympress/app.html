@@ -196,7 +196,7 @@
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Gio</span>
 
-<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">extras</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">builder</span>
+<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">ui</span><span class="p">,</span> <span class="n">builder</span>
 
 
 <div class="viewcode-block" id="Pympress"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress">[docs]</a><span class="k">class</span> <span class="nc">Pympress</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="p">):</span>
@@ -255,7 +255,6 @@
         <span class="s1">&#39;; GLib </span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">MAJOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MINOR_VERSION</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">MICRO_VERSION</span><span class="p">),</span>
         <span class="s1">&#39;; Poppler&#39;</span><span class="p">,</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_version</span><span class="p">(),</span> <span class="n">document</span><span class="o">.</span><span class="n">Poppler</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">value_nick</span><span class="p">,</span>
         <span class="s1">&#39;; Cairo&#39;</span><span class="p">,</span> <span class="n">cairo</span><span class="o">.</span><span class="n">cairo_version_string</span><span class="p">(),</span> <span class="s1">&#39;, pycairo&#39;</span><span class="p">,</span> <span class="n">cairo</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
-        <span class="s1">&#39;; Media:&#39;</span><span class="p">,</span> <span class="n">extras</span><span class="o">.</span><span class="n">Media</span><span class="o">.</span><span class="n">backend_version</span><span class="p">()</span>
     <span class="p">])</span>
 
 
