@@ -88,7 +88,10 @@
 <li class="toctree-l1"><a class="reference internal" href="README.html#contributing">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="options.html">Configuration file</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Module documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-pympress.document">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pympress.__main__">Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pympress-main-the-entry-point-of-pympress"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.__main__</span></code> – The entry point of pympress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pympress-app-the-gtk-application-managing-the-lifetime-and-cli"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.app</span></code> – The Gtk.Application managing the lifetime and CLI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pympress-ui-gui-management"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.ui</span></code> – GUI management</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pympress-document-document-handling"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.document</span></code> – document handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pympress-ui-builder-abstract-gui-management"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.ui_builder</span></code> – abstract GUI management</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pympress-surfacecache-pages-prerendering-and-caching"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.surfacecache</span></code> – pages prerendering and caching</a></li>
@@ -184,9 +187,1153 @@
 <p>This page contains the inline documentation, generated from the code using sphinx.</p>
 <p>The code is documented in the source using the <a class="reference external" href="https://google.github.io/styleguide/pyguide.html">Google style</a> for docstrings. Sphinx has gathered a <a class="reference external" href="http://www.sphinx-doc.org/en/latest/ext/example_google.html">set of examples</a> which serves as a better crash course than the full style reference.</p>
 <p>Retructured text (rst) can be used inside the comments and docstrings.</p>
-<div class="section" id="module-pympress.document">
-<span id="modules"></span><h2>Modules<a class="headerlink" href="#module-pympress.document" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="pympress-document-document-handling">
+<div class="section" id="module-pympress.__main__">
+<span id="modules"></span><h2>Modules<a class="headerlink" href="#module-pympress.__main__" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pympress-main-the-entry-point-of-pympress">
+<h3><a class="reference internal" href="#module-pympress.__main__" title="pympress.__main__"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.__main__</span></code></a> – The entry point of pympress<a class="headerlink" href="#pympress-main-the-entry-point-of-pympress" title="Permalink to this headline">¶</a></h3>
+<dl class="py function">
+<dt id="pympress.__main__.main">
+<code class="sig-prename descclassname"><span class="pre">pympress.__main__.</span></code><code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['setup.py',</span> <span class="pre">'build_sphinx']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/__main__.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.__main__.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entry point of pympress. Parse command line arguments, instantiate the UI, and start the main loop.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pympress.__main__.uncaught_handler">
+<code class="sig-prename descclassname"><span class="pre">pympress.__main__.</span></code><code class="sig-name descname"><span class="pre">uncaught_handler</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">exc_info</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/__main__.html#uncaught_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.__main__.uncaught_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception handler, to log uncuaght exceptiosn to our log file.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-pympress.app"></span><div class="section" id="pympress-app-the-gtk-application-managing-the-lifetime-and-cli">
+<h3><a class="reference internal" href="#module-pympress.app" title="pympress.app"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.app</span></code></a> – The Gtk.Application managing the lifetime and CLI<a class="headerlink" href="#pympress-app-the-gtk-application-managing-the-lifetime-and-cli" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="pympress.app.Pympress">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pympress.app.</span></code><code class="sig-name descname"><span class="pre">Pympress</span></code><a class="reference internal" href="_modules/pympress/app.html#Pympress"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gi.repository.Gtk.Application</span></code></p>
+<p>Class representing the single pympress Gtk application.</p>
+<dl class="py method">
+<dt id="pympress.app.Pympress.activate_action">
+<code class="sig-name descname"><span class="pre">activate_action</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.activate_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.activate_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse an action name and activate it, with parameter wrapped in a <a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a> if it is not None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the stateful action</p></li>
+<li><p><strong>parameter</strong> – an object or None to pass as a parameter to the action, wrapped in a GLib.Variant</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.config">
+<code class="sig-name descname"><span class="pre">config</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.app.Pympress.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#pympress.config.Config" title="pympress.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> object that holds pympress conferences</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.do_activate">
+<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1618426515.726554</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate: show UI windows.</p>
+<p>Build them if they do not exist, otherwise bring to front.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.do_handle_local_options">
+<code class="sig-name descname"><span class="pre">do_handle_local_options</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">opts_variant_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_handle_local_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_handle_local_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse command line options, returned as a VariantDict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>estimated talk time, log level, notes positions.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#tuple" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.do_open">
+<code class="sig-name descname"><span class="pre">do_open</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_open"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle opening files. In practice we only open once, the last one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>files</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#list" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>~Gio.File`s) – representing an array of files to open</p></li>
+<li><p><strong>n_files</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the number of files passed.</p></li>
+<li><p><strong>hint</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – a hint, such as view, edit, etc. Should always be the empty string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.do_shutdown">
+<code class="sig-name descname"><span class="pre">do_shutdown</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_shutdown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform various cleanups and save preferences.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.do_startup">
+<code class="sig-name descname"><span class="pre">do_startup</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_startup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_startup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Common start-up tasks for primary and remote instances.</p>
+<p>NB. super(self) causes segfaults, Gtk.Application needs to be used as base.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.get_action_state">
+<code class="sig-name descname"><span class="pre">get_action_state</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.get_action_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.get_action_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse an action name and return its unwrapped state from the <a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the stateful action</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the value contained in the action</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> or <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.gui">
+<code class="sig-name descname"><span class="pre">gui</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.app.Pympress.gui" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#pympress.ui.UI" title="pympress.ui.UI"><code class="xref py py-class docutils literal notranslate"><span class="pre">UI</span></code></a> object that is the interface of pympress</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.log_level">
+<code class="sig-name descname"><span class="pre">log_level</span></code><em class="property"> <span class="pre">=</span> <span class="pre">40</span></em><a class="headerlink" href="#pympress.app.Pympress.log_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The log level to use</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.notes_pos">
+<code class="sig-name descname"><span class="pre">notes_pos</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.app.Pympress.notes_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>The notes positioning, to pass to the UI when it is created</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.option_descriptions">
+<code class="sig-name descname"><span class="pre">option_descriptions</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'blank':</span> <span class="pre">('Blank/unblank</span> <span class="pre">content</span> <span class="pre">screen',</span> <span class="pre">None),</span> <span class="pre">'first':</span> <span class="pre">('First</span> <span class="pre">slide',</span> <span class="pre">None),</span> <span class="pre">'last':</span> <span class="pre">('Last</span> <span class="pre">slide',</span> <span class="pre">None),</span> <span class="pre">'log':</span> <span class="pre">('Set</span> <span class="pre">level</span> <span class="pre">of</span> <span class="pre">verbosity</span> <span class="pre">in</span> <span class="pre">log</span> <span class="pre">file:</span> <span class="pre">DEBUG,</span> <span class="pre">INFO,</span> <span class="pre">WARNING,</span> <span class="pre">ERROR,</span> <span class="pre">or</span> <span class="pre">CRITICAL',</span> <span class="pre">'&lt;level&gt;'),</span> <span class="pre">'next':</span> <span class="pre">('Next</span> <span class="pre">slide',</span> <span class="pre">None),</span> <span class="pre">'notes':</span> <span class="pre">('Set</span> <span class="pre">the</span> <span class="pre">position</span> <span class="pre">of</span> <span class="pre">notes</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">pdf</span> <span class="pre">page</span> <span class="pre">(none,</span> <span class="pre">left,</span> <span class="pre">right,</span> <span class="pre">top,</span> <span class="pre">bottom,</span> <span class="pre">or</span> <span class="pre">after).</span> <span class="pre">Overrides</span> <span class="pre">the</span> <span class="pre">detection</span> <span class="pre">from</span> <span class="pre">the</span> <span class="pre">file.',</span> <span class="pre">'&lt;position&gt;'),</span> <span class="pre">'pause':</span> <span class="pre">('Toggle</span> <span class="pre">pause</span> <span class="pre">of</span> <span class="pre">talk</span> <span class="pre">timer',</span> <span class="pre">None),</span> <span class="pre">'prev':</span> <span class="pre">('Previous</span> <span class="pre">slide',</span> <span class="pre">None),</span> <span class="pre">'quit':</span> <span class="pre">('Close</span> <span class="pre">opened</span> <span class="pre">pympress</span> <span class="pre">instance',</span> <span class="pre">None),</span> <span class="pre">'reset':</span> <span class="pre">('Reset</span> <span class="pre">talk</span> <span class="pre">timer',</span> <span class="pre">None),</span> <span class="pre">'talk-time':</span> <span class="pre">('The</span> <span class="pre">estimated</span> <span class="pre">(intended)</span> <span class="pre">talk</span> <span class="pre">time</span> <span class="pre">in</span> <span class="pre">minutes</span> <span class="pre">(and</span> <span class="pre">optionally</span> <span class="pre">seconds)',</span> <span class="pre">'mm[:ss]'),</span> <span class="pre">'version':</span> <span class="pre">('Print</span> <span class="pre">version</span> <span class="pre">and</span> <span class="pre">exit',</span> <span class="pre">None)}</span></em><a class="headerlink" href="#pympress.app.Pympress.option_descriptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.options">
+<code class="sig-name descname"><span class="pre">options</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'blank':</span> <span class="pre">(98,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'first':</span> <span class="pre">(102,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'last':</span> <span class="pre">(108,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'log':</span> <span class="pre">(0,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_STRING</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'next':</span> <span class="pre">(110,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'notes':</span> <span class="pre">(78,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_STRING</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'pause':</span> <span class="pre">(80,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'prev':</span> <span class="pre">(112,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'quit':</span> <span class="pre">(113,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'reset':</span> <span class="pre">(114,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'talk-time':</span> <span class="pre">(116,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_STRING</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;),</span> <span class="pre">'version':</span> <span class="pre">(118,</span> <span class="pre">&lt;flags</span> <span class="pre">0</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionFlags&gt;,</span> <span class="pre">&lt;enum</span> <span class="pre">G_OPTION_ARG_NONE</span> <span class="pre">of</span> <span class="pre">type</span> <span class="pre">GLib.OptionArg&gt;)}</span></em><a class="headerlink" href="#pympress.app.Pympress.options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.quit">
+<code class="sig-name descname"><span class="pre">quit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.quit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit and ignore other arguments e.g. sent by signals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.set_action_enabled">
+<code class="sig-name descname"><span class="pre">set_action_enabled</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.set_action_enabled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.set_action_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse an action name and set its enabled state to True or False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the stateful action</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – wheether the action should be enabled or disabled</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.app.Pympress.set_action_state">
+<code class="sig-name descname"><span class="pre">set_action_state</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.set_action_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.set_action_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse an action name and set its state wrapped in a <a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the stateful action</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> or <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – the value to set.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.app.Pympress.version_string">
+<code class="sig-name descname"><span class="pre">version_string</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.0-beta6</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.4</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.4.0-1043-azure</span> <span class="pre">#45-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Fri</span> <span class="pre">Mar</span> <span class="pre">19</span> <span class="pre">17:33:38</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.0'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-pympress.ui"></span><div class="section" id="pympress-ui-gui-management">
+<h3><a class="reference internal" href="#module-pympress.ui" title="pympress.ui"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.ui</span></code></a> – GUI management<a class="headerlink" href="#pympress-ui-gui-management" title="Permalink to this headline">¶</a></h3>
+<p>This module contains the whole graphical user interface of pympress, which is
+made of two separate windows: the Content window, which displays only the
+current page in full size, and the Presenter window, which displays both the
+current and the next page, as well as a time counter and a clock.</p>
+<p>Both windows are managed by the <a class="reference internal" href="#pympress.ui.UI" title="pympress.ui.UI"><code class="xref py py-class docutils literal notranslate"><span class="pre">UI</span></code></a> class.</p>
+<dl class="py class">
+<dt id="pympress.ui.UI">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pympress.ui.</span></code><code class="sig-name descname"><span class="pre">UI</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.builder.Builder</span></code></a></p>
+<p>Pympress GUI management.</p>
+<dl class="py attribute">
+<dt id="pympress.ui.UI.accel_group">
+<code class="sig-name descname"><span class="pre">accel_group</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.accel_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AccelGroup.html#Gtk.AccelGroup" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gtk.AccelGroup</span></code></a> to store the shortcuts</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.activate">
+<code class="sig-name descname"><span class="pre">activate</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate application, i.e. bring windows to front.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.adjust_bottom_bar_font">
+<code class="sig-name descname"><span class="pre">adjust_bottom_bar_font</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.adjust_bottom_bar_font"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.adjust_bottom_bar_font" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale baseline font size of bottom bar, clipped to 6px..13px. Fonts are then scaled by CSS em indications.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.adjust_frame_position">
+<code class="sig-name descname"><span class="pre">adjust_frame_position</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.adjust_frame_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.adjust_frame_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select how to align the frame on screen.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.annotations">
+<code class="sig-name descname"><span class="pre">annotations</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class <a class="reference internal" href="#pympress.extras.Annotations" title="pympress.extras.Annotations"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annotations</span></code></a> managing the display of annotations</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.app">
+<code class="sig-name descname"><span class="pre">app</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.app" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#pympress.app.Pympress" title="pympress.app.Pympress"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pympress</span></code></a> instance</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.blanked">
+<code class="sig-name descname"><span class="pre">blanked</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.ui.UI.blanked" title="Permalink to this definition">¶</a></dt>
+<dd><p>track whether we blank the screen</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.c_da">
+<code class="sig-name descname"><span class="pre">c_da</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.c_da" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the Content window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.c_frame">
+<code class="sig-name descname"><span class="pre">c_frame</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.c_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the Content window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.c_win">
+<code class="sig-name descname"><span class="pre">c_win</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.c_win" title="Permalink to this definition">¶</a></dt>
+<dd><p>Content window, as a <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html#Gtk.Window" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Window</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.cache">
+<code class="sig-name descname"><span class="pre">cache</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.cache" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.surfacecache.SurfaceCache" title="pympress.surfacecache.SurfaceCache"><code class="xref py py-class docutils literal notranslate"><span class="pre">SurfaceCache</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.cancel_current_input">
+<code class="sig-name descname"><span class="pre">cancel_current_input</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.cancel_current_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.cancel_current_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the action cancelling the input, if applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.change_notes_pos">
+<code class="sig-name descname"><span class="pre">change_notes_pos</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.change_notes_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.change_notes_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch the position of the nodes in the slide.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether the mode has been toggled.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.chosen_notes_mode">
+<code class="sig-name descname"><span class="pre">chosen_notes_mode</span></code><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#pympress.ui.UI.chosen_notes_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current choice of mode to toggle notes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.cleanup">
+<code class="sig-name descname"><span class="pre">cleanup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.cleanup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save configuration and exit the main loop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.clear_zoom_cache">
+<code class="sig-name descname"><span class="pre">clear_zoom_cache</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.clear_zoom_cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.clear_zoom_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback to clear the cache of zoomed widgets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.click_link">
+<code class="sig-name descname"><span class="pre">click_link</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.click_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.click_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a link was clicked and follow it.</p>
+<p>Handles a click on a slide.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.close_file">
+<code class="sig-name descname"><span class="pre">close_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.close_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.close_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the current document.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.close_shortcuts">
+<code class="sig-name descname"><span class="pre">close_shortcuts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.close_shortcuts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.close_shortcuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Destroy the shortcuts window once it is hidden.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.config">
+<code class="sig-name descname"><span class="pre">config</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.config" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.config.Config" title="pympress.config.Config"><code class="xref py py-class docutils literal notranslate"><span class="pre">Config</span></code></a> to remember preferences</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.current_page">
+<code class="sig-name descname"><span class="pre">current_page</span></code><em class="property"> <span class="pre">=</span> <span class="pre">-1</span></em><a class="headerlink" href="#pympress.ui.UI.current_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of page currently displayed in Content window’s miniatures</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.do_page_change">
+<code class="sig-name descname"><span class="pre">do_page_change</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unpause</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.do_page_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.do_page_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch to another page and display it.</p>
+<p>This is a kind of event which is supposed to be called only from the
+<a class="reference internal" href="#pympress.document.Document" title="pympress.document.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a> class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>is_preview</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> if the page change should not update the content</p></li>
+<li><p><strong>unpause</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#True" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> if the page change should unpause the timer, <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#False" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a> otherwise</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.doc">
+<code class="sig-name descname"><span class="pre">doc</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;pympress.document.EmptyDocument</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#pympress.ui.UI.doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current <a class="reference internal" href="#pympress.document.Document" title="pympress.document.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_goto_end">
+<code class="sig-name descname"><span class="pre">doc_goto_end</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_goto_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_goto_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the end of the document</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_goto_home">
+<code class="sig-name descname"><span class="pre">doc_goto_home</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_goto_home"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_goto_home" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the start of the document</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_goto_next">
+<code class="sig-name descname"><span class="pre">doc_goto_next</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_goto_next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_goto_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the previous page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_goto_prev">
+<code class="sig-name descname"><span class="pre">doc_goto_prev</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_goto_prev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_goto_prev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the next page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_hist_next">
+<code class="sig-name descname"><span class="pre">doc_hist_next</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_hist_next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_hist_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the next page in the history of visited pages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_hist_prev">
+<code class="sig-name descname"><span class="pre">doc_hist_prev</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_hist_prev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_hist_prev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the previous page in the history of visited pages</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_label_next">
+<code class="sig-name descname"><span class="pre">doc_label_next</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_label_next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_label_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the next page with a different label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.doc_label_prev">
+<code class="sig-name descname"><span class="pre">doc_label_prev</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.doc_label_prev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.doc_label_prev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the previous page with a different label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.error_opening_file">
+<code class="sig-name descname"><span class="pre">error_opening_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.error_opening_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.error_opening_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the current document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.est_time">
+<code class="sig-name descname"><span class="pre">est_time</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.est_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.editable_label.EstimatedTalkTime" title="pympress.editable_label.EstimatedTalkTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">EstimatedTalkTime</span></code></a> to set estimated/remaining talk time</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.get_notes_mode">
+<code class="sig-name descname"><span class="pre">get_notes_mode</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.get_notes_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.get_notes_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple getter.</p>
+<dl class="simple">
+<dt>Returns (<a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a>):</dt><dd><p>Truthy when we split slides in content + notes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.goto_page">
+<code class="sig-name descname"><span class="pre">goto_page</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.goto_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.goto_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle going to the page passed as argument</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the page to which to go. Will be clipped to document pages.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.highlight_button">
+<code class="sig-name descname"><span class="pre">highlight_button</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.highlight_button" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go to scribble on screen</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.hover_link">
+<code class="sig-name descname"><span class="pre">hover_link</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.hover_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.hover_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage events related to hyperlinks, setting the cursor to a pointer if the hovered region is clickable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.laser">
+<code class="sig-name descname"><span class="pre">laser</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.laser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Software-implemented laser pointer, <a class="reference internal" href="#pympress.pointer.Pointer" title="pympress.pointer.Pointer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pointer</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.laser_button">
+<code class="sig-name descname"><span class="pre">laser_button</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.laser_button" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go toggle the pointer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.layout_name">
+<code class="sig-name descname"><span class="pre">layout_name</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notes_mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.layout_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.layout_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the layout made for the selected notes_mode</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.load_icons">
+<code class="sig-name descname"><span class="pre">load_icons</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.load_icons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.load_icons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the icon list for both windows.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.load_layout">
+<code class="sig-name descname"><span class="pre">load_layout</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.load_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.load_layout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the current layout</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the layout to load, <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#None" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> to use current layout automatically</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.make_cwin">
+<code class="sig-name descname"><span class="pre">make_cwin</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.make_cwin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.make_cwin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the content window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.make_pwin">
+<code class="sig-name descname"><span class="pre">make_pwin</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.make_pwin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.make_pwin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.medias">
+<code class="sig-name descname"><span class="pre">medias</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.medias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class <a class="reference internal" href="#pympress.extras.Media" title="pympress.extras.Media"><code class="xref py py-class docutils literal notranslate"><span class="pre">Media</span></code></a> managing keeping track of and callbacks on media overlays</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.menu_about">
+<code class="sig-name descname"><span class="pre">menu_about</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.menu_about"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.menu_about" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the “About pympress” dialog.</p>
+<p>Handles clicks on the “about” menu.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.move_window">
+<code class="sig-name descname"><span class="pre">move_window</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">screen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">win</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_monitor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_monitor</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.move_window"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.move_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move window from monitor number from_monitor to monitor to_monitor.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.next_button">
+<code class="sig-name descname"><span class="pre">next_button</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.next_button" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go to next slide</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.notes_mode">
+<code class="sig-name descname"><span class="pre">notes_mode</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#pympress.ui.UI.notes_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to use notes mode or not</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_configure_da">
+<code class="sig-name descname"><span class="pre">on_configure_da</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_configure_da"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_configure_da" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage “configure” events for all drawing areas, e.g. resizes.</p>
+<p>We tell the local <a class="reference internal" href="#pympress.surfacecache.SurfaceCache" title="pympress.surfacecache.SurfaceCache"><code class="xref py py-class docutils literal notranslate"><span class="pre">SurfaceCache</span></code></a> cache about it, so that it can
+invalidate its internal cache for the specified widget and pre-render next pages at a correct size.</p>
+<p>Warning: Some not-explicitly sent signals contain wrong values! Just don’t resize in that case,
+since these always seem to happen after a correct signal that was sent explicitly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget which has been resized</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event, which contains the new dimensions of the widget</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_configure_win">
+<code class="sig-name descname"><span class="pre">on_configure_win</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_configure_win"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_configure_win" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage “configure” events for both window widgets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the window which has been moved or resized</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event, which contains the new dimensions of the widget</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_drag_drop">
+<code class="sig-name descname"><span class="pre">on_drag_drop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drag_context</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_drag_drop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_drag_drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive the drag-drops (as text only). If a file is dropped, open it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – The widget on which the dragged item was dropped</p></li>
+<li><p><strong>drag_context</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/DragContext.html#Gdk.DragContext" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DragContext</span></code></a>) – Context object of the dragging</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – position of the drop</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>) – position of the drop</p></li>
+<li><p><strong>data</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/SelectionData.html#Gtk.SelectionData" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelectionData</span></code></a>) – container for the dropped data</p></li>
+<li><p><strong>info</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – info on the target</p></li>
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – time of the drop</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_draw">
+<code class="sig-name descname"><span class="pre">on_draw</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cairo_context</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage draw events for both windows.</p>
+<p>This callback may be called either directly on a page change or as an
+event handler by GTK. In both cases, it determines which widget needs to
+be updated, and updates it, using the
+<a class="reference internal" href="#pympress.surfacecache.SurfaceCache" title="pympress.surfacecache.SurfaceCache"><code class="xref py py-class docutils literal notranslate"><span class="pre">SurfaceCache</span></code></a> if possible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget to update</p></li>
+<li><p><strong>cairo_context</strong> (<a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/context.html#cairo.Context" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>) – the Cairo context (or <a class="reference external" href="https://docs.python.org/3.4/library/constants.html#None" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a> if called directly)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_navigation">
+<code class="sig-name descname"><span class="pre">on_navigation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_navigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_navigation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage key presses for both windows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred (ignored)</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_page_change">
+<code class="sig-name descname"><span class="pre">on_page_change</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_page_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_page_change" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal handler for current page editing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the editable widget which has received the event.</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_pane_event">
+<code class="sig-name descname"><span class="pre">on_pane_event</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_pane_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_pane_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signal handler for gtk.paned events.</p>
+<p>This function allows one to delay drawing events when resizing, and to speed up redrawing when
+moving the middle pane is done (which happens at the end of a mouse resize)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred (ignored)</p></li>
+<li><p><strong>evt</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_scroll">
+<code class="sig-name descname"><span class="pre">on_scroll</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_scroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_scroll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage scroll events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred (ignored)</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the event that occurred</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.on_window_state_event">
+<code class="sig-name descname"><span class="pre">on_window_state_event</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_window_state_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_window_state_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track whether the preview window is maximized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p></li>
+<li><p><strong>event</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code>) – the event that occurred</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.open_file">
+<code class="sig-name descname"><span class="pre">open_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.open_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.open_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_central">
+<code class="sig-name descname"><span class="pre">p_central</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_central" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Box.html#Gtk.Box" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> for the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_da_cur">
+<code class="sig-name descname"><span class="pre">p_da_cur</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_da_cur" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the current slide copy in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_da_next">
+<code class="sig-name descname"><span class="pre">p_da_next</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_da_next" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the next slide in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_da_notes">
+<code class="sig-name descname"><span class="pre">p_da_notes</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_da_notes" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the current slide in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_frame_annot">
+<code class="sig-name descname"><span class="pre">p_frame_annot</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_annot" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Frame.html#Gtk.Frame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code></a> for the annotations in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_frame_cur">
+<code class="sig-name descname"><span class="pre">p_frame_cur</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_cur" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the current slide copy in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_frame_next">
+<code class="sig-name descname"><span class="pre">p_frame_next</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_next" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the next slide in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_frame_notes">
+<code class="sig-name descname"><span class="pre">p_frame_notes</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_notes" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the current slide in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.p_win">
+<code class="sig-name descname"><span class="pre">p_win</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_win" title="Permalink to this definition">¶</a></dt>
+<dd><p>Presenter window, as a <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Window.html#Gtk.Window" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Window</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.page_number">
+<code class="sig-name descname"><span class="pre">page_number</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.page_number" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.editable_label.PageNumber" title="pympress.editable_label.PageNumber"><code class="xref py py-class docutils literal notranslate"><span class="pre">PageNumber</span></code></a> displaying and setting current page numbers</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.pane_handle_pos">
+<code class="sig-name descname"><span class="pre">pane_handle_pos</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.ui.UI.pane_handle_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map of <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Paned.html#Gtk.Paned" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paned</span></code></a> to the relative position (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#float" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> between 0 and 1) of its handle</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.pick_file">
+<code class="sig-name descname"><span class="pre">pick_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.pick_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.pick_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the user which file he means to open.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.placeable_widgets">
+<code class="sig-name descname"><span class="pre">placeable_widgets</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.ui.UI.placeable_widgets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a> from the presenter window that can be dynamically rearranged</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.populate_recent_menu">
+<code class="sig-name descname"><span class="pre">populate_recent_menu</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_opening</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.populate_recent_menu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.populate_recent_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback for the recent document menu.</p>
+<p>Gets the URI and requests the document swap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>is_opening</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – a wrapped boolean indicating whether the menu is opening or closing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.prev_button">
+<code class="sig-name descname"><span class="pre">prev_button</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.prev_button" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go to previous slide</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.preview_page">
+<code class="sig-name descname"><span class="pre">preview_page</span></code><em class="property"> <span class="pre">=</span> <span class="pre">-1</span></em><a class="headerlink" href="#pympress.ui.UI.preview_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of page currently displayed in Presenter window’s miniatures</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.recent_menu">
+<code class="sig-name descname"><span class="pre">recent_menu</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.recent_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Gio.Menu</span></code> to display the recent files to open</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.redraw_current_slide">
+<code class="sig-name descname"><span class="pre">redraw_current_slide</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.redraw_current_slide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.redraw_current_slide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback to queue a redraw of the current slides (in both winows).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.redraw_panes">
+<code class="sig-name descname"><span class="pre">redraw_panes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.redraw_panes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.redraw_panes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Paned.html#Gtk.Paned" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paned</span></code></a>’s resizing signal.</p>
+<p>Used for delayed drawing events of drawing areas inside the panes.</p>
+<p>This is very useful on windows where resizing gets sluggish if we try to redraw while resizing.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.redraw_timeout">
+<code class="sig-name descname"><span class="pre">redraw_timeout</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#pympress.ui.UI.redraw_timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tracks return values of GLib.timeout_add to cancel gtk.paned’s redraw callbacks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.reload_document">
+<code class="sig-name descname"><span class="pre">reload_document</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.reload_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.reload_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reload the current document.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.resize_panes">
+<code class="sig-name descname"><span class="pre">resize_panes</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.ui.UI.resize_panes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether we should delay redraws on some drawing areas to fluidify resizing gtk.paned</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.scribbler">
+<code class="sig-name descname"><span class="pre">scribbler</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.scribbler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class <code class="xref py py-class docutils literal notranslate"><span class="pre">Scribble</span></code> managing drawing by the user on top of the current slide.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.setup_screens">
+<code class="sig-name descname"><span class="pre">setup_screens</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.setup_screens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.setup_screens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the position of the windows.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.shortcuts_window">
+<code class="sig-name descname"><span class="pre">shortcuts_window</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.shortcuts_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ShortcutsWindow.html#Gtk.ShortcutsWindow" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShortcutsWindow</span></code></a> to show the shortcuts</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.show_annotations">
+<code class="sig-name descname"><span class="pre">show_annotations</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#pympress.ui.UI.show_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to display annotations or not</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.show_bigbuttons">
+<code class="sig-name descname"><span class="pre">show_bigbuttons</span></code><em class="property"> <span class="pre">=</span> <span class="pre">True</span></em><a class="headerlink" href="#pympress.ui.UI.show_bigbuttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to display big buttons or not</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.show_shortcuts">
+<code class="sig-name descname"><span class="pre">show_shortcuts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.show_shortcuts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.show_shortcuts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display the shortcuts window.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.swap_document">
+<code class="sig-name descname"><span class="pre">swap_document</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reloading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.swap_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.swap_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the currently open document with a new one.</p>
+<p>The new document is possibly and EmptyDocument if docpath is None.
+The state of the ui and cache are updated accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docpath</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the absolute path to the new document</p></li>
+<li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the page at which to start the presentation</p></li>
+<li><p><strong>reloading</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether we are reloading or detecting stuff from the document</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.swap_screens">
+<code class="sig-name descname"><span class="pre">swap_screens</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.swap_screens"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.swap_screens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swap the monitors on which each window is displayed (if there are 2 monitors at least).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.switch_annotations">
+<code class="sig-name descname"><span class="pre">switch_annotations</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.switch_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.switch_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch the display to show annotations or to hide them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether the mode has been toggled.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.switch_bigbuttons">
+<code class="sig-name descname"><span class="pre">switch_bigbuttons</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.switch_bigbuttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.switch_bigbuttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle the display of big buttons (nice for touch screens).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.switch_blanked">
+<code class="sig-name descname"><span class="pre">switch_blanked</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.switch_blanked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.switch_blanked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch the blanked mode of the content screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the action triggering the call
+param (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>): the parameter as a variant, or None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>gaction (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.switch_fullscreen">
+<code class="sig-name descname"><span class="pre">switch_fullscreen</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.switch_fullscreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.switch_fullscreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch the Content window to fullscreen (if in normal mode) or to normal mode (if fullscreen).</p>
+<p>Screensaver will be disabled when entering fullscreen mode, and enabled
+when leaving fullscreen mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget in which the event occurred</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether some window’s full screen status got toggled</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.switch_mode">
+<code class="sig-name descname"><span class="pre">switch_mode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.switch_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.switch_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch the display mode to “Notes mode” or “Normal mode” (without notes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether the mode has been toggled.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.talk_time">
+<code class="sig-name descname"><span class="pre">talk_time</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.talk_time" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.talk_time.TimeCounter" title="pympress.talk_time.TimeCounter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeCounter</span></code></a> clock tracking talk time (elapsed, and remaining)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.timing">
+<code class="sig-name descname"><span class="pre">timing</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.timing" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#pympress.extras.TimingReport" title="pympress.extras.TimingReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimingReport</span></code></a> popup to show how much time was spent on which part</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.track_clicks">
+<code class="sig-name descname"><span class="pre">track_clicks</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.track_clicks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.track_clicks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track mouse press and release events.</p>
+<p>Handles clicks on the slides.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget that received the click</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event containing the click position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.track_motions">
+<code class="sig-name descname"><span class="pre">track_motions</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.track_motions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.track_motions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Track mouse motion events.</p>
+<p>Handles mouse motions on the “about” menu.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget that received the mouse motion</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event containing the mouse position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the event was consumed</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.update_frame_position">
+<code class="sig-name descname"><span class="pre">update_frame_position</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.update_frame_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.update_frame_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Callback to preview the frame alignment, called from the Gtk.SpinButton.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/SpinButton.html#Gtk.SpinButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpinButton</span></code></a>) – The button updating the slide alignment in the drawing area widget</p></li>
+<li><p><strong>user_data</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The property being set, either the x or y alignment (resp. xalign and yalign).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.ui.UI.validate_current_input">
+<code class="sig-name descname"><span class="pre">validate_current_input</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.validate_current_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.validate_current_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the action validating the input, if applicable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the parameter as a variant, or None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.zoom">
+<code class="sig-name descname"><span class="pre">zoom</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.zoom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class <a class="reference internal" href="#pympress.extras.Zoom" title="pympress.extras.Zoom"><code class="xref py py-class docutils literal notranslate"><span class="pre">Zoom</span></code></a> managing the zoom level of the current slide.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-pympress.document"></span><div class="section" id="pympress-document-document-handling">
 <h3><a class="reference internal" href="#module-pympress.document" title="pympress.document"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.document</span></code></a> – document handling<a class="headerlink" href="#pympress-document-document-handling" title="Permalink to this headline">¶</a></h3>
 <p>This module contains several classes that are used for managing documents (only
 PDF documents are supported at the moment, but other formats may be added in the
@@ -417,7 +1564,7 @@ starts at 0.</p>
 <dl class="py method">
 <dt id="pympress.document.Document.navigate">
 <code class="sig-name descname"><span class="pre">navigate</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.document.Document.navigate" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">goto_page()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.goto_page" title="pympress.ui.UI.goto_page"><code class="xref py py-func docutils literal notranslate"><span class="pre">goto_page()</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1501,7 +2648,7 @@ popped from the start of the cache.</p>
 <dl class="py attribute">
 <dt id="pympress.surfacecache.SurfaceCache.surface_factory">
 <code class="sig-name descname"><span class="pre">surface_factory</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.surfacecache.SurfaceCache.surface_factory" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> containing functions that return a <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/surfaces.html#cairo.Surface" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a> given a <a href="#id1"><span class="problematic" id="id2">:format:`~cairo.Format`</span></a>,
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#dict" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> containing functions that return a <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/surfaces.html#cairo.Surface" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Surface</span></code></a> given a <a href="#id3"><span class="problematic" id="id4">:format:`~cairo.Format`</span></a>,
 width <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> and height <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, see <code class="xref py py-meth docutils literal notranslate"><span class="pre">create_similar_image_surface()</span></code></p>
 </dd></dl>
 
@@ -1640,7 +2787,7 @@ widget names and its values are document types from ui.</p>
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.load_layout">
 <code class="sig-name descname"><span class="pre">load_layout</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.load_layout" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">load_layout()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.load_layout" title="pympress.ui.UI.load_layout"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_layout()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -1666,7 +2813,7 @@ widget names and its values are document types from ui.</p>
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.mouse_pos">
 <code class="sig-name descname"><span class="pre">mouse_pos</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.mouse_pos" title="Permalink to this definition">¶</a></dt>
-<dd><p>The position of the mouse on the slide as <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#tuple" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a href="#id3"><span class="problematic" id="id4">`</span></a>float`s</p>
+<dd><p>The position of the mouse on the slide as <a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#tuple" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> of <a href="#id5"><span class="problematic" id="id6">`</span></a>float`s</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1698,7 +2845,7 @@ widget names and its values are document types from ui.</p>
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.on_draw">
 <code class="sig-name descname"><span class="pre">on_draw</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.on_draw" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">on_draw()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.on_draw" title="pympress.ui.UI.on_draw"><code class="xref py py-func docutils literal notranslate"><span class="pre">on_draw()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -1807,7 +2954,7 @@ widget names and its values are document types from ui.</p>
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.redraw_current_slide">
 <code class="sig-name descname"><span class="pre">redraw_current_slide</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.redraw_current_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.redraw_current_slide" title="pympress.ui.UI.redraw_current_slide"><code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2022,13 +3169,13 @@ widget names and its values are document types from ui.</p>
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.track_clicks">
 <code class="sig-name descname"><span class="pre">track_clicks</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.track_clicks" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">track_clicks()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.track_clicks" title="pympress.ui.UI.track_clicks"><code class="xref py py-func docutils literal notranslate"><span class="pre">track_clicks()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.track_motions">
 <code class="sig-name descname"><span class="pre">track_motions</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.scribble.Scribbler.track_motions" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">track_motions()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.track_motions" title="pympress.ui.UI.track_motions"><code class="xref py py-func docutils literal notranslate"><span class="pre">track_motions()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -2206,7 +3353,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7ff5c6c1cdc0</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x5626dc4b61e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f5895e41640</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x5640f88301e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -2231,7 +3378,7 @@ clicking while ctrl pressed.</p>
 <dl class="py method">
 <dt id="pympress.pointer.Pointer.redraw_current_slide">
 <code class="sig-name descname"><span class="pre">redraw_current_slide</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.pointer.Pointer.redraw_current_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.redraw_current_slide" title="pympress.ui.UI.redraw_current_slide"><code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -2252,7 +3399,7 @@ clicking while ctrl pressed.</p>
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.set_action_state">
 <code class="sig-name descname"><span class="pre">set_action_state</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.pointer.Pointer.set_action_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-meth docutils literal notranslate"><span class="pre">set_action_state()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.app.Pympress.set_action_state" title="pympress.app.Pympress.set_action_state"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_action_state()</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -2707,7 +3854,7 @@ targeted talk duration.</p>
 <dl class="py method">
 <dt id="pympress.editable_label.PageNumber.page_change">
 <code class="sig-name descname"><span class="pre">page_change</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.editable_label.PageNumber.page_change" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">do_page_change()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.do_page_change" title="pympress.ui.UI.do_page_change"><code class="xref py py-func docutils literal notranslate"><span class="pre">do_page_change()</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -3724,7 +4871,7 @@ A default backend is marked by an empty list.</p>
 <dl class="py method">
 <dt id="pympress.extras.Zoom.redraw_current_slide">
 <code class="sig-name descname"><span class="pre">redraw_current_slide</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.extras.Zoom.redraw_current_slide" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.ui.UI.redraw_current_slide" title="pympress.ui.UI.redraw_current_slide"><code class="xref py py-func docutils literal notranslate"><span class="pre">redraw_current_slide()</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -3735,7 +4882,7 @@ A default backend is marked by an empty list.</p>
 <dl class="py attribute">
 <dt id="pympress.extras.Zoom.set_action_enabled">
 <code class="sig-name descname"><span class="pre">set_action_enabled</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Zoom.set_action_enabled" title="Permalink to this definition">¶</a></dt>
-<dd><p>callback, to be connected to <code class="xref py py-meth docutils literal notranslate"><span class="pre">set_action_enabled()</span></code></p>
+<dd><p>callback, to be connected to <a class="reference internal" href="#pympress.app.Pympress.set_action_enabled" title="pympress.app.Pympress.set_action_enabled"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_action_enabled()</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">

@@ -1584,15 +1584,12 @@
             <span class="k">return</span> <span class="s1">&#39;plain&#39;</span></div>
 
 
-<div class="viewcode-block" id="UI.swap_layout"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.swap_layout">[docs]</a>    <span class="k">def</span> <span class="nf">swap_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Save the old layout in the prefs, load the new layout.</span>
+<div class="viewcode-block" id="UI.load_layout"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.load_layout">[docs]</a>    <span class="k">def</span> <span class="nf">load_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Replace the current layout</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            old (`str`): the name of the layout to save, `None` to use current layout automatically</span>
 <span class="sd">            new (`str`): the name of the layout to load, `None` to use current layout automatically</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">old</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">)</span>
 
@@ -1645,7 +1642,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">disable_scribbling</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">set_notes_after</span><span class="p">(</span><span class="n">target_mode</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;page number&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">swap_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="n">target_mode</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="n">target_mode</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span> <span class="o">=</span> <span class="n">target_mode</span>
         <span class="n">page_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
