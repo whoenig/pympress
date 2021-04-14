@@ -652,7 +652,7 @@
 <div class="viewcode-block" id="Media.get_factory"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.get_factory">[docs]</a>    <span class="k">def</span> <span class="nf">get_factory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mime_type</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns a class of type :attr:`~_backend`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;mime_type&#39;</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;image/gif&#39;</span><span class="p">,</span> <span class="s1">&#39;image/svg+xml&#39;</span><span class="p">}:</span>
+        <span class="k">if</span> <span class="n">mime_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;image/gif&#39;</span><span class="p">,</span> <span class="s1">&#39;image/svg+xml&#39;</span><span class="p">}:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backends</span><span class="p">[</span><span class="s1">&#39;gif&#39;</span><span class="p">]</span>
 
         <span class="c1"># Search for specific mime type</span>

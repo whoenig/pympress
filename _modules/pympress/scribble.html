@@ -269,8 +269,8 @@
     <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.track_clicks`</span>
     <span class="n">track_clicks</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
 
-    <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.swap_layout`</span>
-    <span class="n">swap_layout</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.load_layout`</span>
+    <span class="n">load_layout</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
     <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.redraw_current_slide`</span>
     <span class="n">redraw_current_slide</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span>
 
@@ -310,7 +310,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">on_draw</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;on_draw&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">track_motions</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;track_motions&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">track_clicks</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;track_clicks&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">swap_layout</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;swap_layout&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_layout</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;load_layout&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_current_slide</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;redraw_current_slide&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resize_cache</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;cache.resize_widget&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_slide_point</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;zoom.get_slide_point&#39;</span><span class="p">)</span>
@@ -753,7 +753,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">off_render</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribble_overlay</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">swap_layout</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;highlight&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_layout</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scribble_overlay</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
@@ -777,7 +777,7 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">extras</span><span class="o">.</span><span class="n">Cursor</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribble_p_da</span><span class="p">,</span> <span class="s1">&#39;default&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">swap_layout</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_layout</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">off_render</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribble_overlay</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scribbling_mode</span> <span class="o">=</span> <span class="kc">False</span>

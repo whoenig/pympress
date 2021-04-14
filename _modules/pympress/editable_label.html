@@ -216,7 +216,6 @@
         <span class="n">hint</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">widget_or_action</span><span class="p">),</span> <span class="n">Gio</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
             <span class="n">hint</span> <span class="o">=</span> <span class="n">widget_or_action</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
-            <span class="k">pass</span>
 
         <span class="k">elif</span> <span class="n">event</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">BUTTON_PRESS</span><span class="p">:</span>
             <span class="c1"># If we clicked on the Event Box then don&#39;t toggle, just enable.</span>
@@ -463,9 +462,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_labels</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">edit_label</span><span class="o">.</span><span class="n">is_focus</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Entry</span><span class="o">.</span><span class="n">do_key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edit_label</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">SpinButton</span><span class="o">.</span><span class="n">do_key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spin_cur</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="kc">True</span></div>
+            <span class="k">return</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">SpinButton</span><span class="o">.</span><span class="n">do_key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spin_cur</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PageNumber.on_scroll"><a class="viewcode-back" href="../../pympress.html#pympress.editable_label.PageNumber.on_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">on_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
