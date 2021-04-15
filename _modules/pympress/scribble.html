@@ -192,7 +192,7 @@
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">builder</span><span class="p">,</span> <span class="n">extras</span><span class="p">,</span> <span class="n">util</span>
 
@@ -299,6 +299,15 @@
     <span class="c1">#: `tuple` of (`int`, `str`) indicating the current page number and label</span>
     <span class="n">current_page</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
+    <span class="c1">#: `str` indicating the current layout of the highlight toolbar</span>
+    <span class="n">tools_orientation</span> <span class="o">=</span> <span class="s1">&#39;vertical&#39;</span>
+    <span class="c1">#: :class:`~Gtk.Box` containing the presets</span>
+    <span class="n">preset_toolbar</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~Gtk.Box` containing the scribble buttons</span>
+    <span class="n">scribble_toolbar</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~Gtk.Box` containing the scribble color and width selectors</span>
+    <span class="n">scribble_color_toolbox</span> <span class="o">=</span> <span class="kc">None</span>
+
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">notes_mode</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Scribbler</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -330,15 +339,18 @@
 
         <span class="c1"># Load color and active pen preferences. Pen 0 is the eraser.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color_width</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">RGBA</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">150</span><span class="p">)]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span>
-            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_color</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;color_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">)))</span> <span class="k">for</span> <span class="n">pen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
-            <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;width_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">))</span> <span class="k">for</span> <span class="n">pen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parse_color</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;color_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">)))</span> <span class="k">for</span> <span class="n">pen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
+            <span class="p">[</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;width_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">))</span> <span class="k">for</span> <span class="n">pen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span>
         <span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scribble_preset_buttons</span> <span class="o">=</span> <span class="p">[</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;pen_preset_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">)</span> <span class="k">if</span> <span class="n">pen</span> <span class="k">else</span> <span class="s1">&#39;eraser&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">pen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
         <span class="p">]</span>
 
-        <span class="n">active_pen</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;active_pen&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layout&#39;</span><span class="p">,</span> <span class="s1">&#39;highlight_tools&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adjust_tools_orientation</span><span class="p">()</span>
+
+        <span class="n">active_pen</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;active_pen&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
             <span class="s1">&#39;highlight&#39;</span><span class="p">:</span>         <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">switch_scribbling</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
             <span class="s1">&#39;highlight-use-pen&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_preset</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">active_pen</span><span class="p">,</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
@@ -346,11 +358,14 @@
             <span class="s1">&#39;highlight-redo&#39;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">redo_scribble</span><span class="p">),</span>
             <span class="s1">&#39;highlight-undo&#39;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pop_scribble</span><span class="p">),</span>
             <span class="s1">&#39;highlight-mode&#39;</span><span class="p">:</span>    <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">highlight_mode</span><span class="p">,</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">str</span><span class="p">),</span>
+            <span class="s1">&#39;highlight-tools-orientation&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_tools_orientation</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span><span class="p">,</span>
+                                                <span class="n">parameter_type</span><span class="o">=</span><span class="nb">str</span><span class="p">),</span>
         <span class="p">})</span>
+
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pen_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_application</span><span class="p">()</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;highlight-use-pen&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_preset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pen_action</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">active_pen</span><span class="p">)</span> <span class="k">if</span> <span class="n">active_pen</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_string</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_string</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">)))</span>
 
 
 <div class="viewcode-block" id="Scribbler.set_mode"><a class="viewcode-back" href="../../pympress.html#pympress.scribble.Scribbler.set_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
@@ -366,7 +381,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">get_application</span><span class="p">()</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;highlight-mode&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_string</span><span class="p">(</span><span class="n">new_mode</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">highlight_mode</span> <span class="o">=</span> <span class="n">new_mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_mode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">highlight_mode</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">remembered_scribbles</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
@@ -632,8 +647,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scribble_preset_buttons</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_preset</span><span class="p">]</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
 
         <span class="n">pen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_preset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;color_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribble_color</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;width_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribble_width</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;color_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribble_color</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;width_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pen</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribble_width</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="Scribbler.adjust_buttons"><a class="viewcode-back" href="../../pympress.html#pympress.scribble.Scribbler.adjust_buttons">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_buttons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -725,6 +740,47 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">resize_cache</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">event</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">height</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Scribbler.set_tools_orientation"><a class="viewcode-back" href="../../pympress.html#pympress.scribble.Scribbler.set_tools_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">set_tools_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Changes the orientation of the highlighting tool box.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            target (:class:`~GLib.Variant`): the new orientation to set, as a string wrapped in a GLib.Variant</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `bool`: whether the preset was loaded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orientation</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">get_string</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">orientation</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">orientation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="s1">&#39;vertical&#39;</span><span class="p">]:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unexpected highlight-tools orientation </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">orientation</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span> <span class="o">=</span> <span class="n">orientation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adjust_tools_orientation</span><span class="p">()</span>
+
+        <span class="n">gaction</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;layout&#39;</span><span class="p">,</span> <span class="s1">&#39;highlight_tools&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Scribbler.adjust_tools_orientation"><a class="viewcode-back" href="../../pympress.html#pympress.scribble.Scribbler.adjust_tools_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">adjust_tools_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Actually change the highlight tool elements orientations according to self.tools_orientation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orientation</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">VERTICAL</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span> <span class="k">else</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preset_toolbar</span><span class="o">.</span><span class="n">set_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scribble_toolbar</span><span class="o">.</span><span class="n">set_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scribble_color_toolbox</span><span class="o">.</span><span class="n">set_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scribble_width_selector</span><span class="o">.</span><span class="n">set_orientation</span><span class="p">(</span><span class="n">orientation</span><span class="p">)</span>
+
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribble_width_selector</span><span class="o">.</span><span class="n">get_size_request</span><span class="p">(),</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span> <span class="o">!=</span> <span class="s1">&#39;vertical&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scribble_width_selector</span><span class="o">.</span><span class="n">set_size_request</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+        <span class="c1"># NB the parent container is layed out perpendicularly to its contents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scribble_overlay</span><span class="o">.</span><span class="n">set_orientation</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools_orientation</span> <span class="o">==</span> <span class="s1">&#39;vertical&#39;</span> <span class="k">else</span>
+                                              <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">VERTICAL</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Scribbler.switch_scribbling"><a class="viewcode-back" href="../../pympress.html#pympress.scribble.Scribbler.switch_scribbling">[docs]</a>    <span class="k">def</span> <span class="nf">switch_scribbling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Starts the mode where one can read on top of the screen.</span>
 
@@ -795,8 +851,8 @@
         <span class="sd">&quot;&quot;&quot; Loads the preset color of a given number or designed by a given widget, as an event handler.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which has received the event, or an `int` for the selected preset</span>
-<span class="sd">            event (:class:`~Gdk.Event`):  the GTK event.</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            target (:class:`~GLib.Variant`): the new preset to load, as a string wrapped in a GLib.Variant</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the preset was loaded</span>
@@ -808,7 +864,7 @@
 
         <span class="n">target</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_preset</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_preset</span> <span class="k">else</span> <span class="s1">&#39;eraser&#39;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;scribble&#39;</span><span class="p">,</span> <span class="s1">&#39;active_pen&#39;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span><span class="p">,</span> <span class="s1">&#39;active_pen&#39;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pen_action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_string</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scribble_color</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribble_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_width</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">active_preset</span><span class="p">]</span>
 

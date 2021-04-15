@@ -233,7 +233,7 @@
 
 <dl class="py method">
 <dt id="pympress.app.Pympress.do_activate">
-<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1618449930.638689</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1618516079.087414</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -2713,6 +2713,12 @@ widget names and its values are document types from ui.</p>
 <dd><p>Properly enable and disable buttons based on scribblings lists.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.adjust_tools_orientation">
+<code class="sig-name descname"><span class="pre">adjust_tools_orientation</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.adjust_tools_orientation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.scribble.Scribbler.adjust_tools_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Actually change the highlight tool elements orientations according to self.tools_orientation</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.c_da">
 <code class="sig-name descname"><span class="pre">c_da</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.c_da" title="Permalink to this definition">¶</a></dt>
@@ -2797,8 +2803,8 @@ widget names and its values are document types from ui.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget which has received the event, or an <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#int" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> for the selected preset</p></li>
-<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event.</p></li>
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the new preset to load, as a string wrapped in a GLib.Variant</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2945,6 +2951,12 @@ widget names and its values are document types from ui.</p>
 <dd><p>Clear scribbles to cached.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.preset_toolbar">
+<code class="sig-name descname"><span class="pre">preset_toolbar</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.preset_toolbar" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Box.html#Gtk.Box" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> containing the presets</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="pympress.scribble.Scribbler.redo_scribble">
 <code class="sig-name descname"><span class="pre">redo_scribble</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.redo_scribble"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.scribble.Scribbler.redo_scribble" title="Permalink to this definition">¶</a></dt>
@@ -3028,6 +3040,12 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_color_toolbox">
+<code class="sig-name descname"><span class="pre">scribble_color_toolbox</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_color_toolbox" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Box.html#Gtk.Box" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> containing the scribble color and width selectors</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.scribble_drawing">
 <code class="sig-name descname"><span class="pre">scribble_drawing</span></code><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_drawing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether the current mouse movements are drawing strokes or should be ignored</p>
@@ -3082,6 +3100,12 @@ widget names and its values are document types from ui.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.scribble_toolbar">
+<code class="sig-name descname"><span class="pre">scribble_toolbar</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_toolbar" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Box.html#Gtk.Box" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> containing the scribble buttons</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="pympress.scribble.Scribbler.scribble_undo">
 <code class="sig-name descname"><span class="pre">scribble_undo</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.scribble_undo" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Button.html#Gtk.Button" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Button</span></code></a> for removing the last drawn scribble</p>
@@ -3115,6 +3139,26 @@ widget names and its values are document types from ui.</p>
 <li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
 <li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the new mode as a string wrapped in a GLib.Variant</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.scribble.Scribbler.set_tools_orientation">
+<code class="sig-name descname"><span class="pre">set_tools_orientation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/scribble.html#Scribbler.set_tools_orientation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.scribble.Scribbler.set_tools_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the orientation of the highlighting tool box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the new orientation to set, as a string wrapped in a GLib.Variant</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>whether the preset was loaded</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -3164,6 +3208,12 @@ widget names and its values are document types from ui.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.scribble.Scribbler.tools_orientation">
+<code class="sig-name descname"><span class="pre">tools_orientation</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'vertical'</span></em><a class="headerlink" href="#pympress.scribble.Scribbler.tools_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.4/library/stdtypes.html#str" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> indicating the current layout of the highlight toolbar</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3353,7 +3403,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f7660871840</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55c51e1261e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f03925afd40</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x559b9257e1e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
