@@ -311,10 +311,13 @@
     <span class="c1">#: A :class:`~Gtk.ShortcutsWindow` to show the shortcuts</span>
     <span class="n">shortcuts_window</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: A :class:`Gtk.AccelGroup` to store the shortcuts</span>
+    <span class="c1">#: A :class:`~Gtk.AccelGroup` to store the shortcuts</span>
     <span class="n">accel_group</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: A :class:`Gio.Menu` to display the recent files to open</span>
+    <span class="c1">#: A :class:`~Gio.Menu` to display the recent files to open</span>
     <span class="n">recent_menu</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#: A :class:`~pympress.extras.FileWatcher` object to reload modified files</span>
+    <span class="n">file_watcher</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">##############################################################################</span>
     <span class="c1">#############################      UI setup      #############################</span>
@@ -402,6 +405,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="n">editable_label</span><span class="o">.</span><span class="n">PageNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;scroll_number&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timing</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">TimingReport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span> <span class="o">=</span> <span class="n">talk_time</span><span class="o">.</span><span class="n">TimeCounter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">est_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">register_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># Get placeable widgets. NB, get the highlight one manually from the scribbler class</span>
@@ -421,8 +425,6 @@
 
         <span class="c1"># Common to both windows</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_icons</span><span class="p">()</span>
-
-        <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="o">.</span><span class="n">start_daemon</span><span class="p">()</span>
 
         <span class="c1"># Adjust default visibility of items</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prev_button</span><span class="o">.</span><span class="n">set_no_show_all</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -723,7 +725,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">disable_scribbling</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">hide_all</span><span class="p">()</span>
 
-        <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="o">.</span><span class="n">stop_daemon</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">cleanup_media_files</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_action_state</span><span class="p">(</span><span class="s1">&#39;content-fullscreen&#39;</span><span class="p">):</span>
@@ -777,7 +778,9 @@
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">reloading</span> <span class="ow">and</span> <span class="n">docpath</span><span class="p">:</span>
                 <span class="n">Gtk</span><span class="o">.</span><span class="n">RecentManager</span><span class="o">.</span><span class="n">get_default</span><span class="p">()</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_uri</span><span class="p">())</span>
-                <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="o">.</span><span class="n">watch_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_path</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_document</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">reloading</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">watch_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_path</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_document</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">reloading</span><span class="p">:</span>
@@ -785,7 +788,7 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">error_opening_file</span><span class="p">(</span><span class="n">docpath</span><span class="p">)</span>
-            <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">)</span>

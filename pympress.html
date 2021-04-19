@@ -233,7 +233,7 @@
 
 <dl class="py method">
 <dt id="pympress.app.Pympress.do_activate">
-<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1618771398.69328</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">do_activate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1618828995.803006</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -382,7 +382,7 @@ current and the next page, as well as a time counter and a clock.</p>
 <dl class="py attribute">
 <dt id="pympress.ui.UI.accel_group">
 <code class="sig-name descname"><span class="pre">accel_group</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.accel_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AccelGroup.html#Gtk.AccelGroup" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Gtk.AccelGroup</span></code></a> to store the shortcuts</p>
+<dd><p>A <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AccelGroup.html#Gtk.AccelGroup" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AccelGroup</span></code></a> to store the shortcuts</p>
 </dd></dl>
 
 <dl class="py method">
@@ -680,6 +680,12 @@ current and the next page, as well as a time counter and a clock.</p>
 <dt id="pympress.ui.UI.est_time">
 <code class="sig-name descname"><span class="pre">est_time</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.est_time" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#pympress.editable_label.EstimatedTalkTime" title="pympress.editable_label.EstimatedTalkTime"><code class="xref py py-class docutils literal notranslate"><span class="pre">EstimatedTalkTime</span></code></a> to set estimated/remaining talk time</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="pympress.ui.UI.file_watcher">
+<code class="sig-name descname"><span class="pre">file_watcher</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.file_watcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="#pympress.extras.FileWatcher" title="pympress.extras.FileWatcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">FileWatcher</span></code></a> object to reload modified files</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1080,7 +1086,7 @@ moving the middle pane is done (which happens at the end of a mouse resize)</p>
 <dl class="py attribute">
 <dt id="pympress.ui.UI.recent_menu">
 <code class="sig-name descname"><span class="pre">recent_menu</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.recent_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Gio.Menu</span></code> to display the recent files to open</p>
+<dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code> to display the recent files to open</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3403,7 +3409,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt id="pympress.pointer.Pointer.pointer">
-<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f81ca98d6c0</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55791fa96de0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">pointer</span></code><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fc462168d00</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55558ed9a9e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -4505,29 +4511,7 @@ of all the resizeable items (if and only if resizeable).</p>
 <dt id="pympress.extras.FileWatcher">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pympress.extras.</span></code><code class="sig-name descname"><span class="pre">FileWatcher</span></code><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.4/library/functions.html#object" title="(in Python v3.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>A class with only static methods that wraps object watchdogs, to trigger callbacks when a file changes.</p>
-<dl class="py method">
-<dt id="pympress.extras.FileWatcher.call">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">call</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.call" title="Permalink to this definition">¶</a></dt>
-<dd><p>Call the callback.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>callback</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code>) – callback to call with all the further arguments</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pympress.extras.FileWatcher.enqueue">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">enqueue</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.enqueue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.enqueue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Do not call callback directly, instead delay as to avoid repeated calls in short periods of time.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>callback</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code>) – callback to call with all the further arguments</p>
-</dd>
-</dl>
-</dd></dl>
-
+<p>A class that wraps watchdog objects, to trigger callbacks when a file changes.</p>
 <dl class="py attribute">
 <dt id="pympress.extras.FileWatcher.monitor">
 <code class="sig-name descname"><span class="pre">monitor</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.FileWatcher.monitor" title="Permalink to this definition">¶</a></dt>
@@ -4541,25 +4525,8 @@ of all the resizeable items (if and only if resizeable).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pympress.extras.FileWatcher.start_daemon">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">start_daemon</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.start_daemon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.start_daemon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the watchdog observer thread.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pympress.extras.FileWatcher.stop_daemon">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">stop_daemon</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wait</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.stop_daemon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.stop_daemon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stop the watchdog observer thread.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>wait</strong> (<a class="reference external" href="https://docs.python.org/3.4/library/functions.html#bool" title="(in Python v3.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether to wait for the thread to have joined before returning</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="pympress.extras.FileWatcher.stop_watching">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">stop_watching</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.stop_watching"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.stop_watching" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">stop_watching</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.stop_watching"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.stop_watching" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all files that are being watched.</p>
 </dd></dl>
 
@@ -4570,8 +4537,9 @@ of all the resizeable items (if and only if resizeable).</p>
 
 <dl class="py method">
 <dt id="pympress.extras.FileWatcher.watch_file">
-<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">watch_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.watch_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.watch_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">watch_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.watch_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.watch_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Watches a new file with a new callback. Removes any precedent watched files.</p>
+<p>If the optional watchdog dependency is missing, does nothing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4910,6 +4878,12 @@ A default backend is marked by an empty list.</p>
 <dt id="pympress.extras.Zoom.get_slide_point">
 <code class="sig-name descname"><span class="pre">get_slide_point</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Zoom.get_slide_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Zoom.get_slide_point" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the point on the slide on a scale (0..1, 0..1), from its position in the widget.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pympress.extras.Zoom.nop">
+<code class="sig-name descname"><span class="pre">nop</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Zoom.nop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Zoom.nop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do nothing</p>
 </dd></dl>
 
 <dl class="py attribute">
