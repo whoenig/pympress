@@ -283,6 +283,7 @@ If you want to add or contribute to a translation, check [pympress’ page on PO
 [@susobaco](https://github.com/susobaco),
 Agnieszka,
 Alexandre Almeida,
+Ferdinand Fichtner,
 [FriedrichFröbel](https://github.com/FriedrichFroebel),
 [Jaroslav Svoboda](https://github.com/multiflexi),
 Jeertmans,
