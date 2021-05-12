@@ -178,11 +178,6 @@
 				<attribute name="target">after</attribute>
 			</item>
 		</submenu>
-
-		<item>
-			<attribute name="label" translatable="yes">Timing breakdown</attribute>
-			<attribute name="action">app.timing-report</attribute>
-		</item>
     </submenu>
 
 	<submenu>

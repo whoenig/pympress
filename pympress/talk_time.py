@@ -165,15 +165,11 @@ class TimeCounter(object):
     #: The pause-timer :class:`~Gio.Action`
     pause_action = None
 
-    #: The :class:`~pympress.extras.TimingReport`, needs to know when the slides change
-    timing_tracker = None
-
-    def __init__(self, builder, ett, timing_tracker):
+    def __init__(self, builder, ett):
         super(TimeCounter, self).__init__()
 
         self.label_colorer = TimeLabelColorer(builder.get_object('label_time'))
         self.ett = ett
-        self.timing_tracker = timing_tracker
 
         builder.load_widgets(self)
 
@@ -213,7 +209,6 @@ class TimeCounter(object):
         self.pause_action.change_state(GLib.Variant.new_boolean(self.paused))
 
         self.elapsed_time += time.time() - self.restart_time
-        self.timing_tracker.end_time = self.elapsed_time
 
         self.update_time()
         return True
@@ -240,8 +235,6 @@ class TimeCounter(object):
     def reset_timer(self, *args):
         """ Reset the timer.
         """
-        self.timing_tracker.reset(self.current_time())
-
         self.restart_time = time.time()
         self.elapsed_time = 0
         self.update_time()
@@ -278,8 +271,6 @@ class TimeCounter(object):
 
         self.label_time.set_text(display_time)
         self.label_clock.set_text(clock)
-        if not self.paused:
-            self.timing_tracker.end_time = elapsed
 
         if self.ett.est_time:
             self.label_colorer.update_time_color(self.ett.est_time - elapsed)

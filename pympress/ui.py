@@ -137,8 +137,6 @@ class UI(builder.Builder):
 
     #: :class:`~pympress.editable_label.EstimatedTalkTime` to set estimated/remaining talk time
     est_time = None
-    #: :class:`~pympress.extras.TimingReport` popup to show how much time was spent on which part
-    timing = None
     #: :class:`~pympress.talk_time.TimeCounter` clock tracking talk time (elapsed, and remaining)
     talk_time = None
 
@@ -237,8 +235,7 @@ class UI(builder.Builder):
         self.laser = pointer.Pointer(self.config, self)
         self.est_time = editable_label.EstimatedTalkTime(self)
         self.page_number = editable_label.PageNumber(self, self.config.getboolean('presenter', 'scroll_number'))
-        self.timing = extras.TimingReport(self)
-        self.talk_time = talk_time.TimeCounter(self, self.est_time, self.timing)
+        self.talk_time = talk_time.TimeCounter(self, self.est_time)
         self.file_watcher = extras.FileWatcher()
         self.config.register_actions(self)
 
@@ -644,7 +641,6 @@ class UI(builder.Builder):
         self.page_number.set_last(self.doc.pages_number())
         self.page_number.enable_labels(self.doc.has_labels())
         self.medias.purge_media_overlays()
-        self.timing.set_document_metadata(self.doc.get_structure().copy(), self.doc.page_labels[:])
 
         # A new document, restart at time 0, paused
         if not reloading:
@@ -970,8 +966,6 @@ class UI(builder.Builder):
         # Start counter if needed
         if unpause:
             self.talk_time.unpause()
-
-        self.timing.transition(self.preview_page, self.talk_time.current_time())
 
 
     def on_draw(self, widget, cairo_context):
