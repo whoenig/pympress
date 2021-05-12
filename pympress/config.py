@@ -95,7 +95,7 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
     #: `dict` of strings that are the valid representations of widgets from the presenter window
     #: that can be dynamically rearranged, mapping to their names
     placeable_widgets = {"notes": "p_frame_notes", "current": "p_frame_cur", "next": "p_frame_next",
-                         "annotations": "p_frame_annot", "highlight": "scribble_overlay"}
+                         "highlight": "scribble_overlay"}
 
     #: `dict` mapping accelerator keys to actions
     shortcuts = {}
@@ -205,7 +205,7 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
             self.set('presenter', 'pointer', 'red')
             self.set('presenter', 'pointer_mode', 'disabled')
 
-        if self.has_section('scribble') and self.has_option('scribble', 'color'):
+        if self.has_option('scribble', 'color'):
             self.set('scribble', 'color_9', self.get('scribble', 'color'))
             self.remove_option('scribble', 'color')
             self.set('scribble', 'active_pen', '9')
@@ -428,7 +428,7 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
         """ Parse and validate layouts loaded from config, with fallbacks if needed.
         """
         widget_reqs = {
-            'notes':      (set(self.placeable_widgets.keys()) - {"annotations", "highlight"}, {"annotations"}),
+            'notes':      (set(self.placeable_widgets.keys()) - {"highlight"},),
             'plain':      (set(self.placeable_widgets.keys()) - {"notes", "highlight"},),
             'note_pages': (set(self.placeable_widgets.keys()) - {"current", "highlight"},),
             'highlight':  ({"highlight"}, set(self.placeable_widgets.keys()) - {"highlight"})

@@ -79,9 +79,6 @@ class UI(builder.Builder):
     #: :class:`~Gtk.DrawingArea` for the current slide copy in the Presenter window.
     p_da_cur = None
 
-    #: :class:`~Gtk.Frame` for the annotations in the Presenter window.
-    p_frame_annot = None
-
     #: Indicates whether we should delay redraws on some drawing areas to fluidify resizing gtk.paned
     resize_panes = False
     #: Tracks return values of GLib.timeout_add to cancel gtk.paned's redraw callbacks
@@ -92,8 +89,6 @@ class UI(builder.Builder):
     #: Current choice of mode to toggle notes
     chosen_notes_mode = document.PdfPage.RIGHT
 
-    #: Whether to display annotations or not
-    show_annotations = True
     #: Whether to display big buttons or not
     show_bigbuttons = True
     #: :class:`~Gtk.ToolButton` big button for touch screens, go to previous slide
@@ -129,8 +124,6 @@ class UI(builder.Builder):
 
     #: Class :class:`~pympress.scribble.Scribble` managing drawing by the user on top of the current slide.
     scribbler = None
-    #: Class :class:`~pympress.extras.Annotations` managing the display of annotations
-    annotations = None
     #: Class :class:`~pympress.extras.Media` managing keeping track of and callbacks on media overlays
     medias = None
     #: Class :class:`~pympress.extras.Zoom` managing the zoom level of the current slide.
@@ -188,7 +181,6 @@ class UI(builder.Builder):
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         )
 
-        self.show_annotations = self.config.getboolean('presenter', 'show_annotations')
         self.chosen_notes_mode = document.PdfPage[self.config.get('notes position', 'horizontal').upper()]
         self.show_bigbuttons = self.config.getboolean('presenter', 'show_bigbuttons')
 
@@ -219,7 +211,6 @@ class UI(builder.Builder):
             'notes-mode':            dict(activate=self.switch_mode, state=False),
             'notes-pos':             dict(activate=self.change_notes_pos, parameter_type=str,
                                           state=self.chosen_notes_mode.name.lower()),
-            'annotations':           dict(activate=self.switch_annotations, state=self.show_annotations),
             'validate-input':        dict(activate=self.validate_current_input),
             'cancel-input':          dict(activate=self.cancel_current_input),
             'align-content':         dict(activate=self.adjust_frame_position),
@@ -242,7 +233,6 @@ class UI(builder.Builder):
 
         self.zoom = extras.Zoom(self)
         self.scribbler = scribble.Scribbler(self.config, self, self.notes_mode)
-        self.annotations = extras.Annotations(self)
         self.medias = extras.Media(self, self.config)
         self.laser = pointer.Pointer(self.config, self)
         self.est_time = editable_label.EstimatedTalkTime(self)
@@ -275,13 +265,11 @@ class UI(builder.Builder):
         self.next_button.set_no_show_all(True)
         self.laser_button.set_no_show_all(True)
         self.highlight_button.set_no_show_all(True)
-        self.p_frame_annot.set_no_show_all(True)
 
         self.prev_button.set_visible(self.show_bigbuttons)
         self.next_button.set_visible(self.show_bigbuttons)
         self.laser_button.set_visible(self.show_bigbuttons)
         self.highlight_button.set_visible(self.show_bigbuttons)
-        self.p_frame_annot.set_visible(self.show_annotations)
         self.laser.activate_pointermode()
 
 
@@ -959,8 +947,6 @@ class UI(builder.Builder):
 
         self.p_da_next.queue_draw()
 
-        self.annotations.add_annotations(page_preview.get_annotations())
-
         # Update display -- needs to be different ?
         self.page_number.update_page_numbers(self.preview_page, page_preview.label())
 
@@ -1161,8 +1147,6 @@ class UI(builder.Builder):
 
         # send to spinner if it is active
         elif self.page_number.on_scroll(widget, event):
-            return True
-        elif self.annotations.on_scroll(widget, event):
             return True
         else:
             return False
@@ -1458,7 +1442,6 @@ class UI(builder.Builder):
 
         # queue visibility of all newly added widgets, make sure visibility is right
         self.p_central.show_all()
-        self.p_frame_annot.set_visible(self.show_annotations)
 
 
     def change_notes_pos(self, gaction, target, force=False):
@@ -1525,32 +1508,6 @@ class UI(builder.Builder):
         self.do_page_change(unpause=False)
         self.page_number.set_last(self.doc.pages_number())
         self.app.set_action_state('notes-mode', bool(self.notes_mode))
-
-        return True
-
-
-    def switch_annotations(self, gaction, target):
-        """ Switch the display to show annotations or to hide them.
-
-        Returns:
-            `bool`: whether the mode has been toggled.
-        """
-        self.show_annotations = not self.show_annotations
-
-        self.p_frame_annot.set_visible(self.show_annotations)
-        self.config.set('presenter', 'show_annotations', 'on' if self.show_annotations else 'off')
-
-        if self.show_annotations:
-            parent = self.p_frame_annot.get_parent()
-            if issubclass(type(parent), Gtk.Paned):
-                if parent.get_orientation() == Gtk.Orientation.HORIZONTAL:
-                    size = parent.get_parent().get_allocated_width()
-                else:
-                    size = parent.get_parent().get_allocated_height()
-                parent.set_position(self.pane_handle_pos[parent] * size)
-
-        self.annotations.add_annotations(self.doc.page(self.preview_page).get_annotations())
-        gaction.change_state(GLib.Variant.new_boolean(self.show_annotations))
 
         return True
 

@@ -193,49 +193,6 @@
                         <property name="shrink">True</property>
                       </packing>
                     </child>
-                    <child>
-                      <object class="GtkFrame" id="p_frame_annot">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label-xalign">0</property>
-                        <property name="shadow-type">in</property>
-                        <child>
-                          <object class="GtkScrolledWindow" id="scrolled_window">
-                            <property name="visible">True</property>
-                            <property name="can-focus">True</property>
-                            <property name="min-content-width">10</property>
-                            <property name="min-content-height">10</property>
-                            <child>
-                              <object class="GtkTextView" id="annotations_textview">
-                                <property name="visible">True</property>
-                                <property name="can-focus">True</property>
-                                <property name="has-focus">True</property>
-                                <property name="editable">False</property>
-                                <property name="wrap-mode">word</property>
-                                <property name="cursor-visible">False</property>
-                                <property name="accepts-tab">False</property>
-                                <property name="monospace">True</property>
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child type="label">
-                          <object class="GtkLabel" id="label4">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="label" translatable="yes">Annotations</property>
-                            <property name="use-markup">True</property>
-                            <style>
-                              <class name="frame-label"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="resize">True</property>
-                        <property name="shrink">True</property>
-                      </packing>
-                    </child>
                   </object>
                   <packing>
                     <property name="resize">True</property>

@@ -59,10 +59,6 @@
 			<attribute name="action">app.align-content</attribute>
 		</item>
 		<item>
-			<attribute name="label" translatable="yes">_Annotations</attribute>
-			<attribute name="action">app.annotations</attribute>
-		</item>
-		<item>
 			<attribute name="label" translatable="yes">Big buttons</attribute>
 			<attribute name="action">app.big-buttons</attribute>
 		</item>

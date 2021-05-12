@@ -194,49 +194,6 @@ class TimingReport(builder.Builder):
         self.time_report_dialog.hide()
 
 
-class Annotations(object):
-    """ Widget displaying a PDF’s text annotations.
-    """
-    #: The containing :class:`~Gtk.TextView` widget for the annotations
-    annotations_textview = None
-    #: :class:`~Gtk.ScrolledWindow` making the annotations list scroll if it's too long
-    scrolled_window = None
-
-    def __init__(self, builder):
-        super(Annotations, self).__init__()
-        builder.load_widgets(self)
-
-
-    def add_annotations(self, annotations):
-        """ Add annotations to be displayed (typically on going to a new slide).
-
-        Args:
-            annotations (`list`): A list of strings, that are the annotations to be displayed
-        """
-        buf = self.annotations_textview.get_buffer()
-        buf.set_text('\n'.join(annotations))
-
-
-    def on_scroll(self, widget, event):
-        """ Try scrolling the annotations window.
-
-        Args:
-            widget (:class:`~Gtk.Widget`):  the widget which has received the event.
-            event (:class:`~Gdk.Event`):  the GTK event.
-
-        Returns:
-            `bool`: whether the event was consumed
-        """
-        adj = self.scrolled_window.get_vadjustment()
-        if event.direction == Gdk.ScrollDirection.UP:
-            adj.set_value(adj.get_value() - adj.get_step_increment())
-        elif event.direction == Gdk.ScrollDirection.DOWN:
-            adj.set_value(adj.get_value() + adj.get_step_increment())
-        else:
-            return False
-        return True
-
-
 class Media(object):
     """ Class managing statically the medias and media player backends, to enable play/pause callbacks.
 

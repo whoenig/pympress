@@ -137,14 +137,6 @@
             <property name="title" translatable="yes">Additional features</property>
 
             <child>
-              <object class="GtkShortcutsShortcut" id="shortcut_annotations">
-                <property name="visible">1</property>
-                <property name="accelerator">a</property>
-                <property name="title" translatable="yes">Toggle annotations</property>
-              </object>
-            </child>
-
-            <child>
               <object class="GtkShortcutsShortcut" id="shortcut_notes_mode">
                 <property name="visible">1</property>
                 <property name="accelerator">n</property>
