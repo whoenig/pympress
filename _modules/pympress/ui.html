@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
 
   
   
@@ -31,6 +33,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
@@ -319,6 +322,9 @@
     <span class="c1">#: A :class:`~pympress.extras.FileWatcher` object to reload modified files</span>
     <span class="n">file_watcher</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="c1">#: `int` or `None`, may keep track of the Gtk.Application inhibit request</span>
+    <span class="n">inhibit_cookie</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="c1">##############################################################################</span>
     <span class="c1">#############################      UI setup      #############################</span>
     <span class="c1">##############################################################################</span>
@@ -557,7 +563,7 @@
 
         <span class="k">if</span> <span class="n">c_full</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="o">.</span><span class="n">fullscreen</span><span class="p">()</span>
-            <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">util</span><span class="o">.</span><span class="n">set_screensaver</span><span class="p">(</span><span class="kc">True</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_screensaver</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">set_action_state</span><span class="p">(</span><span class="s1">&#39;content-fullscreen&#39;</span><span class="p">,</span> <span class="n">c_full</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">set_action_state</span><span class="p">(</span><span class="s1">&#39;presenter-fullscreen&#39;</span><span class="p">,</span> <span class="n">p_full</span><span class="p">)</span></div>
@@ -728,7 +734,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">cleanup_media_files</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get_action_state</span><span class="p">(</span><span class="s1">&#39;content-fullscreen&#39;</span><span class="p">):</span>
-            <span class="n">util</span><span class="o">.</span><span class="n">set_screensaver</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+            <span class="c1"># In case we used hard-disabling</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_screensaver</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="UI.menu_about"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.menu_about">[docs]</a>    <span class="k">def</span> <span class="nf">menu_about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -1478,8 +1485,35 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">widget</span><span class="o">.</span><span class="n">fullscreen</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="n">gaction</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;content-fullscreen&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_screensaver</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="n">toggle_to</span><span class="p">)</span>
+
         <span class="n">gaction</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_boolean</span><span class="p">(</span><span class="n">toggle_to</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="UI.set_screensaver"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.set_screensaver">[docs]</a>    <span class="k">def</span> <span class="nf">set_screensaver</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disabled</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Disable or re-enable the screensaver.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            disabled (`bool`): `True` iff the screensaver should be disabled, otherwise enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">disabled</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inhibit_cookie</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">uninhibit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inhibit_cookie</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">inhibit_cookie</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">util</span><span class="o">.</span><span class="n">hard_set_screensaver</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inhibit_cookie</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">flags</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ApplicationInhibitFlags</span><span class="o">.</span><span class="n">LOGOUT</span> <span class="o">|</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ApplicationInhibitFlags</span><span class="o">.</span><span class="n">SWITCH</span> <span class="o">|</span> \
+                    <span class="n">Gtk</span><span class="o">.</span><span class="n">ApplicationInhibitFlags</span><span class="o">.</span><span class="n">SUSPEND</span> <span class="o">|</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ApplicationInhibitFlags</span><span class="o">.</span><span class="n">IDLE</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">inhibit_cookie</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">inhibit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Fullscreen Presentation running&quot;</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">inhibit_cookie</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Gtk.Application.inhibit failed preventing screensaver, trying hard disabling&#39;</span><span class="p">))</span>
+                <span class="n">util</span><span class="o">.</span><span class="n">hard_set_screensaver</span><span class="p">(</span><span class="n">disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="UI.on_window_state_event"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_window_state_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_window_state_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
@@ -1494,7 +1528,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="o">.</span><span class="n">get_name</span><span class="p">():</span>
             <span class="n">fullscreen</span> <span class="o">=</span> <span class="p">(</span><span class="n">Gdk</span><span class="o">.</span><span class="n">WindowState</span><span class="o">.</span><span class="n">FULLSCREEN</span> <span class="o">&amp;</span> <span class="n">event</span><span class="o">.</span><span class="n">new_window_state</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
-            <span class="n">util</span><span class="o">.</span><span class="n">set_screensaver</span><span class="p">(</span><span class="n">fullscreen</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
