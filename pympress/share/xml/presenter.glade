@@ -397,25 +397,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="highlight_button">
-                <property name="label" translatable="yes">Highlight</property>
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="receives-default">True</property>
-                <property name="margin-top">10</property>
-                <property name="action-name">app.highlight</property>
-                <style>
-                  <class name="info-label"/>
-                </style>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="padding">2</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkButton" id="laser_button">
                 <property name="label" translatable="yes">Pointer</property>
                 <property name="visible">True</property>

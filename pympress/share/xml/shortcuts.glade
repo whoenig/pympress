@@ -145,14 +145,6 @@
             </child>
 
             <child>
-              <object class="GtkShortcutsShortcut" id="shortcut_highlighting">
-                <property name="visible">1</property>
-                <property name="accelerator">h</property>
-                <property name="title" translatable="yes">Toggle highlighting</property>
-              </object>
-            </child>
-
-            <child>
               <object class="GtkShortcutsShortcut" id="shortcut_toggle_pointermode">
                 <property name="visible">1</property>
                 <property name="accelerator">l</property>
@@ -177,14 +169,6 @@
             </child>
 
             <child>
-              <object class="GtkShortcutsShortcut" id="shortcut_undo_scribble">
-                <property name="visible">1</property>
-                <property name="accelerator">&lt;ctrl&gt;z</property>
-                <property name="title" translatable="yes">Undo highlight stroke</property>
-              </object>
-            </child>
-
-            <child>
               <object class="GtkShortcutsShortcut" id="shortcut_validate">
                 <property name="visible">1</property>
                 <property name="accelerator">Return</property>
@@ -196,7 +180,7 @@
               <object class="GtkShortcutsShortcut" id="shortcut_cancel">
                 <property name="visible">1</property>
                 <property name="accelerator">Escape</property>
-                <property name="title" translatable="yes">Cancel goto/jump/highlighting/zooming</property>
+                <property name="title" translatable="yes">Cancel goto/jump/zooming</property>
               </object>
             </child>
 

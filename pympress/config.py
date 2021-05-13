@@ -94,8 +94,7 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
 
     #: `dict` of strings that are the valid representations of widgets from the presenter window
     #: that can be dynamically rearranged, mapping to their names
-    placeable_widgets = {"notes": "p_frame_notes", "current": "p_frame_cur", "next": "p_frame_next",
-                         "highlight": "scribble_overlay"}
+    placeable_widgets = {"notes": "p_frame_notes", "current": "p_frame_cur", "next": "p_frame_next"}
 
     #: `dict` mapping accelerator keys to actions
     shortcuts = {}
@@ -205,26 +204,11 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
             self.set('presenter', 'pointer', 'red')
             self.set('presenter', 'pointer_mode', 'disabled')
 
-        if self.has_option('scribble', 'color'):
-            self.set('scribble', 'color_9', self.get('scribble', 'color'))
-            self.remove_option('scribble', 'color')
-            self.set('scribble', 'active_pen', '9')
-
-        if self.has_section('scribble') and self.has_option('scribble', 'width'):
-            self.set('scribble', 'width_9', self.get('scribble', 'width'))
-            self.remove_option('scribble', 'width')
-            self.set('scribble', 'active_pen', '9')
-
         if self.has_option('presenter', 'monitor'):
             self.remove_option('presenter', 'monitor')
 
         if self.has_option('content', 'monitor'):
             self.remove_option('content', 'monitor')
-
-        if self.has_section('scribble'):
-            for key, val in self.items('scribble'):
-                self.set('highlight', key, val)
-            self.remove_section('scribble')
 
         # When we went from gtk signal handlers to actions, some renaming had to be done
         for old, new in {
@@ -250,18 +234,6 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
             'close_file':           'close-file',
             'validate':             'validate-input',
             'cancel':               'cancel-input',
-            'undo_scribble':        'highlight-undo',
-            'redo_scribble':        'highlight-redo',
-            'scribble_preset_1':    'highlight-use-pen::1',
-            'scribble_preset_2':    'highlight-use-pen::2',
-            'scribble_preset_3':    'highlight-use-pen::3',
-            'scribble_preset_4':    'highlight-use-pen::4',
-            'scribble_preset_5':    'highlight-use-pen::5',
-            'scribble_preset_6':    'highlight-use-pen::6',
-            'scribble_preset_7':    'highlight-use-pen::7',
-            'scribble_preset_8':    'highlight-use-pen::8',
-            'scribble_preset_9':    'highlight-use-pen::9',
-            'scribble_preset_0':    'highlight-use-pen::eraser',
             'toggle_pointermode':   'pointer-mode::toggle',
         }.items():
             shortcut = self.get('shortcuts', old, fallback=None)
@@ -428,10 +400,9 @@ class Config(configparser.ConfigParser, object):  # python 2 fix
         """ Parse and validate layouts loaded from config, with fallbacks if needed.
         """
         widget_reqs = {
-            'notes':      (set(self.placeable_widgets.keys()) - {"highlight"},),
-            'plain':      (set(self.placeable_widgets.keys()) - {"notes", "highlight"},),
-            'note_pages': (set(self.placeable_widgets.keys()) - {"current", "highlight"},),
-            'highlight':  ({"highlight"}, set(self.placeable_widgets.keys()) - {"highlight"})
+            'notes':      (set(self.placeable_widgets.keys()),),
+            'plain':      (set(self.placeable_widgets.keys()) - {"notes",},),
+            'note_pages': (set(self.placeable_widgets.keys()) - {"current",},),
         }
 
         for layout_name in widget_reqs:
