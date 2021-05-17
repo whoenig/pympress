@@ -446,10 +446,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">p_frame_annot</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_annotations</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">laser</span><span class="o">.</span><span class="n">activate_pointermode</span><span class="p">()</span>
 
-
-<div class="viewcode-block" id="UI.activate"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.activate">[docs]</a>    <span class="k">def</span> <span class="nf">activate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Activate application, i.e. bring windows to front.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Setup screens and show all windows</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_screens</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="o">.</span><span class="n">show_all</span><span class="p">()</span>
@@ -458,7 +454,7 @@
         <span class="c1"># Queue some redraws</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw_panes</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">do_page_change</span><span class="p">(</span><span class="n">unpause</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_page_change</span><span class="p">(</span><span class="n">unpause</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="UI.load_icons"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.load_icons">[docs]</a>    <span class="k">def</span> <span class="nf">load_icons</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

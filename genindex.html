@@ -200,7 +200,7 @@
 </li>
       <li><a href="pympress.html#pympress.media_overlays.base.VideoOverlay.action_map">action_map (pympress.media_overlays.base.VideoOverlay attribute)</a>
 </li>
-      <li><a href="pympress.html#pympress.ui.UI.activate">activate() (pympress.ui.UI method)</a>
+      <li><a href="pympress.html#pympress.app.Pympress.action_startup_queue">action_startup_queue (pympress.app.Pympress attribute)</a>
 </li>
       <li><a href="pympress.html#pympress.app.Pympress.activate_action">activate_action() (pympress.app.Pympress method)</a>
 </li>
@@ -218,10 +218,10 @@
 </li>
       <li><a href="pympress.html#pympress.scribble.Scribbler.adjust_buttons">adjust_buttons() (pympress.scribble.Scribbler method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pympress.html#pympress.ui.UI.adjust_frame_position">adjust_frame_position() (pympress.ui.UI method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pympress.html#pympress.extras.Media.adjust_margins_for_mode">adjust_margins_for_mode() (pympress.extras.Media method)</a>
 </li>
       <li><a href="pympress.html#pympress.scribble.Scribbler.adjust_tools_orientation">adjust_tools_orientation() (pympress.scribble.Scribbler method)</a>
@@ -243,6 +243,8 @@
       <li><a href="pympress.html#pympress.extras.Annotations.annotations_textview">annotations_textview (pympress.extras.Annotations attribute)</a>
 </li>
       <li><a href="pympress.html#pympress.ui.UI.app">app (pympress.ui.UI attribute)</a>
+</li>
+      <li><a href="pympress.html#pympress.app.Pympress.auto_log_level">auto_log_level (pympress.app.Pympress attribute)</a>
 </li>
       <li><a href="pympress.html#pympress.media_overlays.base.VideoOverlay.autoplay">autoplay (pympress.media_overlays.base.VideoOverlay attribute)</a>
 </li>
@@ -760,10 +762,10 @@
 </li>
       <li><a href="pympress.html#pympress.config.Config.layout">layout (pympress.config.Config attribute)</a>
 </li>
-      <li><a href="pympress.html#pympress.config.layout_from_json">layout_from_json() (in module pympress.config)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pympress.html#pympress.config.layout_from_json">layout_from_json() (in module pympress.config)</a>
+</li>
       <li><a href="pympress.html#pympress.ui.UI.layout_name">layout_name() (pympress.ui.UI method)</a>
 </li>
       <li><a href="pympress.html#pympress.document.PdfPage.LEFT">LEFT (pympress.document.PdfPage attribute)</a>
@@ -799,8 +801,6 @@
       <li><a href="pympress.html#pympress.config.Config.load_window_layouts">load_window_layouts() (pympress.config.Config method)</a>
 </li>
       <li><a href="pympress.html#pympress.surfacecache.SurfaceCache.locks">locks (pympress.surfacecache.SurfaceCache attribute)</a>
-</li>
-      <li><a href="pympress.html#pympress.app.Pympress.log_level">log_level (pympress.app.Pympress attribute)</a>
 </li>
       <li><a href="pympress.html#pympress.document.Document.lookup_label">lookup_label() (pympress.document.Document method)</a>
 </li>
@@ -909,10 +909,10 @@
 </li>
       <li><a href="pympress.html#pympress.document.PdfPage.NONE">NONE (pympress.document.PdfPage attribute)</a>
 </li>
-      <li><a href="pympress.html#pympress.extras.Zoom.nop">nop() (pympress.extras.Zoom method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pympress.html#pympress.extras.Zoom.nop">nop() (pympress.extras.Zoom method)</a>
+</li>
       <li><a href="pympress.html#pympress.document.Document.notes_after">notes_after (pympress.document.Document attribute)</a>
 </li>
       <li><a href="pympress.html#pympress.ui.UI.notes_mode">notes_mode (pympress.ui.UI attribute)</a>
@@ -923,8 +923,6 @@
         <li><a href="pympress.html#pympress.document.EmptyDocument.notes_page">(pympress.document.EmptyDocument method)</a>
 </li>
       </ul></li>
-      <li><a href="pympress.html#pympress.app.Pympress.notes_pos">notes_pos (pympress.app.Pympress attribute)</a>
-</li>
       <li><a href="pympress.html#pympress.document.Page.number">number() (pympress.document.Page method)</a>
 </li>
   </ul></td>
@@ -1114,7 +1112,11 @@
       <li><a href="pympress.html#pympress.document.Document.play_media">play_media() (pympress.document.Document method)</a>
 </li>
       <li><a href="pympress.html#pympress.extras.Media.play_pause">play_pause() (pympress.extras.Media method)</a>
+
+      <ul>
+        <li><a href="pympress.html#pympress.media_overlays.base.VideoOverlay.play_pause">(pympress.media_overlays.base.VideoOverlay method)</a>
 </li>
+      </ul></li>
       <li><a href="pympress.html#pympress.media_overlays.gst_backend.GstOverlay.playbin">playbin (pympress.media_overlays.gst_backend.GstOverlay attribute)</a>
 </li>
   </ul></td>
@@ -1451,6 +1453,8 @@
       </ul></li>
       <li><a href="pympress.html#pympress.editable_label.PageNumber.set_last">set_last() (pympress.editable_label.PageNumber method)</a>
 </li>
+      <li><a href="pympress.html#pympress.app.Pympress.set_log_level">set_log_level() (pympress.app.Pympress method)</a>
+</li>
       <li><a href="pympress.html#pympress.scribble.Scribbler.set_mode">set_mode() (pympress.scribble.Scribbler method)</a>
 </li>
       <li><a href="pympress.html#pympress.document.Document.set_notes_after">set_notes_after() (pympress.document.Document method)</a>
@@ -1465,10 +1469,10 @@
       </ul></li>
       <li><a href="pympress.html#pympress.scribble.Scribbler.set_tools_orientation">set_tools_orientation() (pympress.scribble.Scribbler method)</a>
 </li>
-      <li><a href="pympress.html#pympress.media_overlays.gif_backend.GifOverlay.set_transform">set_transform() (pympress.media_overlays.gif_backend.GifOverlay method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pympress.html#pympress.media_overlays.gif_backend.GifOverlay.set_transform">set_transform() (pympress.media_overlays.gif_backend.GifOverlay method)</a>
+</li>
       <li><a href="pympress.html#pympress.surfacecache.SurfaceCache.set_widget_type">set_widget_type() (pympress.surfacecache.SurfaceCache method)</a>
 </li>
       <li><a href="pympress.html#pympress.builder.Builder.setup_actions">setup_actions() (pympress.builder.Builder static method)</a>

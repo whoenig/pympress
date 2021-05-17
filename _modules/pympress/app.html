@@ -209,10 +209,10 @@
     <span class="n">gui</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: The :class:`~pympress.config.Config` object that holds pympress conferences</span>
     <span class="n">config</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: The log level to use</span>
-    <span class="n">log_level</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
-    <span class="c1">#: The notes positioning, to pass to the UI when it is created</span>
-    <span class="n">notes_pos</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: `list` of actions to be passsed to the GUI that were queued before GUI was created</span>
+    <span class="n">action_startup_queue</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#: `bool` to automatically upgrade log level (DEBUG / INFO at init, then ERROR), False if user set log level</span>
+    <span class="n">auto_log_level</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
         <span class="c1"># long_name:  (short_name (int), flags (GLib.OptionFlags), arg (GLib.OptionArg)</span>
@@ -269,7 +269,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_is_remote</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">UI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+            <span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+                <span class="s1">&#39;log-level&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_log_level</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">logger</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">(),</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>
+            <span class="p">},</span> <span class="n">action_map</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># Connect proper exit function to interrupt</span>
         <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
@@ -298,7 +300,6 @@
             <span class="n">Gdk</span><span class="o">.</span><span class="n">set_allowed_backends</span><span class="p">(</span><span class="s1">&#39;x11,*&#39;</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">version_string</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
         <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_startup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
@@ -307,11 +308,18 @@
 
 <span class="sd">        Build them if they do not exist, otherwise bring to front.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;Activating on non-remote ?!&#39;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_is_remote</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_log_level</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;log-level&#39;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">action_startup_queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;log-level&#39;</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">))</span>
 
+            <span class="c1"># Build the UI and windows</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">UI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_startup_queue</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">action_startup_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_activate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gui</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">present_with_time</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span></div>
 
 
@@ -355,6 +363,10 @@
 <span class="sd">            name (`str`): the name of the stateful action</span>
 <span class="sd">            parameter: an object or None to pass as a parameter to the action, wrapped in a GLib.Variant</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_is_remote</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">gui</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;log-level&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_startup_queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">parameter</span><span class="p">))</span>
+            <span class="k">return</span>
+
         <span class="k">if</span> <span class="n">parameter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">parameter</span> <span class="o">=</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="o">.</span><span class="n">_glib_type_strings</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">parameter</span><span class="p">)],</span> <span class="n">parameter</span><span class="p">)</span>
 
@@ -386,6 +398,17 @@
         <span class="n">Gtk</span><span class="o">.</span><span class="n">Application</span><span class="o">.</span><span class="n">do_shutdown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Pympress.set_log_level"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.set_log_level">[docs]</a>    <span class="k">def</span> <span class="nf">set_log_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Action that sets the logging level (on the root logger of the active instance)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action (:class:`~Gio.Action`): The action activatd</span>
+<span class="sd">            parameter (:class:~`GLib.Variant`): The desired level as an int wrapped in a GLib.Variant</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">get_int64</span><span class="p">())</span>
+        <span class="n">action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">param</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Pympress.do_handle_local_options"><a class="viewcode-back" href="../../pympress.html#pympress.app.Pympress.do_handle_local_options">[docs]</a>    <span class="k">def</span> <span class="nf">do_handle_local_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opts_variant_dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Parse command line options, returned as a VariantDict</span>
 
@@ -414,7 +437,8 @@
             <span class="k">elif</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
                 <span class="n">numeric_level</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">logging</span><span class="p">,</span> <span class="n">arg</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">numeric_level</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">numeric_level</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">auto_log_level</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;log-level&#39;</span><span class="p">,</span> <span class="n">numeric_level</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Invalid log level </span><span class="se">\&quot;</span><span class="si">{}</span><span class="se">\&quot;</span><span class="s2">, try one of </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">arg</span><span class="p">,</span> <span class="s2">&quot;DEBUG, INFO, WARNING, ERROR, CRITICAL&quot;</span>
