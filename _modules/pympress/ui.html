@@ -781,9 +781,10 @@
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">reloading</span> <span class="ow">and</span> <span class="n">docpath</span><span class="p">:</span>
                 <span class="n">Gtk</span><span class="o">.</span><span class="n">RecentManager</span><span class="o">.</span><span class="n">get_default</span><span class="p">()</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_uri</span><span class="p">())</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">reloading</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">watch_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_path</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">reload_document</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">reloading</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Error</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">reloading</span><span class="p">:</span>
