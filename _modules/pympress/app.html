@@ -403,7 +403,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            action (:class:`~Gio.Action`): The action activatd</span>
-<span class="sd">            parameter (:class:~`GLib.Variant`): The desired level as an int wrapped in a GLib.Variant</span>
+<span class="sd">            param (:class:~`GLib.Variant`): The desired level as an int wrapped in a GLib.Variant</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">get_int64</span><span class="p">())</span>
         <span class="n">action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">param</span><span class="p">)</span></div>
