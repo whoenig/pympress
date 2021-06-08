@@ -231,12 +231,12 @@
 <span class="sd">        max_pages (`int`): The maximum page number.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">#: The actual cache. It is a `dict` of :class:`~pympress.surfacecache.Cache`:</span>
-    <span class="c1">#: its keys are widget names and its values are `dict` whose keys are page</span>
-    <span class="c1">#: numbers and values are instances of :class:`~cairo.ImageSurface`.</span>
-    <span class="c1">#: In each :class:`~pympress.surfacecache.Cache` keys are ordered by Least Recently</span>
-    <span class="c1">#: Used (get or set), when the size is beyond :attr:`max_pages`, pages are</span>
-    <span class="c1">#: popped from the start of the cache.</span>
+    <span class="c1">#: The actual cache. The `dict`s keys are widget names and its values are</span>
+    <span class="c1">#: :class:`~pympress.surfacecache.OrderedDict`, whose keys are page numbers</span>
+    <span class="c1">#: and values are instances of :class:`~cairo.ImageSurface`.</span>
+    <span class="c1">#: In each :class:`~pympress.surfacecache.OrderedDict` keys are ordered by</span>
+    <span class="c1">#: Least Recently Used (get or set), when the size is beyond</span>
+    <span class="c1">#: :attr:`max_pages`, pages are popped from the start of the cache.</span>
     <span class="n">surface_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1">#: `dict` containing functions that return a :class:`~cairo.Surface` given a :format:`~cairo.Format`,</span>
@@ -443,10 +443,10 @@
 
 
 <div class="viewcode-block" id="SurfaceCache.renderer"><a class="viewcode-back" href="../../pympress.html#pympress.surfacecache.SurfaceCache.renderer">[docs]</a>    <span class="k">def</span> <span class="nf">renderer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">,</span> <span class="n">page_nb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Rendering thread.</span>
+        <span class="sd">&quot;&quot;&quot; Rendering function.</span>
 
-<span class="sd">        This function is meant to be run in the prerendering thread. It runs</span>
-<span class="sd">        infinitely (until the program ends) and does the following steps:</span>
+<span class="sd">        This function is meant to be scheduled on the GLib main loop. When run,</span>
+<span class="sd">        it will go through the following steps:</span>
 
 <span class="sd">        - check if the job&#39;s result is not already available in the cache</span>
 <span class="sd">        - render it in a new :class:`~cairo.ImageSurface` if necessary</span>
@@ -460,25 +460,25 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">page_nb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_cache</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]:</span>
                 <span class="c1"># Already in cache</span>
-                <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="n">GLib</span><span class="o">.</span><span class="n">SOURCE_REMOVE</span>
             <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_size</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span>
             <span class="n">wtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_type</span><span class="p">[</span><span class="n">widget_name</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">ww</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">wh</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Widget </span><span class="si">{}</span><span class="s1"> with invalid size </span><span class="si">{}</span><span class="s1">x</span><span class="si">{}</span><span class="s1"> when rendering&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">widget_name</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">))</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="n">GLib</span><span class="o">.</span><span class="n">SOURCE_REMOVE</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_lock</span><span class="p">:</span>
             <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page_nb</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="n">GLib</span><span class="o">.</span><span class="n">SOURCE_REMOVE</span>
 
         <span class="c1"># Render to a ImageSurface</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_factory</span><span class="p">[</span><span class="n">widget_name</span><span class="p">](</span><span class="n">cairo</span><span class="o">.</span><span class="n">Format</span><span class="o">.</span><span class="n">RGB24</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Widget </span><span class="si">{}</span><span class="s1"> was not mapped when rendering&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">widget_name</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="n">GLib</span><span class="o">.</span><span class="n">SOURCE_REMOVE</span>
 
         <span class="n">context</span> <span class="o">=</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Context</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
         <span class="n">page</span><span class="o">.</span><span class="n">render_cairo</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span><span class="p">,</span> <span class="n">wtype</span><span class="p">)</span>
@@ -494,7 +494,7 @@
             <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pages</span><span class="p">:</span>
                 <span class="n">pc</span><span class="o">.</span><span class="n">popitem</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="kc">False</span></div></div>
+        <span class="k">return</span> <span class="n">GLib</span><span class="o">.</span><span class="n">SOURCE_REMOVE</span></div></div>
 
 
 <span class="c1">##</span>

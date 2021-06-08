@@ -248,7 +248,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.app.Pympress.do_activate">
-<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1621640536.953616</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1623141768.242523</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -378,7 +378,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.app.Pympress.version_string">
-<span class="sig-name descname"><span class="pre">version_string</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.1</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.5</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.4.0-1047-azure</span> <span class="pre">#49-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Thu</span> <span class="pre">Apr</span> <span class="pre">22</span> <span class="pre">14:30:37</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.0'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">version_string</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.1</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.5</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.4.0-1047-azure</span> <span class="pre">#49-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Thu</span> <span class="pre">Apr</span> <span class="pre">22</span> <span class="pre">14:30:37</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.1'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2585,9 +2585,9 @@ accesses to <a class="reference internal" href="#pympress.surfacecache.SurfaceCa
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.surfacecache.SurfaceCache.renderer">
 <span class="sig-name descname"><span class="pre">renderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_nb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/surfacecache.html#SurfaceCache.renderer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.surfacecache.SurfaceCache.renderer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Rendering thread.</p>
-<p>This function is meant to be run in the prerendering thread. It runs
-infinitely (until the program ends) and does the following steps:</p>
+<dd><p>Rendering function.</p>
+<p>This function is meant to be scheduled on the GLib main loop. When run,
+it will go through the following steps:</p>
 <ul class="simple">
 <li><p>check if the job’s result is not already available in the cache</p></li>
 <li><p>render it in a new <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/surfaces.html#cairo.ImageSurface" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageSurface</span></code></a> if necessary</p></li>
@@ -2651,12 +2651,12 @@ the process and the widget configuration is still valid</p></li>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.surfacecache.SurfaceCache.surface_cache">
 <span class="sig-name descname"><span class="pre">surface_cache</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.surfacecache.SurfaceCache.surface_cache" title="Permalink to this definition">¶</a></dt>
-<dd><p>The actual cache. It is a <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> of <code class="xref py py-class docutils literal notranslate"><span class="pre">Cache</span></code>:
-its keys are widget names and its values are <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> whose keys are page
-numbers and values are instances of <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/surfaces.html#cairo.ImageSurface" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageSurface</span></code></a>.
-In each <code class="xref py py-class docutils literal notranslate"><span class="pre">Cache</span></code> keys are ordered by Least Recently
-Used (get or set), when the size is beyond <a class="reference internal" href="#pympress.surfacecache.SurfaceCache.max_pages" title="pympress.surfacecache.SurfaceCache.max_pages"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_pages</span></code></a>, pages are
-popped from the start of the cache.</p>
+<dd><p>The actual cache. The <code class="xref py py-obj docutils literal notranslate"><span class="pre">dict`s</span> <span class="pre">keys</span> <span class="pre">are</span> <span class="pre">widget</span> <span class="pre">names</span> <span class="pre">and</span> <span class="pre">its</span> <span class="pre">values</span> <span class="pre">are</span>
+<span class="pre">:class:`~pympress.surfacecache.OrderedDict</span></code>, whose keys are page numbers
+and values are instances of <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/surfaces.html#cairo.ImageSurface" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageSurface</span></code></a>.
+In each <a class="reference internal" href="#pympress.surfacecache.OrderedDict" title="pympress.surfacecache.OrderedDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></a> keys are ordered by
+Least Recently Used (get or set), when the size is beyond
+<a class="reference internal" href="#pympress.surfacecache.SurfaceCache.max_pages" title="pympress.surfacecache.SurfaceCache.max_pages"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_pages</span></code></a>, pages are popped from the start of the cache.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -3417,7 +3417,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.pointer.Pointer.pointer">
-<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fe277afa040</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x5637c06cb9e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f53bbcbaec0</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x555ff33471e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
