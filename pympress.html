@@ -248,7 +248,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.app.Pympress.do_activate">
-<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1623141768.242523</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1623142021.8732948</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -2425,20 +2425,6 @@ is done by the <a class="reference internal" href="#pympress.surfacecache.Surfac
 Hence the prerendering isn’t really done in parallel in another thread, but
 scheduled on the main thread at idle times using GLib.idle_add().</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="pympress.surfacecache.OrderedDict">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.surfacecache.</span></span><span class="sig-name descname"><span class="pre">OrderedDict</span></span><a class="reference internal" href="_modules/pympress/surfacecache.html#OrderedDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.surfacecache.OrderedDict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/collections.html#collections.OrderedDict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">collections.OrderedDict</span></code></a></p>
-<p>OrderedDict for python2 compatibility, adding move_to_end().</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.surfacecache.OrderedDict.move_to_end">
-<span class="sig-name descname"><span class="pre">move_to_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/surfacecache.html#OrderedDict.move_to_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.surfacecache.OrderedDict.move_to_end" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move an existing key to either end of an ordered dictionary.</p>
-<p>Forward or reimplement <a class="reference external" href="https://docs.python.org/3.9/library/collections.html#collections.OrderedDict.move_to_end" title="(in Python v3.9)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">move_to_end()</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="pympress.surfacecache.SurfaceCache">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.surfacecache.</span></span><span class="sig-name descname"><span class="pre">SurfaceCache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_pages</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/surfacecache.html#SurfaceCache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.surfacecache.SurfaceCache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
@@ -2652,9 +2638,9 @@ the process and the widget configuration is still valid</p></li>
 <dt class="sig sig-object py" id="pympress.surfacecache.SurfaceCache.surface_cache">
 <span class="sig-name descname"><span class="pre">surface_cache</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.surfacecache.SurfaceCache.surface_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>The actual cache. The <code class="xref py py-obj docutils literal notranslate"><span class="pre">dict`s</span> <span class="pre">keys</span> <span class="pre">are</span> <span class="pre">widget</span> <span class="pre">names</span> <span class="pre">and</span> <span class="pre">its</span> <span class="pre">values</span> <span class="pre">are</span>
-<span class="pre">:class:`~pympress.surfacecache.OrderedDict</span></code>, whose keys are page numbers
+<span class="pre">:class:`~collections.OrderedDict</span></code>, whose keys are page numbers
 and values are instances of <a class="reference external" href="https://www.cairographics.org/documentation/pycairo/3/reference/surfaces.html#cairo.ImageSurface" title="(in Pycairo v1.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageSurface</span></code></a>.
-In each <a class="reference internal" href="#pympress.surfacecache.OrderedDict" title="pympress.surfacecache.OrderedDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></a> keys are ordered by
+In each <a class="reference external" href="https://docs.python.org/3.9/library/collections.html#collections.OrderedDict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedDict</span></code></a> keys are ordered by
 Least Recently Used (get or set), when the size is beyond
 <a class="reference internal" href="#pympress.surfacecache.SurfaceCache.max_pages" title="pympress.surfacecache.SurfaceCache.max_pages"><code class="xref py py-attr docutils literal notranslate"><span class="pre">max_pages</span></code></a>, pages are popped from the start of the cache.</p>
 </dd></dl>
@@ -3417,7 +3403,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.pointer.Pointer.pointer">
-<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f53bbcbaec0</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x555ff33471e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f494edf4c40</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55d37e0af9e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
