@@ -248,7 +248,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.app.Pympress.do_activate">
-<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1626962437.1035619</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1626964841.4588878</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -1167,14 +1167,14 @@ moving the middle pane is done (which happens at the end of a mouse resize)</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.ui.UI.swap_document">
-<span class="sig-name descname"><span class="pre">swap_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reloading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.swap_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.swap_document" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">swap_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reloading</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.swap_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.swap_document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace the currently open document with a new one.</p>
-<p>The new document is possibly and EmptyDocument if docpath is None.
+<p>The new document is possibly and EmptyDocument if doc_uri is None.
 The state of the ui and cache are updated accordingly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>docpath</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the absolute path to the new document</p></li>
+<li><p><strong>doc_uri</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the URI to the new document</p></li>
 <li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the page at which to start the presentation</p></li>
 <li><p><strong>reloading</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether we are reloading or detecting stuff from the document</p></li>
 </ul>
@@ -1358,7 +1358,7 @@ only rendering itself: the preparation of the target surface must be done
 elsewhere).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pympress.document.Document">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.document.</span></span><span class="sig-name descname"><span class="pre">Document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.document.</span></span><span class="sig-name descname"><span class="pre">Document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>This is the main document handling class.</p>
 <div class="admonition note">
@@ -1371,7 +1371,7 @@ starts at 0.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>builder</strong> (<a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.builder.Builder</span></code></a>) – A builder to load callbacks</p></li>
 <li><p><strong>pop_doc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code>) – Instance of the Poppler document that this class will wrap</p></li>
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Absolute path to the PDF file to open</p></li>
+<li><p><strong>uri</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – URI of the PDF file to open</p></li>
 <li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – page number to which the file should be opened</p></li>
 </ul>
 </dd>
@@ -1384,13 +1384,13 @@ starts at 0.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.document.Document.create">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.create" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes a Document by passing it a <a class="reference external" href="https://lazka.github.io/pgi-docs/Poppler-0.18/classes/Document.html#Poppler.Document" title="(in Poppler 0.18 v0.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>builder</strong> (<a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.builder.Builder</span></code></a>) – A builder to load callbacks</p></li>
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Absolute path to the PDF file to open</p></li>
+<li><p><strong>uri</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – URI to the PDF file to open</p></li>
 <li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – page number to which the file should be opened</p></li>
 </ul>
 </dd>
@@ -1422,20 +1422,6 @@ starts at 0.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.document.Document.get_path">
-<span class="sig-name descname"><span class="pre">get_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.get_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.get_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gives access to the path of this document.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the path to the file currently opened.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1659,12 +1645,6 @@ a page that has already been loaded.</p>
 <dt class="sig sig-object py" id="pympress.document.Document.path">
 <span class="sig-name descname"><span class="pre">path</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.document.Document.path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to pdf</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.document.Document.path_to_uri">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">path_to_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.path_to_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.path_to_uri" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform a path to a file URI, and maintains others URIs.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3403,7 +3383,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.pointer.Pointer.pointer">
-<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f7befea9400</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55addb1191e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f6db12b7740</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55c7179051e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -4531,13 +4511,13 @@ of all the resizeable items (if and only if resizeable).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.extras.FileWatcher.watch_file">
-<span class="sig-name descname"><span class="pre">watch_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.watch_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.watch_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">watch_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#FileWatcher.watch_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.FileWatcher.watch_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Watches a new file with a new callback. Removes any precedent watched files.</p>
 <p>If the optional watchdog dependency is missing, does nothing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – full path to the file to watch</p></li>
+<li><p><strong>uri</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – URI of the file to watch</p></li>
 <li><p><strong>callback</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">function</span></code>) – callback to call with all the further arguments when the file changes</p></li>
 </ul>
 </dd>

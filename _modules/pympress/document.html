@@ -211,14 +211,6 @@
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Poppler&#39;</span><span class="p">,</span> <span class="s1">&#39;0.18&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Poppler</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">scheme_chars</span>
-    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">pathname2url</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">scheme_chars</span>
-    <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">pathname2url</span>
-
-
 <span class="kn">from</span> <span class="nn">pympress.util</span> <span class="kn">import</span> <span class="n">fileopen</span>
 
 
@@ -785,7 +777,7 @@
 <span class="sd">    Args:</span>
 <span class="sd">        builder (:class:`pympress.builder.Builder`):  A builder to load callbacks</span>
 <span class="sd">        pop_doc (:class:`~pympress.Poppler.Document`):  Instance of the Poppler document that this class will wrap</span>
-<span class="sd">        path (`str`):  Absolute path to the PDF file to open</span>
+<span class="sd">        uri (`str`):  URI of the PDF file to open</span>
 <span class="sd">        page (`int`):  page number to which the file should be opened</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -817,7 +809,7 @@
     <span class="c1">#: callback, to be connected to :func:`~pympress.ui.UI.goto_page`</span>
     <span class="n">navigate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">pop_doc</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">pop_doc</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">builder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Connect callbacks</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">play_media</span>                <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;medias.play&#39;</span><span class="p">)</span>
@@ -827,7 +819,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">goto_prev_hist</span>            <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">get_callback_handler</span><span class="p">(</span><span class="s1">&#39;doc_hist_prev&#39;</span><span class="p">)</span>
 
         <span class="c1"># Setup PDF file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">pop_doc</span>
 
         <span class="c1"># Pages number</span>
@@ -913,44 +905,23 @@
         <span class="k">return</span> <span class="n">index</span></div>
 
 
-<div class="viewcode-block" id="Document.path_to_uri"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.path_to_uri">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">path_to_uri</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Transform a path to a file URI, and maintains others URIs.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Do not trust urlsplit, manually check we have an URI</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="s1">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">path</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
-        <span class="k">if</span> <span class="n">path</span><span class="p">[</span><span class="n">pos</span><span class="p">:</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;://&#39;</span> <span class="ow">and</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">path</span><span class="p">[:</span><span class="n">pos</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">scheme_chars</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">path</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># A msys/mingw path on windows has unexpected forward-slashes</span>
-            <span class="k">return</span> <span class="n">urljoin</span><span class="p">(</span><span class="s1">&#39;file:&#39;</span><span class="p">,</span> <span class="n">pathname2url</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">path</span></div>
-
-
 <div class="viewcode-block" id="Document.create"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.create">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initializes a Document by passing it a :class:`~Poppler.Document`.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            builder (:class:`pympress.builder.Builder`):  A builder to load callbacks</span>
-<span class="sd">            path (`str`):  Absolute path to the PDF file to open</span>
+<span class="sd">            uri (`str`):  URI to the PDF file to open</span>
 <span class="sd">            page (`int`):  page number to which the file should be opened</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            :class:`~pympress.document.Document`: The initialized document</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">uri</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">doc</span> <span class="o">=</span> <span class="n">EmptyDocument</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">uri</span> <span class="o">=</span> <span class="n">Document</span><span class="o">.</span><span class="n">path_to_uri</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
             <span class="n">poppler_doc</span> <span class="o">=</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">uri</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
-                <span class="n">scheme</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;://&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-            <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">poppler_doc</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">poppler_doc</span><span class="p">,</span> <span class="n">uri</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">doc</span></div>
 
@@ -1184,22 +1155,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hist_pos</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Document.get_path"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.get_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Gives access to the path of this document.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            `str`: the path to the file currently opened.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span></div>
-
-
 <div class="viewcode-block" id="Document.get_uri"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.get_uri">[docs]</a>    <span class="k">def</span> <span class="nf">get_uri</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gives access to the URI, rather than the path, of this document.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `str`: the URI to the file currently opened.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_to_uri</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">uri</span></div>
 
 
 <div class="viewcode-block" id="Document.get_full_path"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.get_full_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_full_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
