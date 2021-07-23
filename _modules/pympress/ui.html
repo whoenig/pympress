@@ -809,6 +809,8 @@
             <span class="c1"># don&#39;t toggle from NONE to NONE</span>
             <span class="k">if</span> <span class="n">target_mode</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">activate_action</span><span class="p">(</span><span class="s1">&#39;notes-pos&#39;</span><span class="p">,</span> <span class="n">target_mode</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">set_notes_after</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;page number&#39;</span><span class="p">)</span>
 
         <span class="c1"># Some things that need updating</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
@@ -834,7 +836,7 @@
 <div class="viewcode-block" id="UI.reload_document"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.reload_document">[docs]</a>    <span class="k">def</span> <span class="nf">reload_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reload the current document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">,</span> <span class="n">reloading</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_uri</span><span class="p">(),</span> <span class="n">page</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">,</span> <span class="n">reloading</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="UI.populate_recent_menu"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.populate_recent_menu">[docs]</a>    <span class="k">def</span> <span class="nf">populate_recent_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">is_opening</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -937,6 +939,10 @@
 
 <div class="viewcode-block" id="UI.open_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Open a document.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            target (:class:`~GLib.Variant`): the file to open as a string variant</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">get_string</span><span class="p">())</span></div>
 
@@ -1580,9 +1586,12 @@
 <div class="viewcode-block" id="UI.switch_blanked"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.switch_blanked">[docs]</a>    <span class="k">def</span> <span class="nf">switch_blanked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Switch the blanked mode of the content screen.</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
 <span class="sd">            param (:class:`~GLib.Variant`): the parameter as a variant, or None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `bool`: whether the notes blanking has been toggled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blanked</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">blanked</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
@@ -1593,6 +1602,12 @@
 
 <div class="viewcode-block" id="UI.layout_name"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.layout_name">[docs]</a>    <span class="k">def</span> <span class="nf">layout_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notes_mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the layout made for the selected notes_mode</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            notes_mode (:class:`~pympress.document.PdfPage`): the mode/positioning of notes</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `str`: a string representing the appropriate layout</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">notes_mode</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;page number&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;note_pages&#39;</span>
@@ -1624,7 +1639,12 @@
         <span class="sd">&quot;&quot;&quot; Switch the position of the nodes in the slide.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `bool`: whether the mode has been toggled.</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            target (:class:`~GLib.Variant`): the notes position as a string variant</span>
+<span class="sd">            force (`bool`): Whether to force the notes switch even if it’s already enabled</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `bool`: whether the notes position has been toggled</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">target_mode</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="p">[</span><span class="n">target</span><span class="o">.</span><span class="n">get_string</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
 
@@ -1649,7 +1669,12 @@
         <span class="sd">&quot;&quot;&quot; Switch the display mode to &quot;Notes mode&quot; or &quot;Normal mode&quot; (without notes).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `bool`: whether the mode has been toggled.</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            target_mode (:class:`~pympress.document.PdfPage`): the mode to which we should switch</span>
+<span class="sd">            force (`bool`): Whether to force the mode switch even if it’s already enabled</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `bool`: whether the notes mode has been toggled</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">target_mode</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">target_mode</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">PdfPage</span><span class="o">.</span><span class="n">NONE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">chosen_notes_mode</span>
@@ -1690,6 +1715,10 @@
 
 <div class="viewcode-block" id="UI.switch_annotations"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.switch_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">switch_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Switch the display to show annotations or to hide them.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            target (:class:`~GLib.Variant`): the parameter as a variant, or None</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the mode has been toggled.</span>
