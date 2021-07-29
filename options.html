@@ -93,6 +93,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration file</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#shortcuts">Shortcuts</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#layouts">Layouts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#themes-on-windows">Themes on Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pympress.html">Module documentation</a></li>
@@ -264,6 +265,36 @@ Here are a couple examples of layouts, with <code class="docutils literal notran
 <ul class="simple">
 <li><p>If you set “resizeable” to <code class="docutils literal notranslate"><span class="pre">false</span></code>, the panes won’t be resizeable dynamically with a handle in the middle</p></li>
 <li><p>“proportions” are normalized, and saved on exit if you resize panes during the execution. If you set them to <code class="docutils literal notranslate"><span class="pre">4</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code>, the panes will be <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">/</span> <span class="pre">(4</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">=</span> <span class="pre">20%</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">(4</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">=</span> <span class="pre">100%</span></code>, so the ini will contain something like <code class="docutils literal notranslate"><span class="pre">0.2</span></code> and <code class="docutils literal notranslate"><span class="pre">0.8</span></code> after executing pympress.</p></li>
+</ul>
+</div>
+<div class="section" id="themes-on-windows">
+<h2>Themes on Windows<a class="headerlink" href="#themes-on-windows" title="Permalink to this headline">¶</a></h2>
+<p>Pympress uses the default Gtk theme of your system, which makes it easy to change on many OSs either globally via your Gtk preferences or <a class="reference external" href="https://www.linuxuprising.com/2019/10/how-to-use-different-gtk-3-theme-for.html">per application</a>.
+Here’s the way to do it on windows:</p>
+<ol>
+<li><p>Install a theme</p>
+<p>There are 2 locations, either install the theme for all your gtk apps, e.g. in <code class="docutils literal notranslate"><span class="pre">C:\Users\%USERNAME%\AppData\Local\themes</span></code>, or just for pympress, so in <code class="docutils literal notranslate"><span class="pre">%INSTALLDIR%\share\themes</span></code> (for me that’s <code class="docutils literal notranslate"><span class="pre">C:\Users\%USERNAME%\AppData\Local\Programs\pympress\share\themes</span></code>)</p>
+<p>Basically pick a theme <a class="reference external" href="https://www.gnome-look.org/browse/cat/135/ord/rating/?tag=dark">e.g. from this list of dark themes</a> and make sure to unpack it in the selected directory, it needs at least <code class="docutils literal notranslate"><span class="pre">%THEMENAME%\gtk-3.0\gtk.css</span></code> and <code class="docutils literal notranslate"><span class="pre">%THEMENAME%\index.theme</span></code>, where <code class="docutils literal notranslate"><span class="pre">THEMENAME</span></code> is the name of the theme.</p>
+<p>There are 2 pitfalls to be aware of, to properly install a theme:</p>
+<ul class="simple">
+<li><p>themes that are not self-contained (relying on re-using css from default linux themes that you might not have), and</p></li>
+<li><p>linux links (files under gtk-3.0/ that point to a directory above and that need to be replaced by a directory containing the contents of the target directory that has the same name as the link file).</p></li>
+</ul>
+</li>
+<li><p>Set the theme as default</p>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">settings.ini</span></code> file, either under <code class="docutils literal notranslate"><span class="pre">C:\Users\%USERNAME%\AppData\Local\gtk-3.0</span></code> (global setting) or <code class="docutils literal notranslate"><span class="pre">%INSTALLDIR%\etc\gtk-3.0</span></code> (just pympress) and set the contents:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Settings]</span>
+<span class="na">gtk-theme-name</span><span class="o">=</span><span class="s">THEMENAME</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Here’s what it looks like with the <a class="reference external" href="https://www.gnome-look.org/p/1254680/">Obscure-Orange</a> theme.
+<img alt="VirtualBox_Win64_16_05_2021_01_23_19" src="https://user-images.githubusercontent.com/6126377/118380851-70d3d080-b5e5-11eb-97ac-65961f343a2d.png" /></p>
+<p>In testing this  found these 2 stackoverflow questions useful:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/a/39041558/1387346">Change GTK+3 look on Windows</a> which contains a list of all interesting directories</p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/a/37060369/1387346">How to get native windows decorations on GTK3 on Windows 7+ and MSYS2</a> which details the process</p></li>
 </ul>
 </div>
 </div>
