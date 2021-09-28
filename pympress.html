@@ -167,7 +167,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.app.Pympress.do_activate">
-<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1632410362.8853378</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1632832112.659533</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -630,8 +630,12 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 <dt class="sig sig-object py" id="pympress.ui.UI.get_notes_mode">
 <span class="sig-name descname"><span class="pre">get_notes_mode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.get_notes_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.get_notes_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple getter.</p>
-<dl class="simple">
-<dt>Returns (<a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a>):</dt><dd><p>Truthy when we split slides in content + notes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Truthy when we split slides in content + notes</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -645,6 +649,12 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 <dd class="field-odd"><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the page to which to go. Will be clipped to document pages.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.ui.UI.grid_next">
+<span class="sig-name descname"><span class="pre">grid_next</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.grid_next" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Grid.html#Gtk.Grid" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a> for the next slide(s) in the Presenter window.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -689,6 +699,12 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 <dt class="sig sig-object py" id="pympress.ui.UI.laser_button">
 <span class="sig-name descname"><span class="pre">laser_button</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.laser_button" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go toggle the pointer</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.ui.UI.layout_editor">
+<span class="sig-name descname"><span class="pre">layout_editor</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.layout_editor" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">LayoutEditor</span></code> popup to configure the layouts of the presenter window</p>
 </dd></dl>
 
 <dl class="py method">
@@ -760,6 +776,12 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 <dt class="sig sig-object py" id="pympress.ui.UI.next_button">
 <span class="sig-name descname"><span class="pre">next_button</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.next_button" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ToolButton.html#Gtk.ToolButton" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolButton</span></code></a> big button for touch screens, go to next slide</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.ui.UI.next_frames_count">
+<span class="sig-name descname"><span class="pre">next_frames_count</span></span><em class="property"> <span class="pre">=</span> <span class="pre">16</span></em><a class="headerlink" href="#pympress.ui.UI.next_frames_count" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> the number of next slides currently on display in the “Next slides” pane, initialized to the maximal number</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -912,12 +934,11 @@ moving the middle pane is done (which happens at the end of a mouse resize)</p>
 <span class="sig-name descname"><span class="pre">open_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.open_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.open_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a document.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the action triggering the call
-target (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>): the file to open as a string variant</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>gaction (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>)</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the file to open as a string variant</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -935,15 +956,15 @@ target (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLi
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.ui.UI.p_da_next">
-<span class="sig-name descname"><span class="pre">p_da_next</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_da_next" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the next slide in the Presenter window.</p>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.ui.UI.p_da_notes">
 <span class="sig-name descname"><span class="pre">p_da_notes</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_da_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the current slide in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.ui.UI.p_das_next">
+<span class="sig-name descname"><span class="pre">p_das_next</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_das_next" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/DrawingArea.html#Gtk.DrawingArea" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DrawingArea</span></code></a> for the next slide in the Presenter window.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -955,19 +976,19 @@ target (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLi
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.ui.UI.p_frame_cur">
 <span class="sig-name descname"><span class="pre">p_frame_cur</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_cur" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the current slide copy in the Presenter window.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.ui.UI.p_frame_next">
-<span class="sig-name descname"><span class="pre">p_frame_next</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_next" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the next slide in the Presenter window.</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the current slide copy in the Presenter window.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.ui.UI.p_frame_notes">
 <span class="sig-name descname"><span class="pre">p_frame_notes</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frame_notes" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the current slide in the Presenter window.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.ui.UI.p_frames_next">
+<span class="sig-name descname"><span class="pre">p_frames_next</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.p_frames_next" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/AspectFrame.html#Gtk.AspectFrame" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AspectFrame</span></code></a> for the next slide in the Presenter window.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -1031,6 +1052,20 @@ target (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLi
 <dt class="sig sig-object py" id="pympress.ui.UI.recent_menu">
 <span class="sig-name descname"><span class="pre">recent_menu</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.recent_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Menu</span></code> to display the recent files to open</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.ui.UI.reconfigure_next_frames">
+<span class="sig-name descname"><span class="pre">reconfigure_next_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.reconfigure_next_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.reconfigure_next_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the number of next frames to preview the the “next slides” panel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – the number of slides as a GVariant</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1232,7 +1267,7 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.ui.UI.timing">
 <span class="sig-name descname"><span class="pre">timing</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.timing" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#pympress.extras.TimingReport" title="pympress.extras.TimingReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimingReport</span></code></a> popup to show how much time was spent on which part</p>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">TimingReport</span></code> popup to show how much time was spent on which part</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3350,7 +3385,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.pointer.Pointer.pointer">
-<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f9028513d80</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55edc79131e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f96ada1c640</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x5651234cc1e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -4038,7 +4073,7 @@ targeted talk duration.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.talk_time.TimeCounter.timing_tracker">
 <span class="sig-name descname"><span class="pre">timing_tracker</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.talk_time.TimeCounter.timing_tracker" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <a class="reference internal" href="#pympress.extras.TimingReport" title="pympress.extras.TimingReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimingReport</span></code></a>, needs to know when the slides change</p>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">TimingReport</span></code>, needs to know when the slides change</p>
 </dd></dl>
 
 <dl class="py method">
@@ -4223,7 +4258,7 @@ Sorted on the timestamps.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.config.Config.placeable_widgets">
-<span class="sig-name descname"><span class="pre">placeable_widgets</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'annotations':</span> <span class="pre">'p_frame_annot',</span> <span class="pre">'current':</span> <span class="pre">'p_frame_cur',</span> <span class="pre">'highlight':</span> <span class="pre">'scribble_overlay',</span> <span class="pre">'next':</span> <span class="pre">'p_frame_next',</span> <span class="pre">'notes':</span> <span class="pre">'p_frame_notes'}</span></em><a class="headerlink" href="#pympress.config.Config.placeable_widgets" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">placeable_widgets</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'annotations':</span> <span class="pre">'p_frame_annot',</span> <span class="pre">'current':</span> <span class="pre">'p_frame_cur',</span> <span class="pre">'highlight':</span> <span class="pre">'scribble_overlay',</span> <span class="pre">'next':</span> <span class="pre">'grid_next',</span> <span class="pre">'notes':</span> <span class="pre">'p_frame_notes'}</span></em><a class="headerlink" href="#pympress.config.Config.placeable_widgets" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> of strings that are the valid representations of widgets from the presenter window
 that can be dynamically rearranged, mapping to their names</p>
 </dd></dl>
@@ -4275,8 +4310,8 @@ to fall back to the user profile location.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pympress.config.Config.update_layout">
-<span class="sig-name descname"><span class="pre">update_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pane_handle_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.update_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.config.Config.update_layout" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pympress.config.Config.update_layout_from_widgets">
+<span class="sig-name descname"><span class="pre">update_layout_from_widgets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pane_handle_pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.update_layout_from_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.config.Config.update_layout_from_widgets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setter for the notes layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -4284,6 +4319,20 @@ to fall back to the user profile location.</p>
 <li><p><strong>layout_name</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the layout to update</p></li>
 <li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget that will contain the layout.</p></li>
 <li><p><strong>pane_handle_pos</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – Map of <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Paned.html#Gtk.Paned" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paned</span></code></a> to the relative handle position (float in 0..1)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.config.Config.update_layout_tree">
+<span class="sig-name descname"><span class="pre">update_layout_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.update_layout_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.config.Config.update_layout_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the layout named <code class="xref py py-obj docutils literal notranslate"><span class="pre">layout_name</span></code>. Throws ValueError on invalid layouts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layout_name</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the name of the layout to update</p></li>
+<li><p><strong>layout</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – the hierarchy of dictionaries, lists, and strings representing the layout</p></li>
 </ul>
 </dd>
 </dl>
@@ -4353,25 +4402,12 @@ of all the resizeable items (if and only if resizeable).</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.config.Config.widget_reqs">
+<span class="sig-name descname"><span class="pre">widget_reqs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'highlight':</span> <span class="pre">({'highlight'},</span> <span class="pre">{'current',</span> <span class="pre">'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations'}),</span> <span class="pre">'note_pages':</span> <span class="pre">({'notes',</span> <span class="pre">'next',</span> <span class="pre">'annotations'},),</span> <span class="pre">'notes':</span> <span class="pre">({'current',</span> <span class="pre">'next',</span> <span class="pre">'notes'},</span> <span class="pre">{'annotations'}),</span> <span class="pre">'plain':</span> <span class="pre">({'current',</span> <span class="pre">'next',</span> <span class="pre">'annotations'},)}</span></em><a class="headerlink" href="#pympress.config.Config.widget_reqs" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> mapping layout ids to tuples of their expected and optional widgets</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pympress.config.layout_from_json">
-<span class="sig-prename descclassname"><span class="pre">pympress.config.</span></span><span class="sig-name descname"><span class="pre">layout_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#layout_from_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.config.layout_from_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the layout from config, with all strings cast to type <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> (even on python2 where they default to <code class="xref py py-obj docutils literal notranslate"><span class="pre">unicode</span></code>).</p>
-<p>Raises ValueError until python 3.4, json.decoder.JSONDecodeError afterwards, on invalid input.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>layout_string</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – A JSON string to be loaded.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pympress.config.recursive_unicode_to_str">
-<span class="sig-prename descclassname"><span class="pre">pympress.config.</span></span><span class="sig-name descname"><span class="pre">recursive_unicode_to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#recursive_unicode_to_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.config.recursive_unicode_to_str" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dummy function that does nothing, for python3.</p>
-<p>For python2 the equivalent function transforms strings to unicode.</p>
 </dd></dl>
 
 </div>
@@ -4652,115 +4688,6 @@ of all the resizeable items (if and only if resizeable).</p>
 <span class="sig-name descname"><span class="pre">types_list</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.extras.Media.types_list" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> containing backends and their mappings to mime type lists for which they are enabled.
 A default backend is marked by an empty list.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.extras.</span></span><span class="sig-name descname"><span class="pre">TimingReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#TimingReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.TimingReport" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.builder.Builder</span></code></a></p>
-<p>Widget tracking and displaying hierachically how much time was spent in each page/section of the presentation.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.clear_on_next_transition">
-<span class="sig-name descname"><span class="pre">clear_on_next_transition</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.extras.TimingReport.clear_on_next_transition" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> marking whether next page transition should reset the history of page timings</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.doc_structure">
-<span class="sig-name descname"><span class="pre">doc_structure</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.extras.TimingReport.doc_structure" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> containing the structure of the current document</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.document_open">
-<span class="sig-name descname"><span class="pre">document_open</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.extras.TimingReport.document_open" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> tracking whether a document is opened</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.end_time">
-<span class="sig-name descname"><span class="pre">end_time</span></span><em class="property"> <span class="pre">=</span> <span class="pre">-1</span></em><a class="headerlink" href="#pympress.extras.TimingReport.end_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> the time at which the clock was reset</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.format_time">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">format_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">secs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#TimingReport.format_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.TimingReport.format_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Formats a number of seconds as <code class="xref py py-obj docutils literal notranslate"><span class="pre">minutes:seconds</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The formatted time, with 2+ digits for minutes and 2 digits for seconds.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.page_labels">
-<span class="sig-name descname"><span class="pre">page_labels</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#pympress.extras.TimingReport.page_labels" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> with the page label of each page of the current document</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.page_time">
-<span class="sig-name descname"><span class="pre">page_time</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#pympress.extras.TimingReport.page_time" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of time at which each page was reached</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reset_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#TimingReport.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.TimingReport.reset" title="Permalink to this definition">¶</a></dt>
-<dd><p>A timer reset. Clear the history as soon as we start changing pages again.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.set_document_metadata">
-<span class="sig-name descname"><span class="pre">set_document_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#TimingReport.set_document_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.TimingReport.set_document_metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show the popup with the timing infortmation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>doc_structure</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>) – the structure of the document</p></li>
-<li><p><strong>page_labels</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – the page labels for each of the pages</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.show_report">
-<span class="sig-name descname"><span class="pre">show_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#TimingReport.show_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.TimingReport.show_report" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show the popup with the timing infortmation.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.time_report_dialog">
-<span class="sig-name descname"><span class="pre">time_report_dialog</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.TimingReport.time_report_dialog" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Dialog.html#Gtk.Dialog" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dialog</span></code></a> to contain the timing to show</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.timing_treeview">
-<span class="sig-name descname"><span class="pre">timing_treeview</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.TimingReport.timing_treeview" title="Permalink to this definition">¶</a></dt>
-<dd><p>The <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/TreeView.html#Gtk.TreeView" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a> containing the timing data to display in the dialog</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.TimingReport.transition">
-<span class="sig-name descname"><span class="pre">transition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#TimingReport.transition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.TimingReport.transition" title="Permalink to this definition">¶</a></dt>
-<dd><p>Record a transition time between slides.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the page number of the current slide</p></li>
-<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – the number of seconds elapsed since the beginning of the presentation</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

@@ -122,6 +122,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">gc</span>
 
@@ -131,7 +132,7 @@
 <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">GObject</span><span class="p">,</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">GdkPixbuf</span><span class="p">,</span> <span class="n">Gio</span>
 
 
-<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">document</span><span class="p">,</span> <span class="n">surfacecache</span><span class="p">,</span> <span class="n">util</span><span class="p">,</span> <span class="n">pointer</span><span class="p">,</span> <span class="n">scribble</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">talk_time</span><span class="p">,</span> <span class="n">extras</span><span class="p">,</span> <span class="n">editable_label</span>
+<span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">document</span><span class="p">,</span> <span class="n">surfacecache</span><span class="p">,</span> <span class="n">util</span><span class="p">,</span> <span class="n">pointer</span><span class="p">,</span> <span class="n">scribble</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">talk_time</span><span class="p">,</span> <span class="n">dialog</span><span class="p">,</span> <span class="n">extras</span><span class="p">,</span> <span class="n">editable_label</span>
 
 
 <div class="viewcode-block" id="UI"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI">[docs]</a><span class="k">class</span> <span class="nc">UI</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
@@ -155,11 +156,15 @@
     <span class="c1">#: :class:`~Gtk.DrawingArea` for the current slide in the Presenter window.</span>
     <span class="n">p_da_notes</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="c1">#: :class:`~Gtk.AspectFrame` for the next slide in the Presenter window.</span>
-    <span class="n">p_frame_next</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~Gtk.Grid` for the next slide(s) in the Presenter window.</span>
+    <span class="n">grid_next</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: `list` of :class:`~Gtk.AspectFrame` for the next slide in the Presenter window.</span>
+    <span class="n">p_frames_next</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~Gtk.DrawingArea` for the next slide in the Presenter window.</span>
-    <span class="n">p_da_next</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: :class:`~Gtk.AspectFrame` for the current slide copy in the Presenter window.</span>
+    <span class="n">p_das_next</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: `int` the number of next slides currently on display in the “Next slides” pane, initialized to the maximal number</span>
+    <span class="n">next_frames_count</span> <span class="o">=</span> <span class="mi">16</span>
+    <span class="c1">#: `list` of :class:`~Gtk.AspectFrame` for the current slide copy in the Presenter window.</span>
     <span class="n">p_frame_cur</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~Gtk.DrawingArea` for the current slide copy in the Presenter window.</span>
     <span class="n">p_da_cur</span> <span class="o">=</span> <span class="kc">None</span>
@@ -229,13 +234,15 @@
 
     <span class="c1">#: :class:`~pympress.editable_label.EstimatedTalkTime` to set estimated/remaining talk time</span>
     <span class="n">est_time</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: :class:`~pympress.extras.TimingReport` popup to show how much time was spent on which part</span>
+    <span class="c1">#: :class:`~pympress.dialog.TimingReport` popup to show how much time was spent on which part</span>
     <span class="n">timing</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~pympress.talk_time.TimeCounter` clock tracking talk time (elapsed, and remaining)</span>
     <span class="n">talk_time</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: A :class:`~Gtk.ShortcutsWindow` to show the shortcuts</span>
     <span class="n">shortcuts_window</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~pympress.dialog.LayoutEditor` popup to configure the layouts of the presenter window</span>
+    <span class="n">layout_editor</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: A :class:`~Gtk.AccelGroup` to store the shortcuts</span>
     <span class="n">accel_group</span> <span class="o">=</span> <span class="kc">None</span>
@@ -308,6 +315,8 @@
             <span class="s1">&#39;validate-input&#39;</span><span class="p">:</span>        <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">validate_current_input</span><span class="p">),</span>
             <span class="s1">&#39;cancel-input&#39;</span><span class="p">:</span>          <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cancel_current_input</span><span class="p">),</span>
             <span class="s1">&#39;align-content&#39;</span><span class="p">:</span>         <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">adjust_frame_position</span><span class="p">),</span>
+            <span class="s1">&#39;next-frames&#39;</span><span class="p">:</span>           <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reconfigure_next_frames</span><span class="p">,</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                                          <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span><span class="p">),</span>
         <span class="p">})</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
@@ -332,8 +341,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">laser</span> <span class="o">=</span> <span class="n">pointer</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">est_time</span> <span class="o">=</span> <span class="n">editable_label</span><span class="o">.</span><span class="n">EstimatedTalkTime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="n">editable_label</span><span class="o">.</span><span class="n">PageNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;scroll_number&#39;</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timing</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">TimingReport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timing</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">TimingReport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span> <span class="o">=</span> <span class="n">talk_time</span><span class="o">.</span><span class="n">TimeCounter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">est_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout_editor</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">LayoutEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">register_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -420,10 +430,15 @@
         <span class="n">pane_handles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replace_layout</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">placeable_widgets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_pane_event</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pane_handle_pos</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">pane_handles</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_frames_next</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;p_frame_next</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;p_da_next</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reconfigure_next_frames</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_int64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getint</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;next_slide_count&#39;</span><span class="p">)))</span>
+
         <span class="n">slide_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="p">,</span> <span class="n">slide_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="p">,</span> <span class="n">slide_type</span><span class="p">,</span> <span class="n">zoomed</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_da_next</span><span class="p">,</span> <span class="n">slide_type</span><span class="p">)</span>
+        <span class="c1"># A single cache for all next slides</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">slide_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">,</span> <span class="n">prerender_enabled</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribble_p_da</span><span class="p">,</span> <span class="n">slide_type</span><span class="p">,</span> <span class="n">prerender_enabled</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribble_p_da</span><span class="p">,</span> <span class="n">slide_type</span><span class="p">,</span> <span class="n">zoomed</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
@@ -437,6 +452,37 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">insert_action_group</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_win</span><span class="o">.</span><span class="n">get_action_group</span><span class="p">(</span><span class="s1">&#39;win&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="o">.</span><span class="n">insert_action_group</span><span class="p">(</span><span class="s1">&#39;win&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UI.reconfigure_next_frames"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.reconfigure_next_frames">[docs]</a>    <span class="k">def</span> <span class="nf">reconfigure_next_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the number of next frames to preview the the “next slides” panel</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
+<span class="sd">            param (:class:`~GLib.Variant`): the number of slides as a GVariant</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_frames</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">get_int64</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">n_frames</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">n_frames</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">n_frames</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">:</span>
+            <span class="n">n_frames</span> <span class="o">=</span> <span class="mi">16</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_next</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_frames_next</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_next</span><span class="o">.</span><span class="n">remove_row</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_next</span><span class="o">.</span><span class="n">remove_column</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n_frames</span><span class="p">)))</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_frames</span> <span class="o">+</span> <span class="n">rows</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">rows</span>
+
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_frames</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_next</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_frames_next</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">n</span> <span class="o">%</span> <span class="n">cols</span><span class="p">,</span> <span class="n">n</span> <span class="o">//</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span> <span class="o">=</span> <span class="n">n_frames</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">set_action_state</span><span class="p">(</span><span class="s1">&#39;next-frames&#39;</span><span class="p">,</span> <span class="n">n_frames</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;next_slide_count&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">n_frames</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="UI.setup_screens"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.setup_screens">[docs]</a>    <span class="k">def</span> <span class="nf">setup_screens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -563,7 +609,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">event</span><span class="o">.</span><span class="n">send_event</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">resize_widget</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">event</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">resize_widget</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0123456789&#39;</span><span class="p">),</span> <span class="n">event</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">c_da</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span>
@@ -611,14 +657,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resize_panes</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_da_next</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">da</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span><span class="p">:</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timeout</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">redraw_timeout</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="s1">&#39;highlight&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribbling_mode</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">),</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pane_handle_pos</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update_layout_from_widgets</span><span class="p">(</span>
+            <span class="s1">&#39;highlight&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribbling_mode</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p_central</span><span class="o">.</span><span class="n">get_children</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pane_handle_pos</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="UI.on_pane_event"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_pane_event">[docs]</a>    <span class="k">def</span> <span class="nf">on_pane_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">evt</span><span class="p">):</span>
@@ -863,7 +912,7 @@
 <div class="viewcode-block" id="UI.open_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Open a document.</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call</span>
 <span class="sd">            target (:class:`~GLib.Variant`): the file to open as a string variant</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -873,8 +922,8 @@
 <div class="viewcode-block" id="UI.get_notes_mode"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.get_notes_mode">[docs]</a>    <span class="k">def</span> <span class="nf">get_notes_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Simple getter.</span>
 
-<span class="sd">        Returns (:class:`~pympress.document.PdfPage`):</span>
-<span class="sd">            Truthy when we split slides in content + notes</span>
+<span class="sd">        Returns:</span>
+<span class="sd">             :class:`~pympress.document.PdfPage`: Truthy when we split slides in content + notes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes_mode</span></div>
 
@@ -1019,7 +1068,7 @@
 
         <span class="n">page_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">)</span>
         <span class="n">page_preview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">)</span>
-        <span class="n">page_next</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">pages_next</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span><span class="p">)]</span>
         <span class="n">page_notes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">notes_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">)</span>
 
         <span class="c1"># Aspect ratios and queue redraws</span>
@@ -1041,11 +1090,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribble_p_frame</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">content_pr</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">scribble_p_frame</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">page_next</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">next_pr</span> <span class="o">=</span> <span class="n">page_next</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">(</span><span class="n">draw_notes</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">p_frame_next</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">next_pr</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_da_next</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
+        <span class="n">next_pr</span> <span class="o">=</span> <span class="n">preview_pr</span>  <span class="c1"># A default page ratio</span>
+        <span class="k">for</span> <span class="n">page</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">da</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pages_next</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_frames_next</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">next_pr</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get_aspect_ratio</span><span class="p">(</span><span class="n">draw_page</span><span class="p">)</span>
+            <span class="n">frame</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">next_pr</span><span class="p">)</span>
+            <span class="n">da</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">add_annotations</span><span class="p">(</span><span class="n">page_preview</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">())</span>
 
@@ -1053,7 +1103,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">update_page_numbers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">,</span> <span class="n">page_preview</span><span class="o">.</span><span class="n">label</span><span class="p">())</span>
 
         <span class="c1"># Prerender the 4 next pages and the 2 previous ones</span>
-        <span class="n">page_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">page_max</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_frames_count</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span>
         <span class="n">page_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">page_max</span><span class="p">))</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">,</span> <span class="n">page_min</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">prerender</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
@@ -1099,16 +1149,20 @@
         <span class="k">elif</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="p">:</span>
             <span class="c1"># Notes page, aligned with preview</span>
             <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">notes_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;p_da_next&#39;</span><span class="p">):])</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
             <span class="c1"># No next page: just return so we won&#39;t draw anything</span>
             <span class="k">if</span> <span class="n">page</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Unknown widget &quot;</span><span class="si">{}</span><span class="s1">&quot; to draw&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">getname</span><span class="p">())))</span>
+            <span class="k">return</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">page</span><span class="o">.</span><span class="n">can_render</span><span class="p">():</span>
             <span class="k">return</span>
 
-        <span class="n">name</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;0123456789&#39;</span><span class="p">)</span>
         <span class="n">nb</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">number</span><span class="p">()</span>
         <span class="n">wtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">get_widget_type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">ww</span><span class="p">,</span> <span class="n">wh</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_allocated_width</span><span class="p">(),</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">()</span>
@@ -1124,7 +1178,7 @@
 
         <span class="n">pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">nb</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">pb</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_panes</span> <span class="ow">and</span> <span class="n">widget</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p_da_next</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_panes</span> <span class="ow">and</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="p">]:</span>
                 <span class="c1"># too slow to render here when resize_panes things</span>
                 <span class="k">return</span>
 
@@ -1316,8 +1370,9 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="c1"># Where did the event occur?</span>
-        <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_next</span><span class="p">:</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;p_da_next&#39;</span><span class="p">):])</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="p">:</span>
             <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">notes_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="p">:</span>
@@ -1354,8 +1409,9 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="c1"># Where did the event occur?</span>
-        <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_next</span><span class="p">:</span>
-            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">widget</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_das_next</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;p_da_next&#39;</span><span class="p">):])</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_notes</span><span class="p">:</span>
             <span class="n">page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">notes_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">widget</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_da_cur</span><span class="p">:</span>

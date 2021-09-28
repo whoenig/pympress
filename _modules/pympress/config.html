@@ -108,8 +108,6 @@
 <span class="sd">---------------------------------------</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -130,47 +128,6 @@
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">util</span>
 
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">unicode</span>  <span class="c1"># trigger NameError in python3</span>
-
-    <span class="k">def</span> <span class="nf">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Recursively convert unicode to str (for python2).</span>
-
-<span class="sd">        Raises NameError in python3 as &#39;unicode&#39; is undefined</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            obj (`unicode` or `str` or `dict` or `list`): A unicode string to transform,</span>
-<span class="sd">                                                          or a container whose children to transform</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">unicode</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span><span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">}</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">obj</span>
-
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-<div class="viewcode-block" id="recursive_unicode_to_str"><a class="viewcode-back" href="../../pympress.html#pympress.config.recursive_unicode_to_str">[docs]</a>    <span class="k">def</span> <span class="nf">recursive_unicode_to_str</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Dummy function that does nothing, for python3.</span>
-
-<span class="sd">        For python2 the equivalent function transforms strings to unicode.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">obj</span></div>
-
-
-<div class="viewcode-block" id="layout_from_json"><a class="viewcode-back" href="../../pympress.html#pympress.config.layout_from_json">[docs]</a><span class="k">def</span> <span class="nf">layout_from_json</span><span class="p">(</span><span class="n">layout_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load the layout from config, with all strings cast to type `str` (even on python2 where they default to `unicode`).</span>
-
-<span class="sd">    Raises ValueError until python 3.4, json.decoder.JSONDecodeError afterwards, on invalid input.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        layout_string (`str`): A JSON string to be loaded.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">layout_string</span><span class="p">))</span></div>
-
-
 <div class="viewcode-block" id="Config"><a class="viewcode-back" href="../../pympress.html#pympress.config.Config">[docs]</a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>  <span class="c1"># python 2 fix</span>
     <span class="sd">&quot;&quot;&quot; Manage configuration :Get the configuration from its file and store its back.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -179,8 +136,16 @@
 
     <span class="c1">#: `dict` of strings that are the valid representations of widgets from the presenter window</span>
     <span class="c1">#: that can be dynamically rearranged, mapping to their names</span>
-    <span class="n">placeable_widgets</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_notes&quot;</span><span class="p">,</span> <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_cur&quot;</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_next&quot;</span><span class="p">,</span>
+    <span class="n">placeable_widgets</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_notes&quot;</span><span class="p">,</span> <span class="s2">&quot;current&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_cur&quot;</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">:</span> <span class="s2">&quot;grid_next&quot;</span><span class="p">,</span>
                          <span class="s2">&quot;annotations&quot;</span><span class="p">:</span> <span class="s2">&quot;p_frame_annot&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">:</span> <span class="s2">&quot;scribble_overlay&quot;</span><span class="p">}</span>
+
+    <span class="c1">#: `dict` mapping layout ids to tuples of their expected and optional widgets</span>
+    <span class="n">widget_reqs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;notes&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;annotations&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;annotations&quot;</span><span class="p">}),</span>
+        <span class="s1">&#39;plain&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">},),</span>
+        <span class="s1">&#39;note_pages&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">},),</span>
+        <span class="s1">&#39;highlight&#39;</span><span class="p">:</span>  <span class="p">({</span><span class="s2">&quot;highlight&quot;</span><span class="p">},</span> <span class="nb">set</span><span class="p">(</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;highlight&quot;</span><span class="p">})</span>
+    <span class="p">}</span>
 
     <span class="c1">#: `dict` mapping accelerator keys to actions</span>
     <span class="n">shortcuts</span> <span class="o">=</span> <span class="p">{}</span>
@@ -509,22 +474,24 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Following placeable_widgets were not specified: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">widget_missing</span><span class="p">)))</span></div>
 
 
+<div class="viewcode-block" id="Config.update_layout_tree"><a class="viewcode-back" href="../../pympress.html#pympress.config.Config.update_layout_tree">[docs]</a>    <span class="k">def</span> <span class="nf">update_layout_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">,</span> <span class="n">layout</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update the layout named `~layout_name`. Throws ValueError on invalid layouts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            layout_name (`str`): the name of the layout to update</span>
+<span class="sd">            layout (`dict`): the hierarchy of dictionaries, lists, and strings representing the layout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_layout</span><span class="p">(</span><span class="n">layout</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">widget_reqs</span><span class="p">[</span><span class="n">layout_name</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">layout</span></div>
+
+
 <div class="viewcode-block" id="Config.load_window_layouts"><a class="viewcode-back" href="../../pympress.html#pympress.config.Config.load_window_layouts">[docs]</a>    <span class="k">def</span> <span class="nf">load_window_layouts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Parse and validate layouts loaded from config, with fallbacks if needed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">widget_reqs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;notes&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;annotations&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;annotations&quot;</span><span class="p">}),</span>
-            <span class="s1">&#39;plain&#39;</span><span class="p">:</span>      <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">},),</span>
-            <span class="s1">&#39;note_pages&#39;</span><span class="p">:</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;current&quot;</span><span class="p">,</span> <span class="s2">&quot;highlight&quot;</span><span class="p">},),</span>
-            <span class="s1">&#39;highlight&#39;</span><span class="p">:</span>  <span class="p">({</span><span class="s2">&quot;highlight&quot;</span><span class="p">},</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeable_widgets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">-</span> <span class="p">{</span><span class="s2">&quot;highlight&quot;</span><span class="p">})</span>
-        <span class="p">}</span>
-
-        <span class="k">for</span> <span class="n">layout_name</span> <span class="ow">in</span> <span class="n">widget_reqs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">layout_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget_reqs</span><span class="p">:</span>
             <span class="c1"># Log error and keep default layout</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">loaded_layout</span> <span class="o">=</span> <span class="n">layout_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layout&#39;</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">))</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">validate_layout</span><span class="p">(</span><span class="n">loaded_layout</span><span class="p">,</span> <span class="o">*</span><span class="n">widget_reqs</span><span class="p">[</span><span class="n">layout_name</span><span class="p">])</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">loaded_layout</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_layout_tree</span><span class="p">(</span><span class="n">layout_name</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;layout&#39;</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">)))</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;Invalid layout for </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">layout_name</span><span class="p">))</span></div>
 
@@ -592,10 +559,10 @@
 <div class="viewcode-block" id="Config.get_layout"><a class="viewcode-back" href="../../pympress.html#pympress.config.Config.get_layout">[docs]</a>    <span class="k">def</span> <span class="nf">get_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Getter for the `~layout_name` layout.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">recursive_unicode_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="Config.update_layout"><a class="viewcode-back" href="../../pympress.html#pympress.config.Config.update_layout">[docs]</a>    <span class="k">def</span> <span class="nf">update_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">):</span>
+<div class="viewcode-block" id="Config.update_layout_from_widgets"><a class="viewcode-back" href="../../pympress.html#pympress.config.Config.update_layout_from_widgets">[docs]</a>    <span class="k">def</span> <span class="nf">update_layout_from_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout_name</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Setter for the notes layout.</span>
 
 <span class="sd">        Args:</span>
@@ -603,7 +570,7 @@
 <span class="sd">            widget (:class:`~Gtk.Widget`): the widget that will contain the layout.</span>
 <span class="sd">            pane_handle_pos (`dict`): Map of :class:`~Gtk.Paned` to the relative handle position (float in 0..1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="n">layout_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_layout_tree</span><span class="p">(</span><span class="n">layout_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget_layout_to_tree</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">))</span></div></div>
 </pre></div>
 
            </div>
