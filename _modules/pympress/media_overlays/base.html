@@ -151,9 +151,9 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        container (:class:`~Gtk.Overlay`): The container with the slide, at the top of which we add the movie area</span>
-<span class="sd">        show_controls (`bool`): whether to display controls on the video player</span>
 <span class="sd">        page_type (:class:`~pympress.document.PdfPage`): the part of the page to display</span>
-<span class="sd">        relative_margins (:class:`~Poppler.Rectangle`): the margins defining the position of the video in the frame.</span>
+<span class="sd">        action_map (:class:`~Gio.ActionMap`): the action map that contains the actions for this media</span>
+<span class="sd">        media (:class:`~pympress.document.Media`): the object defining the properties of the video such as position etc.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: :class:`~Gtk.Overlay` that is the parent of the VideoOverlay widget.</span>
     <span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span>
@@ -171,6 +171,8 @@
     <span class="n">relative_margins</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: `bool` that tracks whether we should play automatically</span>
     <span class="n">autoplay</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1">#: `bool` that tracks whether we should play after we finished playing</span>
+    <span class="n">repeat</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1">#: `bool` that tracks whether the user is dragging the position</span>
     <span class="n">dragging_position</span> <span class="o">=</span> <span class="kc">False</span>
@@ -184,21 +186,26 @@
     <span class="c1">#: :class:`~Gio.ActionMap` containing the actios for this video overlay</span>
     <span class="n">action_map</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_map</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_map</span><span class="p">,</span> <span class="n">media</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">VideoOverlay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">container</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">relative_page_margins</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;y1&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relative_page_margins</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;y2&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;y1&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_margins_for_page</span><span class="p">(</span><span class="n">page_type</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">load_ui</span><span class="p">(</span><span class="s1">&#39;media_overlay&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">show_controls</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">show_controls</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">connect_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># medias, here the actions are scoped to the current widget</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span> <span class="o">=</span> <span class="n">action_map</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">media_overlay</span><span class="o">.</span><span class="n">insert_action_group</span><span class="p">(</span><span class="s1">&#39;media&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">autoplay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">repeat</span>
+        <span class="c1"># TODO: handle poster</span>
 
 
 <div class="viewcode-block" id="VideoOverlay.handle_embed"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.handle_embed">[docs]</a>    <span class="k">def</span> <span class="nf">handle_embed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapped_widget</span><span class="p">):</span>
@@ -254,6 +261,15 @@
         <span class="sd">&quot;&quot;&quot; Callback to toggle play/pausing from clicking on the DrawingArea</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;pause&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="VideoOverlay.handle_end"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.handle_end">[docs]</a>    <span class="k">def</span> <span class="nf">handle_end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; End of the stream reached: restart if looping, otherwise hide overlay</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">repeat</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;stop&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_map</span><span class="o">.</span><span class="n">lookup_action</span><span class="p">(</span><span class="s1">&#39;set_time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_double</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="VideoOverlay.update_margins_for_page"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.base.VideoOverlay.update_margins_for_page">[docs]</a>    <span class="k">def</span> <span class="nf">update_margins_for_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_type</span><span class="p">):</span>

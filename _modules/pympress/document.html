@@ -129,15 +129,12 @@
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Poppler&#39;</span><span class="p">,</span> <span class="s1">&#39;0.18&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Poppler</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">url2pathname</span>
 
 <span class="kn">from</span> <span class="nn">pympress.util</span> <span class="kn">import</span> <span class="n">fileopen</span>
 
@@ -318,6 +315,10 @@
         <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">:</span> <span class="n">fun</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">)),</span> <span class="o">**</span><span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">))</span></div></div>
 
 
+<span class="c1">#: A class that holds all the properties for media files</span>
+<span class="n">Media</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Media&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;relative_margins&#39;</span><span class="p">,</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="s1">&#39;autoplay&#39;</span><span class="p">,</span> <span class="s1">&#39;repeat&#39;</span><span class="p">,</span> <span class="s1">&#39;poster&#39;</span><span class="p">,</span>
+                                         <span class="s1">&#39;show_controls&#39;</span><span class="p">],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">])</span>
+
 
 <div class="viewcode-block" id="Page"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Page">[docs]</a><span class="k">class</span> <span class="nc">Page</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Class representing a single page.</span>
@@ -339,7 +340,7 @@
     <span class="n">page_label</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: All the links in the page, as a `list` of :class:`~pympress.document.Link` instances</span>
     <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1">#: All the media in the page, as a `list` of tuples of (area, filename)</span>
+    <span class="c1">#: All the media in the page, as a `list` of :class:`~pympress.document.Media`</span>
     <span class="n">medias</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1">#: `float`, page width</span>
     <span class="n">pw</span> <span class="o">=</span> <span class="mf">0.</span>
@@ -386,19 +387,27 @@
             <span class="k">elif</span> <span class="n">annot_type</span> <span class="o">==</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">MOVIE</span><span class="p">:</span>
                 <span class="n">movie</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">get_movie</span><span class="p">()</span>
                 <span class="n">filepath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">(</span><span class="n">movie</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
-                <span class="k">if</span> <span class="n">filepath</span><span class="p">:</span>
-                    <span class="c1"># TODO there is no autoplay, or repeatCount</span>
-                    <span class="n">relative_margins</span> <span class="o">=</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">()</span>
-                    <span class="n">relative_margins</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">x1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span>        <span class="c1"># left</span>
-                    <span class="n">relative_margins</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">x2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span>  <span class="c1"># right</span>
-                    <span class="n">relative_margins</span><span class="o">.</span><span class="n">y1</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span>        <span class="c1"># bottom</span>
-                    <span class="n">relative_margins</span><span class="o">.</span><span class="n">y2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">y2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span>  <span class="c1"># top</span>
-                    <span class="n">media</span> <span class="o">=</span> <span class="p">(</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">movie</span><span class="o">.</span><span class="n">show_controls</span><span class="p">())</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">media</span><span class="p">)</span>
-                    <span class="n">action</span> <span class="o">=</span> <span class="n">Link</span><span class="o">.</span><span class="n">build_closure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">play_media</span><span class="p">,</span> <span class="nb">hash</span><span class="p">(</span><span class="n">media</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">filepath</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Pympress can not find file &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">movie</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
                     <span class="k">continue</span>
+
+                <span class="n">relative_margins</span> <span class="o">=</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">()</span>
+                <span class="n">relative_margins</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">x1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span>        <span class="c1"># left</span>
+                <span class="n">relative_margins</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">x2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span>  <span class="c1"># right</span>
+                <span class="n">relative_margins</span><span class="o">.</span><span class="n">y1</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span>        <span class="c1"># bottom</span>
+                <span class="n">relative_margins</span><span class="o">.</span><span class="n">y2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">annotation</span><span class="o">.</span><span class="n">area</span><span class="o">.</span><span class="n">y2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span>  <span class="c1"># top</span>
+
+                <span class="n">movie_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;show_controls&#39;</span><span class="p">:</span> <span class="n">movie</span><span class="o">.</span><span class="n">show_controls</span><span class="p">(),</span> <span class="s1">&#39;poster&#39;</span><span class="p">:</span> <span class="n">movie</span><span class="o">.</span><span class="n">need_poster</span><span class="p">()}</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">movie_options</span><span class="p">[</span><span class="s1">&#39;repeat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">movie</span><span class="o">.</span><span class="n">get_play_mode</span><span class="p">()</span> <span class="o">==</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">MoviePlayMode</span><span class="o">.</span><span class="n">REPEAT</span>
+                    <span class="c1"># NB: autoplay not part of Poppler’s MovieActivationParameters struct</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">pass</span>  <span class="c1"># Missing functions in pre-21.04 Poppler versions</span>
+
+                <span class="n">media</span> <span class="o">=</span> <span class="n">Media</span><span class="p">(</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="o">**</span><span class="n">movie_options</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">media</span><span class="p">)</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">Link</span><span class="o">.</span><span class="n">build_closure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">play_media</span><span class="p">,</span> <span class="nb">hash</span><span class="p">(</span><span class="n">media</span><span class="p">))</span>
+
             <span class="k">elif</span> <span class="n">annot_type</span> <span class="o">==</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">SCREEN</span><span class="p">:</span>
                 <span class="n">action_obj</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">get_action</span><span class="p">()</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">action_obj</span><span class="p">:</span>
@@ -558,14 +567,21 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Pympress can not find file &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">media</span><span class="o">.</span><span class="n">get_filename</span><span class="p">())</span>
                     <span class="k">return</span> <span class="kc">None</span>
 
-            <span class="c1"># TODO grab the show_controls, autoplay, repeat</span>
             <span class="n">relative_margins</span> <span class="o">=</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">()</span>
             <span class="n">relative_margins</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">x1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span>        <span class="c1"># left</span>
             <span class="n">relative_margins</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rect</span><span class="o">.</span><span class="n">x2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span>  <span class="c1"># right</span>
             <span class="n">relative_margins</span><span class="o">.</span><span class="n">y1</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">y1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span>        <span class="c1"># bottom</span>
             <span class="n">relative_margins</span><span class="o">.</span><span class="n">y2</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">rect</span><span class="o">.</span><span class="n">y2</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span>  <span class="c1"># top</span>
 
-            <span class="n">media</span> <span class="o">=</span> <span class="p">(</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">media_options</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">media_options</span><span class="p">[</span><span class="s1">&#39;autoplay&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">get_auto_play</span><span class="p">()</span>
+                <span class="n">media_options</span><span class="p">[</span><span class="s1">&#39;show_controls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">get_show_controls</span><span class="p">()</span>
+                <span class="n">media_options</span><span class="p">[</span><span class="s1">&#39;repeat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">media</span><span class="o">.</span><span class="n">get_repeat_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="c1"># NB: no poster in Poppler’s MediaParameters</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="n">media</span> <span class="o">=</span> <span class="n">Media</span><span class="p">(</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">media_options</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">media</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Link</span><span class="o">.</span><span class="n">build_closure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">play_media</span><span class="p">,</span> <span class="nb">hash</span><span class="p">(</span><span class="n">media</span><span class="p">))</span>
 

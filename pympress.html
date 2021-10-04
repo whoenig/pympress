@@ -167,7 +167,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.app.Pympress.do_activate">
-<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1632835901.4470599</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1633360643.096699</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -297,7 +297,7 @@
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.app.Pympress.version_string">
-<span class="sig-name descname"><span class="pre">version_string</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.4</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.7</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.8.0-1041-azure</span> <span class="pre">#44~20.04.1-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Fri</span> <span class="pre">Aug</span> <span class="pre">20</span> <span class="pre">20:41:09</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.1'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">version_string</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'Pympress:</span> <span class="pre">1.6.4</span> <span class="pre">;</span> <span class="pre">Python:</span> <span class="pre">3.9.7</span> <span class="pre">;</span> <span class="pre">OS:</span> <span class="pre">Linux</span> <span class="pre">5.8.0-1042-azure</span> <span class="pre">#45~20.04.1-Ubuntu</span> <span class="pre">SMP</span> <span class="pre">Wed</span> <span class="pre">Sep</span> <span class="pre">15</span> <span class="pre">14:24:15</span> <span class="pre">UTC</span> <span class="pre">2021</span> <span class="pre">;</span> <span class="pre">Gtk</span> <span class="pre">3.24.20</span> <span class="pre">;</span> <span class="pre">GLib</span> <span class="pre">2.64.2</span> <span class="pre">;</span> <span class="pre">Poppler</span> <span class="pre">0.86.1</span> <span class="pre">cairo</span> <span class="pre">;</span> <span class="pre">Cairo</span> <span class="pre">1.16.0</span> <span class="pre">,</span> <span class="pre">pycairo</span> <span class="pre">1.20.1'</span></em><a class="headerlink" href="#pympress.app.Pympress.version_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1856,6 +1856,49 @@ Also, it has no “rendering” capability, and is made harmless by overriding i
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="pympress.document.Media">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.document.</span></span><span class="sig-name descname"><span class="pre">Media</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relative_margins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autoplay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_controls</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pympress.document.Media" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
+<p>A class that holds all the properties for media files</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Media.autoplay">
+<span class="sig-name descname"><span class="pre">autoplay</span></span><a class="headerlink" href="#pympress.document.Media.autoplay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Media.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#pympress.document.Media.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Media.poster">
+<span class="sig-name descname"><span class="pre">poster</span></span><a class="headerlink" href="#pympress.document.Media.poster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Media.relative_margins">
+<span class="sig-name descname"><span class="pre">relative_margins</span></span><a class="headerlink" href="#pympress.document.Media.relative_margins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Media.repeat">
+<span class="sig-name descname"><span class="pre">repeat</span></span><a class="headerlink" href="#pympress.document.Media.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Media.show_controls">
+<span class="sig-name descname"><span class="pre">show_controls</span></span><a class="headerlink" href="#pympress.document.Media.show_controls" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="pympress.document.Page">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.document.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">page</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
@@ -2032,7 +2075,7 @@ if one exists, <a class="reference external" href="https://docs.python.org/3.9/l
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.document.Page.medias">
 <span class="sig-name descname"><span class="pre">medias</span></span><em class="property"> <span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#pympress.document.Page.medias" title="Permalink to this definition">¶</a></dt>
-<dd><p>All the media in the page, as a <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of tuples of (area, filename)</p>
+<dd><p>All the media in the page, as a <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="#pympress.document.Media" title="pympress.document.Media"><code class="xref py py-class docutils literal notranslate"><span class="pre">Media</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -3385,7 +3428,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.pointer.Pointer.pointer">
-<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f8027cd13c0</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55f32cda19e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7ffa45afbe40</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55da2fa0c9e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -4404,7 +4447,7 @@ of all the resizeable items (if and only if resizeable).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.config.Config.widget_reqs">
-<span class="sig-name descname"><span class="pre">widget_reqs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'highlight':</span> <span class="pre">({'highlight'},</span> <span class="pre">{'current',</span> <span class="pre">'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations'}),</span> <span class="pre">'note_pages':</span> <span class="pre">({'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations'},),</span> <span class="pre">'notes':</span> <span class="pre">({'next',</span> <span class="pre">'notes',</span> <span class="pre">'current'},</span> <span class="pre">{'annotations'}),</span> <span class="pre">'plain':</span> <span class="pre">({'next',</span> <span class="pre">'current',</span> <span class="pre">'annotations'},)}</span></em><a class="headerlink" href="#pympress.config.Config.widget_reqs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">widget_reqs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'highlight':</span> <span class="pre">({'highlight'},</span> <span class="pre">{'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations',</span> <span class="pre">'current'}),</span> <span class="pre">'note_pages':</span> <span class="pre">({'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations'},),</span> <span class="pre">'notes':</span> <span class="pre">({'next',</span> <span class="pre">'notes',</span> <span class="pre">'current'},</span> <span class="pre">{'annotations'}),</span> <span class="pre">'plain':</span> <span class="pre">({'next',</span> <span class="pre">'annotations',</span> <span class="pre">'current'},)}</span></em><a class="headerlink" href="#pympress.config.Config.widget_reqs" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> mapping layout ids to tuples of their expected and optional widgets</p>
 </dd></dl>
 
@@ -5059,16 +5102,16 @@ A default backend is marked by an empty list.</p>
 <h3><a class="reference internal" href="#module-pympress.media_overlays.base" title="pympress.media_overlays.base"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.media_overlays.base</span></code></a> – widget to play videos with a backend like VLC<a class="headerlink" href="#pympress-media-overlays-base-widget-to-play-videos-with-a-backend-like-vlc" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pympress.media_overlays.base.VideoOverlay">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.media_overlays.base.</span></span><span class="sig-name descname"><span class="pre">VideoOverlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_controls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_margins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_map</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/base.html#VideoOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.media_overlays.base.</span></span><span class="sig-name descname"><span class="pre">VideoOverlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">media</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/base.html#VideoOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pympress.builder.Builder" title="pympress.builder.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.builder.Builder</span></code></a></p>
 <p>Simple Video widget.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>container</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Overlay.html#Gtk.Overlay" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Overlay</span></code></a>) – The container with the slide, at the top of which we add the movie area</p></li>
-<li><p><strong>show_controls</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether to display controls on the video player</p></li>
 <li><p><strong>page_type</strong> (<a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a>) – the part of the page to display</p></li>
-<li><p><strong>relative_margins</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Poppler-0.18/classes/Rectangle.html#Poppler.Rectangle" title="(in Poppler 0.18 v0.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rectangle</span></code></a>) – the margins defining the position of the video in the frame.</p></li>
+<li><p><strong>action_map</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">ActionMap</span></code>) – the action map that contains the actions for this media</p></li>
+<li><p><strong>media</strong> (<a class="reference internal" href="#pympress.document.Media" title="pympress.document.Media"><code class="xref py py-class docutils literal notranslate"><span class="pre">Media</span></code></a>) – the object defining the properties of the video such as position etc.</p></li>
 </ul>
 </dd>
 </dl>
@@ -5185,6 +5228,12 @@ A default backend is marked by an empty list.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pympress.media_overlays.base.VideoOverlay.handle_end">
+<span class="sig-name descname"><span class="pre">handle_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/base.html#VideoOverlay.handle_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay.handle_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>End of the stream reached: restart if looping, otherwise hide overlay</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pympress.media_overlays.base.VideoOverlay.is_playing">
 <span class="sig-name descname"><span class="pre">is_playing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/base.html#VideoOverlay.is_playing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay.is_playing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether the media is currently playing (and not paused).</p>
@@ -5273,6 +5322,12 @@ A default backend is marked by an empty list.</p>
 <dt class="sig sig-object py" id="pympress.media_overlays.base.VideoOverlay.relative_page_margins">
 <span class="sig-name descname"><span class="pre">relative_page_margins</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay.relative_page_margins" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tuple</span></code></a> containing the left/top/right/bottom space around the drawing area in the PDF page</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.media_overlays.base.VideoOverlay.repeat">
+<span class="sig-name descname"><span class="pre">repeat</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.media_overlays.base.VideoOverlay.repeat" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> that tracks whether we should play after we finished playing</p>
 </dd></dl>
 
 <dl class="py method">
@@ -5373,13 +5428,13 @@ A default backend is marked by an empty list.</p>
 <h3><code class="xref py py-mod docutils literal notranslate"><span class="pre">pympress.media_overlays.gif</span></code> – widget to play gif images as videos<a class="headerlink" href="#pympress-media-overlays-gif-widget-to-play-gif-images-as-videos" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pympress.media_overlays.gif_backend.GifOverlay">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.media_overlays.gif_backend.</span></span><span class="sig-name descname"><span class="pre">GifOverlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_controls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_margins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_getter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gif_backend.html#GifOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gif_backend.GifOverlay" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pympress.media_overlays.gif_backend.</span></span><span class="sig-name descname"><span class="pre">GifOverlay</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gif_backend.html#GifOverlay"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gif_backend.GifOverlay" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pympress.media_overlays.base.VideoOverlay" title="pympress.media_overlays.base.VideoOverlay"><code class="xref py py-class docutils literal notranslate"><span class="pre">pympress.media_overlays.base.VideoOverlay</span></code></a></p>
 <p>A simple overlay mimicking the functionality of showing videos, but showing gifs instead.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.media_overlays.gif_backend.GifOverlay.advance_gif">
 <span class="sig-name descname"><span class="pre">advance_gif</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/media_overlays/gif_backend.html#GifOverlay.advance_gif"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.media_overlays.gif_backend.GifOverlay.advance_gif" title="Permalink to this definition">¶</a></dt>
-<dd><p>Advance the gif,  queue redrawing if the frame changed, and schedule the next frame.</p>
+<dd><p>Advance the gif, queue redrawing if the frame changed, and schedule the next frame.</p>
 </dd></dl>
 
 <dl class="py attribute">

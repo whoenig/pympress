@@ -134,16 +134,16 @@
     <span class="c1">#: The :class:`~cairo.Matrix` defining the zoom &amp; shift to scale the gif</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">callback_getter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GifOverlay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
         <span class="c1"># override: no toolbar or interactive stuff for a gif, replace the whole widget area with a GdkPixbuf</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">GifOverlay</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">callback_getter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toolbar</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># we&#39;ll manually draw on the movie zone</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">movie_zone</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;draw&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">movie_zone</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;configure-event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_transform</span><span class="p">)</span>
-
-        <span class="c1"># automatically show</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span> <span class="o">=</span> <span class="kc">True</span>
 
 
 <div class="viewcode-block" id="GifOverlay.set_file"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.set_file">[docs]</a>    <span class="k">def</span> <span class="nf">set_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
@@ -186,7 +186,7 @@
 
 
 <div class="viewcode-block" id="GifOverlay.advance_gif"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gif_backend.GifOverlay.advance_gif">[docs]</a>    <span class="k">def</span> <span class="nf">advance_gif</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Advance the gif,  queue redrawing if the frame changed, and schedule the next frame.</span>
+        <span class="sd">&quot;&quot;&quot; Advance the gif, queue redrawing if the frame changed, and schedule the next frame.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="o">.</span><span class="n">advance</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">movie_zone</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>

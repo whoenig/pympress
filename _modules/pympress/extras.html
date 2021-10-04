@@ -121,11 +121,7 @@
 
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">functools</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">url2pathname</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">document</span><span class="p">,</span> <span class="n">builder</span>
 
@@ -262,16 +258,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">remove_media_overlays</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">show_controls</span> <span class="ow">in</span> <span class="n">current_page</span><span class="o">.</span><span class="n">get_media</span><span class="p">():</span>
-            <span class="n">media_id</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">((</span><span class="n">relative_margins</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">media</span> <span class="ow">in</span> <span class="n">current_page</span><span class="o">.</span><span class="n">get_media</span><span class="p">():</span>
+            <span class="n">media_id</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="n">media</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">media_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">:</span>
-                <span class="n">mime_type</span><span class="p">,</span> <span class="n">enc</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">mime_type</span><span class="p">,</span> <span class="n">enc</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
                 <span class="n">factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_factory</span><span class="p">(</span><span class="n">mime_type</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">factory</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;No available overlay for mime type </span><span class="si">{}</span><span class="s1">, ignoring media </span><span class="si">{}</span><span class="s1">&#39;</span>
-                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mime_type</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mime_type</span><span class="p">,</span> <span class="n">media</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
                     <span class="k">continue</span>
 
                 <span class="n">action_group</span> <span class="o">=</span> <span class="n">Gio</span><span class="o">.</span><span class="n">SimpleActionGroup</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>
@@ -282,21 +278,17 @@
                     <span class="s1">&#39;set_time&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">set_time</span><span class="p">,</span> <span class="n">media_id</span><span class="p">),</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
                 <span class="p">},</span> <span class="n">action_group</span><span class="p">)</span>
 
-                <span class="n">v_da_c</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_overlay</span><span class="p">,</span> <span class="n">show_controls</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_group</span><span class="p">)</span>
-                <span class="n">v_da_p</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_overlay</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">relative_margins</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_group</span><span class="p">)</span>
-
-                <span class="n">v_da_c</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-                <span class="n">v_da_p</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">v_da_c</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c_overlay</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_group</span><span class="p">,</span> <span class="n">media</span><span class="p">)</span>
+                <span class="n">v_da_p</span> <span class="o">=</span> <span class="n">factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_overlay</span><span class="p">,</span> <span class="n">page_type</span><span class="p">,</span> <span class="n">action_group</span><span class="p">,</span> <span class="n">media</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">show_controls</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_da_c</span><span class="p">,</span> <span class="n">v_da_p</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mute</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mute</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]:</span>
-                <span class="k">if</span> <span class="n">w</span><span class="o">.</span><span class="n">autoplay</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">set_time</span><span class="p">(</span><span class="n">media_id</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_double</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-                    <span class="n">w</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">overlay</span><span class="o">.</span><span class="n">autoplay</span> <span class="k">for</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_media_overlays</span><span class="p">[</span><span class="n">media_id</span><span class="p">]):</span>
+                <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">play</span><span class="p">,</span> <span class="n">media_id</span><span class="p">)</span></div>
+            <span class="c1"># TODO: handle poster</span>
 
 
 <div class="viewcode-block" id="Media.resize"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
