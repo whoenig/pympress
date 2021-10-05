@@ -108,20 +108,18 @@
 <span class="sd">-----------------------------------------------------------------------------------------------------</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">gi</span>
-<span class="kn">import</span> <span class="nn">cairo</span>
-<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Gio</span>
-
+<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
+
+<span class="kn">import</span> <span class="nn">gi</span>
+<span class="kn">import</span> <span class="nn">cairo</span>
+<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Gtk&#39;</span><span class="p">,</span> <span class="s1">&#39;3.0&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gi.repository</span> <span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span><span class="p">,</span> <span class="n">Gio</span>
 
 <span class="kn">from</span> <span class="nn">pympress</span> <span class="kn">import</span> <span class="n">document</span><span class="p">,</span> <span class="n">builder</span>
 
@@ -129,28 +127,60 @@
 <div class="viewcode-block" id="Annotations"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations">[docs]</a><span class="k">class</span> <span class="nc">Annotations</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Widget displaying a PDF’s text annotations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#: The containing :class:`~Gtk.TextView` widget for the annotations</span>
-    <span class="n">annotations_textview</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: :class:`~Gtk.ScrolledWindow` making the annotations list scroll if it&#39;s too long</span>
-    <span class="n">scrolled_window</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The containing :class:`~Gtk.TreeView` widget for the annotations</span>
+    <span class="n">annotations_treeview</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The containing :class:`~Gtk.ListStore` storing the annotations to be displayed</span>
+    <span class="n">annotations_liststore</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The :class:`~Gtk.Entry` in which we are currently editing an annotation, or None</span>
+    <span class="n">editing</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">new_doc_annotation</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="n">set_doc_annotation</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="n">remove_doc_annotation</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Annotations</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">builder</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
+            <span class="s1">&#39;add-annotation&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_annotation</span><span class="p">),</span>
+            <span class="s1">&#39;remove-annotation&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_annotation</span><span class="p">),</span>
+        <span class="p">})</span>
 
 
-<div class="viewcode-block" id="Annotations.add_annotations"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.add_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annotations</span><span class="p">):</span>
+<div class="viewcode-block" id="Annotations.load_annotations"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.load_annotations">[docs]</a>    <span class="k">def</span> <span class="nf">load_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">annot_page</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add annotations to be displayed (typically on going to a new slide).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            annotations (`list`): A list of strings, that are the annotations to be displayed</span>
+<span class="sd">            annot_page (:class:`~pympress.document.Page`): The page object that contains the annotations</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">buf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_textview</span><span class="o">.</span><span class="n">get_buffer</span><span class="p">()</span>
-        <span class="n">buf</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">annotations</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">num</span><span class="p">,</span> <span class="n">annot</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">annot_page</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">annot</span><span class="o">.</span><span class="n">get_contents</span><span class="p">(),</span> <span class="n">num</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_doc_annotation</span> <span class="o">=</span> <span class="n">annot_page</span><span class="o">.</span><span class="n">new_annotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_doc_annotation</span> <span class="o">=</span> <span class="n">annot_page</span><span class="o">.</span><span class="n">set_annotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_doc_annotation</span> <span class="o">=</span> <span class="n">annot_page</span><span class="o">.</span><span class="n">remove_annotation</span></div>
 
 
-<div class="viewcode-block" id="Annotations.on_scroll"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.on_scroll">[docs]</a>    <span class="k">def</span> <span class="nf">on_scroll</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Try scrolling the annotations window.</span>
+<div class="viewcode-block" id="Annotations.try_cancel"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.try_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">try_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Try to cancel editing</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `bool`: whether editing was enabled and thus canceled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_treeview</span><span class="o">.</span><span class="n">get_selection</span><span class="p">()</span><span class="o">.</span><span class="n">get_selected_rows</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">annotations_treeview</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Annotations.key_event"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.key_event">[docs]</a>    <span class="k">def</span> <span class="nf">key_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle a key (press/release) event.</span>
+
+<span class="sd">        Needed to forward events directly to the :class:`~Gtk.Entry`, bypassing the global action accelerators.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which has received the event.</span>
@@ -159,14 +189,77 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            `bool`: whether the event was consumed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">adj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrolled_window</span><span class="o">.</span><span class="n">get_vadjustment</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">ScrollDirection</span><span class="o">.</span><span class="n">UP</span><span class="p">:</span>
-            <span class="n">adj</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">adj</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">-</span> <span class="n">adj</span><span class="o">.</span><span class="n">get_step_increment</span><span class="p">())</span>
-        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">direction</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">ScrollDirection</span><span class="o">.</span><span class="n">DOWN</span><span class="p">:</span>
-            <span class="n">adj</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">adj</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">+</span> <span class="n">adj</span><span class="o">.</span><span class="n">get_step_increment</span><span class="p">())</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">get_event_type</span><span class="p">()</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">KEY_PRESS</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editing</span><span class="o">.</span><span class="n">do_key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editing</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">get_event_type</span><span class="p">()</span> <span class="o">==</span> <span class="n">Gdk</span><span class="o">.</span><span class="n">EventType</span><span class="o">.</span><span class="n">KEY_RELEASE</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">editing</span><span class="o">.</span><span class="n">do_key_release_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editing</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Annotations.editing_started"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.editing_started">[docs]</a>    <span class="k">def</span> <span class="nf">editing_started</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_renderer</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle edit start</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cell_renderer (:class:`~Gtk.CellRenderer`): The renderer which received the signal</span>
+<span class="sd">            widget (:class:`~Gtk.CellEditable`): the Gtk entry editing the annotation entry</span>
+<span class="sd">            entry_number (`str`): the string representation of the path identifying the edited cell</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="o">=</span> <span class="n">widget</span></div>
+
+
+<div class="viewcode-block" id="Annotations.editing_validated"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.editing_validated">[docs]</a>    <span class="k">def</span> <span class="nf">editing_validated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_renderer</span><span class="p">,</span> <span class="n">entry_number</span><span class="p">,</span> <span class="n">new_content</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle successful edit: store the new cell value in the model and the document</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cell_renderer (:class:`~Gtk.CellRenderer`): The renderer which received the signal</span>
+<span class="sd">            entry_number (`str`): the string representation of the path identifying the edited cell</span>
+<span class="sd">            new_content (`str`): the new value of the edited cell</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">TreePath</span><span class="o">.</span><span class="n">new_from_string</span><span class="p">(</span><span class="n">entry_number</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">get_iter</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">new_content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_doc_annotation</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">get_indices</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_content</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editing_finished</span><span class="p">(</span><span class="n">cell_renderer</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Annotations.editing_finished"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.editing_finished">[docs]</a>    <span class="k">def</span> <span class="nf">editing_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell_renderer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle the end of editing</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cell_renderer (:class:`~Gtk.CellRenderer`): The renderer which received the signal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">editing</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Annotations.add_annotation"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.add_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">add_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add an annotation to the the page’s annotation list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call, which identifies which backend</span>
+<span class="sd">            param (:class:`~GLib.Variant`): an optional parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">get_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">append</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations_treeview</span><span class="o">.</span><span class="n">set_cursor</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_treeview</span><span class="o">.</span><span class="n">get_columns</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_doc_annotation</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">get_indices</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Annotations.remove_annotation"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Annotations.remove_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">remove_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove an annotation to the from the page’s annotation list</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            gaction (:class:`~Gio.Action`): the action triggering the call, which identifies which backend</span>
+<span class="sd">            param (:class:`~GLib.Variant`): an optional parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations_treeview</span><span class="o">.</span><span class="n">get_selection</span><span class="p">()</span><span class="o">.</span><span class="n">get_selected_rows</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rows</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations_liststore</span><span class="o">.</span><span class="n">get_iter</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_doc_annotation</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_indices</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">return</span> <span class="kc">True</span></div></div>
+
 
 
 <div class="viewcode-block" id="Media"><a class="viewcode-back" href="../../pympress.html#pympress.extras.Media">[docs]</a><span class="k">class</span> <span class="nc">Media</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -737,17 +830,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
 
         <span class="n">scheme</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;://&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">url2pathname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">scheme</span> <span class="o">!=</span> <span class="s1">&#39;file&#39;</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Impossible to watch files with </span><span class="si">{}</span><span class="s1"> schemes&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scheme</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="o">.</span><span class="n">on_modified</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enqueue</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">src_path</span> <span class="o">==</span> <span class="n">path</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span> <span class="n">directory</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observer</span><span class="o">.</span><span class="n">schedule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">monitor</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">))</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Impossible to open dir at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">directory</span><span class="p">),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Impossible to open dir at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">)),</span> <span class="n">exc_info</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FileWatcher.stop_watching"><a class="viewcode-back" href="../../pympress.html#pympress.extras.FileWatcher.stop_watching">[docs]</a>    <span class="k">def</span> <span class="nf">stop_watching</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

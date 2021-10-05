@@ -118,19 +118,18 @@
 <span class="sd">elsewhere).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span><span class="p">,</span> <span class="n">pathname2url</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunsplit</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Poppler&#39;</span><span class="p">,</span> <span class="s1">&#39;0.18&#39;</span><span class="p">)</span>
@@ -376,11 +375,8 @@
 
         <span class="c1"># Read annotations, in particular those that indicate media</span>
         <span class="k">for</span> <span class="n">annotation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">get_annot_mapping</span><span class="p">():</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
             <span class="n">annot_type</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">get_annot_type</span><span class="p">()</span>
+
             <span class="k">if</span> <span class="n">annot_type</span> <span class="o">==</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">LINK</span><span class="p">:</span>
                 <span class="c1"># just an Annot, not subclassed -- probably redundant with links</span>
                 <span class="k">continue</span>
@@ -417,18 +413,22 @@
                     <span class="k">continue</span>
             <span class="k">elif</span> <span class="n">annot_type</span> <span class="o">==</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">FILE_ATTACHMENT</span><span class="p">:</span>
                 <span class="n">attachment</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">get_attachment</span><span class="p">()</span>
-                <span class="n">prefix</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">attachment</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">attachment</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">filename</span><span class="o">.</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">filename</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="c1"># now the file name is shotgunned</span>
-                    <span class="n">filename</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">filename</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">remove_on_exit</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">attachment</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">attachment</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)):</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Pympress can not extract attached file&quot;</span><span class="p">))</span>
                     <span class="k">continue</span>
                 <span class="n">action</span> <span class="o">=</span> <span class="n">Link</span><span class="o">.</span><span class="n">build_closure</span><span class="p">(</span><span class="n">fileopen</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">annot_type</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">POPUP</span><span class="p">,</span>
                                 <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">FREE_TEXT</span><span class="p">}:</span>
-                <span class="c1"># text-only annotations, hide them from screen</span>
+                <span class="c1"># text-only annotations, hide them from screen and show them in annotations popup</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="o">.</span><span class="n">get_contents</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="p">)</span>
+
                 <span class="bp">self</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">remove_annot</span><span class="p">(</span><span class="n">annotation</span><span class="o">.</span><span class="n">annot</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">elif</span> <span class="n">annot_type</span> <span class="ow">in</span> <span class="p">{</span><span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">STRIKE_OUT</span><span class="p">,</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotType</span><span class="o">.</span><span class="n">HIGHLIGHT</span><span class="p">,</span>
@@ -556,9 +556,9 @@
                 <span class="n">ext</span> <span class="o">=</span> <span class="n">get_extension</span><span class="p">(</span><span class="n">media</span><span class="o">.</span><span class="n">get_mime_type</span><span class="p">())</span>
                 <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;pdf_embed_&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                     <span class="c1"># now the file name is shotgunned</span>
-                    <span class="n">filename</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">filename</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">remove_on_exit</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">media</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">media</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="p">)):</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Pympress can not extract embedded media&quot;</span><span class="p">))</span>
                     <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
@@ -661,6 +661,57 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span></div>
 
 
+<div class="viewcode-block" id="Page.new_annotation"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Page.new_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">new_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add an annotation to this page</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pos (`int`): The position in the list of annotations in which to insert this annotation</span>
+<span class="sd">            rect (:class:`~Poppler.Rectangle`): A rectangle for the position of this annotation</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            :class:`~Poppler.Annot`: A new annotation on this page</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">):</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">rect</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">()</span>
+            <span class="n">rect</span><span class="o">.</span><span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pw</span> <span class="o">-</span> <span class="mi">20</span>
+            <span class="n">rect</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">20</span>
+            <span class="n">rect</span><span class="o">.</span><span class="n">y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ph</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span>
+            <span class="n">rect</span><span class="o">.</span><span class="n">y1</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">y2</span> <span class="o">-</span> <span class="mi">20</span>
+
+        <span class="n">new_annot</span> <span class="o">=</span> <span class="n">Poppler</span><span class="o">.</span><span class="n">AnnotText</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">doc</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span>
+        <span class="n">new_annot</span><span class="o">.</span><span class="n">set_icon</span><span class="p">(</span><span class="n">Poppler</span><span class="o">.</span><span class="n">ANNOT_TEXT_ICON_NOTE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">new_annot</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">made_changes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">new_annot</span></div>
+
+
+<div class="viewcode-block" id="Page.set_annotation"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Page.set_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">set_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add an annotation to this page</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pos (`int`): The number of the annotation</span>
+<span class="sd">            value (`str`): The new contents of the annotation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="o">.</span><span class="n">get_rectangle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remove_annotation</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_annotation</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">rect</span><span class="p">)</span><span class="o">.</span><span class="n">set_contents</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Page.remove_annotation"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Page.remove_annotation">[docs]</a>    <span class="k">def</span> <span class="nf">remove_annotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add an annotation to this page</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pos (`int`): The number of the annotation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">made_changes</span><span class="p">()</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="Page.get_media"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Page.get_media">[docs]</a>    <span class="k">def</span> <span class="nf">get_media</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the list of medias this page might want to play.</span>
 
@@ -735,7 +786,7 @@
     <span class="c1">#: navigation in the document faster by avoiding calls to Poppler when loading</span>
     <span class="c1">#: a page that has already been loaded.</span>
     <span class="n">pages_cache</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c1">#: Files that are temporary and need to be removed</span>
+    <span class="c1">#: `set` of :class:`~pathlib.Path` representing the temporary files which need to be removed</span>
     <span class="n">temp_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
     <span class="c1">#: History of pages we have visited</span>
     <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
@@ -745,6 +796,8 @@
     <span class="n">page_labels</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1">#: `bool` indicating whether the second half of pages are in fact notes pages</span>
     <span class="n">notes_after</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1">#: `bool` indicating whether there were modifications to the document</span>
+    <span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="c1">#: callback, to be connected to :func:`~pympress.extras.Media.play`</span>
     <span class="n">play_media</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span>
@@ -765,6 +818,7 @@
         <span class="c1"># Setup PDF file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">pop_doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="c1"># Pages number</span>
         <span class="k">if</span> <span class="n">pop_doc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -868,6 +922,48 @@
             <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="n">poppler_doc</span><span class="p">,</span> <span class="n">uri</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">doc</span></div>
+
+
+<div class="viewcode-block" id="Document.made_changes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.made_changes">[docs]</a>    <span class="k">def</span> <span class="nf">made_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Notify the document that some changes were made (e.g. annotations edited)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Document.has_changes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.has_changes">[docs]</a>    <span class="k">def</span> <span class="nf">has_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return whether that some changes were made (e.g. annotations edited)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">changes</span></div>
+
+
+<div class="viewcode-block" id="Document.save_changes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.save_changes">[docs]</a>    <span class="k">def</span> <span class="nf">save_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest_uri</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Save the changes</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dest_uri (`str` or `None`): The URI where to save the file, or None to save in-place</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages_cache</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">():</span>
+                <span class="n">page</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">add_annot</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dest_uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dest_uri</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">dest_uri</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># We can’t overwrite the current file directly, so create a temporary file and then overwrite</span>
+            <span class="n">uri_parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span>
+            <span class="n">cur_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">cur_path</span><span class="o">.</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">cur_path</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">cur_path</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
+                                             <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">temp_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">urlunsplit</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">pathname2url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">temp_path</span><span class="p">))))):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">temp_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">cur_path</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages_cache</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">():</span>
+                <span class="n">page</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">remove_annot</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Document.guess_notes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.Document.guess_notes">[docs]</a>    <span class="k">def</span> <span class="nf">guess_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">horizontal</span><span class="p">,</span> <span class="n">vertical</span><span class="p">,</span> <span class="n">current_page</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -1112,18 +1208,17 @@
         <span class="sd">&quot;&quot;&quot; Returns full path, extrapolated from a path relative to this document or to the current directory.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            filename (`str`):  Name of the file or relative path to it</span>
+<span class="sd">            filename (:class:`~pathlib.Path`):  Name of the file or relative path to it</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            `str`: the full path to the file or None if it doesn&#39;t exist</span>
+<span class="sd">            :class:`~pathlib.Path`: the full path to the file or None if it doesn&#39;t exist</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">filepath</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isabs</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">filename</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
 
-        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;://&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">])),</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()]:</span>
-            <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">urlsplit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span><span class="o">.</span><span class="n">path</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()]:</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">dirname</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">filepath</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">filepath</span></div>
 
 
@@ -1131,7 +1226,7 @@
         <span class="sd">&quot;&quot;&quot; Remember a temporary file to delete later.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            filename (`str`): The path to the file to delete</span>
+<span class="sd">            filename (:class:`~pathlib.Path`): The path to the file to delete</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></div>
 
@@ -1140,7 +1235,8 @@
         <span class="sd">&quot;&quot;&quot; Removes all files that were extracted from the pdf into the filesystem.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">temp_files</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp_files</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div></div>
 
 

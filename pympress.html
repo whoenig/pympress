@@ -167,7 +167,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.app.Pympress.do_activate">
-<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1633360643.096699</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">do_activate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1633453007.7961009</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/app.html#Pympress.do_activate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.app.Pympress.do_activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate: show UI windows.</p>
 <p>Build them if they do not exist, otherwise bring to front.</p>
 </dd></dl>
@@ -610,8 +610,13 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.ui.UI.error_opening_file">
-<span class="sig-name descname"><span class="pre">error_opening_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.error_opening_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.error_opening_file" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">error_opening_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.error_opening_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.error_opening_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove the current document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uri</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the URI of the document</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -860,6 +865,20 @@ be updated, and updates it, using the
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pympress.ui.UI.on_key_input">
+<span class="sig-name descname"><span class="pre">on_key_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_key_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_key_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle key strokes at top level, only for when editing needs to bypass action accelerators</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Widget.html#Gtk.Widget" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></a>) – the widget which has received the key stroke</p></li>
+<li><p><strong>event</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gdk-3.0/classes/Event.html#Gdk.Event" title="(in Gdk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Event</span></code></a>) – the GTK event, which contains the key stroke details</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pympress.ui.UI.on_navigation">
 <span class="sig-name descname"><span class="pre">on_navigation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.on_navigation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.on_navigation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manage key presses for both windows.</p>
@@ -1100,6 +1119,18 @@ moving the middle pane is done (which happens at the end of a mouse resize)</p>
 <dd><p>Indicates whether we should delay redraws on some drawing areas to fluidify resizing gtk.paned</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.ui.UI.save_file">
+<span class="sig-name descname"><span class="pre">save_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.save_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.save_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the current document.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.ui.UI.save_file_as">
+<span class="sig-name descname"><span class="pre">save_file_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.save_file_as"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.save_file_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the current document.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.ui.UI.scribbler">
 <span class="sig-name descname"><span class="pre">scribbler</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.ui.UI.scribbler" title="Permalink to this definition">¶</a></dt>
@@ -1313,6 +1344,23 @@ force (<a class="reference external" href="https://docs.python.org/3.9/library/f
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pympress.ui.UI.unsaved_changes">
+<span class="sig-name descname"><span class="pre">unsaved_changes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.unsaved_changes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.unsaved_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prompt the user about what to do with changes in the document: save, discard, or cancel action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reload</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – The unsaved changes is prompted by reloading the file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#True" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> iff we need to cancel the current action</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pympress.ui.UI.update_frame_position">
 <span class="sig-name descname"><span class="pre">update_frame_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/ui.html#UI.update_frame_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.ui.UI.update_frame_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Callback to preview the frame alignment, called from the Gtk.SpinButton.</p>
@@ -1378,6 +1426,12 @@ starts at 0.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.document.Document.changes">
+<span class="sig-name descname"><span class="pre">changes</span></span><em class="property"> <span class="pre">=</span> <span class="pre">False</span></em><a class="headerlink" href="#pympress.document.Document.changes" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a> indicating whether there were modifications to the document</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.document.Document.cleanup_media_files">
 <span class="sig-name descname"><span class="pre">cleanup_media_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.cleanup_media_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.cleanup_media_files" title="Permalink to this definition">¶</a></dt>
@@ -1417,13 +1471,13 @@ starts at 0.</p>
 <dd><p>Returns full path, extrapolated from a path relative to this document or to the current directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – Name of the file or relative path to it</p>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – Name of the file or relative path to it</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the full path to the file or None if it doesn’t exist</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1489,6 +1543,12 @@ starts at 0.</p>
 <dd class="field-odd"><p><a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.document.Document.has_changes">
+<span class="sig-name descname"><span class="pre">has_changes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.has_changes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.has_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether that some changes were made (e.g. annotations edited)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1561,6 +1621,12 @@ starts at 0.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.document.Document.made_changes">
+<span class="sig-name descname"><span class="pre">made_changes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.made_changes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.made_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Notify the document that some changes were made (e.g. annotations edited)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1661,7 +1727,18 @@ a page that has already been loaded.</p>
 <dd><p>Remember a temporary file to delete later.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The path to the file to delete</p>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>) – The path to the file to delete</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.document.Document.save_changes">
+<span class="sig-name descname"><span class="pre">save_changes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dest_uri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Document.save_changes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Document.save_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the changes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dest_uri</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>) – The URI where to save the file, or None to save in-place</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1686,7 +1763,7 @@ a page that has already been loaded.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.document.Document.temp_files">
 <span class="sig-name descname"><span class="pre">temp_files</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#pympress.document.Document.temp_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Files that are temporary and need to be removed</p>
+<dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#set" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a> of <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a> representing the temporary files which need to be removed</p>
 </dd></dl>
 
 </dd></dl>
@@ -2079,6 +2156,26 @@ if one exists, <a class="reference external" href="https://docs.python.org/3.9/l
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pympress.document.Page.new_annotation">
+<span class="sig-name descname"><span class="pre">new_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Page.new_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Page.new_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an annotation to this page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – The position in the list of annotations in which to insert this annotation</p></li>
+<li><p><strong>rect</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Poppler-0.18/classes/Rectangle.html#Poppler.Rectangle" title="(in Poppler 0.18 v0.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rectangle</span></code></a>) – A rectangle for the position of this annotation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A new annotation on this page</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Poppler-0.18/classes/Annot.html#Poppler.Annot" title="(in Poppler 0.18 v0.18)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Annot</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pympress.document.Page.number">
 <span class="sig-name descname"><span class="pre">number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Page.number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Page.number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the page number.</p>
@@ -2121,6 +2218,17 @@ if one exists, <a class="reference external" href="https://docs.python.org/3.9/l
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pympress.document.Page.remove_annotation">
+<span class="sig-name descname"><span class="pre">remove_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Page.remove_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Page.remove_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an annotation to this page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pos</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – The number of the annotation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pympress.document.Page.render_cairo">
 <span class="sig-name descname"><span class="pre">render_cairo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ww</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">PdfPage.FULL</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Page.render_cairo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Page.render_cairo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Render the page on a Cairo surface.</p>
@@ -2131,6 +2239,20 @@ if one exists, <a class="reference external" href="https://docs.python.org/3.9/l
 <li><p><strong>ww</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – target width in pixels</p></li>
 <li><p><strong>wh</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – target height in pixels</p></li>
 <li><p><strong>dtype</strong> (<a class="reference internal" href="#pympress.document.PdfPage" title="pympress.document.PdfPage"><code class="xref py py-class docutils literal notranslate"><span class="pre">PdfPage</span></code></a>) – the type of document that should be rendered</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.document.Page.set_annotation">
+<span class="sig-name descname"><span class="pre">set_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/document.html#Page.set_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.document.Page.set_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an annotation to this page</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pos</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – The number of the annotation</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The new contents of the annotation</p></li>
 </ul>
 </dd>
 </dl>
@@ -3428,7 +3550,7 @@ clicking while ctrl pressed.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.pointer.Pointer.pointer">
-<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7ffa45afbe40</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55da2fa0c9e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">pointer</span></span><em class="property"> <span class="pre">=</span> <span class="pre">&lt;GdkPixbuf.Pixbuf</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7f461d112980</span> <span class="pre">(GdkPixbuf</span> <span class="pre">at</span> <span class="pre">0x55d9fad345e0)&gt;</span></em><a class="headerlink" href="#pympress.pointer.Pointer.pointer" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a> to read XML descriptions of GUIs and load them.</p>
 </dd></dl>
 
@@ -4250,7 +4372,7 @@ Sorted on the timestamps.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pympress.config.Config.getfloat">
 <span class="sig-name descname"><span class="pre">getfloat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/config.html#Config.getfloat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.config.Config.getfloat" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for confiparser’s to handle parsing errors when a fallback is given.</p>
+<dd><p>Wrapper for configparser’s to handle parsing errors when a fallback is given.</p>
 <p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">getfloat()</span></code></p>
 </dd></dl>
 
@@ -4295,6 +4417,12 @@ Sorted on the timestamps.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>search_legacy_locations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – whether to look in previously used locations</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The path to the config file to use</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -4447,7 +4575,7 @@ of all the resizeable items (if and only if resizeable).</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pympress.config.Config.widget_reqs">
-<span class="sig-name descname"><span class="pre">widget_reqs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'highlight':</span> <span class="pre">({'highlight'},</span> <span class="pre">{'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations',</span> <span class="pre">'current'}),</span> <span class="pre">'note_pages':</span> <span class="pre">({'next',</span> <span class="pre">'notes',</span> <span class="pre">'annotations'},),</span> <span class="pre">'notes':</span> <span class="pre">({'next',</span> <span class="pre">'notes',</span> <span class="pre">'current'},</span> <span class="pre">{'annotations'}),</span> <span class="pre">'plain':</span> <span class="pre">({'next',</span> <span class="pre">'annotations',</span> <span class="pre">'current'},)}</span></em><a class="headerlink" href="#pympress.config.Config.widget_reqs" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">widget_reqs</span></span><em class="property"> <span class="pre">=</span> <span class="pre">{'highlight':</span> <span class="pre">({'highlight'},</span> <span class="pre">{'next',</span> <span class="pre">'annotations',</span> <span class="pre">'current',</span> <span class="pre">'notes'}),</span> <span class="pre">'note_pages':</span> <span class="pre">({'notes',</span> <span class="pre">'annotations',</span> <span class="pre">'next'},),</span> <span class="pre">'notes':</span> <span class="pre">({'notes',</span> <span class="pre">'current',</span> <span class="pre">'next'},</span> <span class="pre">{'annotations'}),</span> <span class="pre">'plain':</span> <span class="pre">({'next',</span> <span class="pre">'annotations',</span> <span class="pre">'current'},)}</span></em><a class="headerlink" href="#pympress.config.Config.widget_reqs" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a> mapping layout ids to tuples of their expected and optional widgets</p>
 </dd></dl>
 
@@ -4462,26 +4590,83 @@ of all the resizeable items (if and only if resizeable).</p>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Widget displaying a PDF’s text annotations.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.Annotations.add_annotations">
-<span class="sig-name descname"><span class="pre">add_annotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.add_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.add_annotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add annotations to be displayed (typically on going to a new slide).</p>
+<dt class="sig sig-object py" id="pympress.extras.Annotations.add_annotation">
+<span class="sig-name descname"><span class="pre">add_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.add_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.add_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an annotation to the the page’s annotation list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>annotations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – A list of strings, that are the annotations to be displayed</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call, which identifies which backend</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – an optional parameter</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.Annotations.annotations_textview">
-<span class="sig-name descname"><span class="pre">annotations_textview</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Annotations.annotations_textview" title="Permalink to this definition">¶</a></dt>
-<dd><p>The containing <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/TextView.html#Gtk.TextView" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextView</span></code></a> widget for the annotations</p>
+<dt class="sig sig-object py" id="pympress.extras.Annotations.annotations_liststore">
+<span class="sig-name descname"><span class="pre">annotations_liststore</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Annotations.annotations_liststore" title="Permalink to this definition">¶</a></dt>
+<dd><p>The containing <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ListStore.html#Gtk.ListStore" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListStore</span></code></a> storing the annotations to be displayed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.annotations_treeview">
+<span class="sig-name descname"><span class="pre">annotations_treeview</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Annotations.annotations_treeview" title="Permalink to this definition">¶</a></dt>
+<dd><p>The containing <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/TreeView.html#Gtk.TreeView" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeView</span></code></a> widget for the annotations</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.editing">
+<span class="sig-name descname"><span class="pre">editing</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Annotations.editing" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Entry.html#Gtk.Entry" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entry</span></code></a> in which we are currently editing an annotation, or None</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pympress.extras.Annotations.on_scroll">
-<span class="sig-name descname"><span class="pre">on_scroll</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.on_scroll"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.on_scroll" title="Permalink to this definition">¶</a></dt>
-<dd><p>Try scrolling the annotations window.</p>
+<dt class="sig sig-object py" id="pympress.extras.Annotations.editing_finished">
+<span class="sig-name descname"><span class="pre">editing_finished</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_renderer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.editing_finished"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.editing_finished" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle the end of editing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cell_renderer</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/CellRenderer.html#Gtk.CellRenderer" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellRenderer</span></code></a>) – The renderer which received the signal</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.editing_started">
+<span class="sig-name descname"><span class="pre">editing_started</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_renderer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entry_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.editing_started"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.editing_started" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle edit start</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell_renderer</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/CellRenderer.html#Gtk.CellRenderer" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellRenderer</span></code></a>) – The renderer which received the signal</p></li>
+<li><p><strong>widget</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/CellEditable.html#Gtk.CellEditable" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellEditable</span></code></a>) – the Gtk entry editing the annotation entry</p></li>
+<li><p><strong>entry_number</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the string representation of the path identifying the edited cell</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.editing_validated">
+<span class="sig-name descname"><span class="pre">editing_validated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_renderer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entry_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_content</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.editing_validated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.editing_validated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle successful edit: store the new cell value in the model and the document</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cell_renderer</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/CellRenderer.html#Gtk.CellRenderer" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CellRenderer</span></code></a>) – The renderer which received the signal</p></li>
+<li><p><strong>entry_number</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the string representation of the path identifying the edited cell</p></li>
+<li><p><strong>new_content</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – the new value of the edited cell</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.key_event">
+<span class="sig-name descname"><span class="pre">key_event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.key_event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.key_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle a key (press/release) event.</p>
+<p>Needed to forward events directly to the <a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/Entry.html#Gtk.Entry" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entry</span></code></a>, bypassing the global action accelerators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -4498,10 +4683,58 @@ of all the resizeable items (if and only if resizeable).</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pympress.extras.Annotations.scrolled_window">
-<span class="sig-name descname"><span class="pre">scrolled_window</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#pympress.extras.Annotations.scrolled_window" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/ScrolledWindow.html#Gtk.ScrolledWindow" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScrolledWindow</span></code></a> making the annotations list scroll if it’s too long</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.load_annotations">
+<span class="sig-name descname"><span class="pre">load_annotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annot_page</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.load_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.load_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add annotations to be displayed (typically on going to a new slide).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>annot_page</strong> (<a class="reference internal" href="#pympress.document.Page" title="pympress.document.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a>) – The page object that contains the annotations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.new_doc_annotation">
+<span class="sig-name descname"><span class="pre">new_doc_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.extras.Annotations.new_doc_annotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.remove_annotation">
+<span class="sig-name descname"><span class="pre">remove_annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.remove_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.remove_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an annotation to the from the page’s annotation list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gaction</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Action</span></code>) – the action triggering the call, which identifies which backend</p></li>
+<li><p><strong>param</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/GLib-2.0/classes/Variant.html#GLib.Variant" title="(in GLib 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variant</span></code></a>) – an optional parameter</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.remove_doc_annotation">
+<span class="sig-name descname"><span class="pre">remove_doc_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.extras.Annotations.remove_doc_annotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.set_doc_annotation">
+<span class="sig-name descname"><span class="pre">set_doc_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pympress.extras.Annotations.set_doc_annotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pympress.extras.Annotations.try_cancel">
+<span class="sig-name descname"><span class="pre">try_cancel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/extras.html#Annotations.try_cancel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.extras.Annotations.try_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Try to cancel editing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether editing was enabled and thus canceled</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -4929,7 +5162,7 @@ A default backend is marked by an empty list.</p>
 <dd><p>Call the right function to open files, based on the platform.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – path to the file to open</p>
+<dd class="field-odd"><p><strong>f</strong> (<em>path-like</em>) – path to the file to open</p>
 </dd>
 </dl>
 </dd></dl>
@@ -4943,7 +5176,7 @@ A default backend is marked by an empty list.</p>
 <dd class="field-odd"><p>The path to the portable configuration file.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -4951,16 +5184,16 @@ A default backend is marked by an empty list.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pympress.util.get_icon_path">
 <span class="sig-prename descclassname"><span class="pre">pympress.util.</span></span><span class="sig-name descname"><span class="pre">get_icon_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/util.html#get_icon_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.util.get_icon_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load an image from pympress’ resources in a Gdk Pixbuf.</p>
+<dd><p>Get the path for an image from pympress’ resources</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) – The name of the icon to load</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The loaded icon</p>
+<dd class="field-even"><p>The path to the icon to load</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://lazka.github.io/pgi-docs/GdkPixbuf-2.0/classes/Pixbuf.html#GdkPixbuf.Pixbuf" title="(in GdkPixbuf 2.0 v2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pixbuf</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -4974,7 +5207,7 @@ A default backend is marked by an empty list.</p>
 <dd class="field-odd"><p>The path to the locale directory</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -4988,7 +5221,7 @@ A default backend is marked by an empty list.</p>
 <dd class="field-odd"><p>path to the log file.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -5002,7 +5235,7 @@ A default backend is marked by an empty list.</p>
 <dd class="field-odd"><p>The path to the portable configuration file.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -5024,7 +5257,7 @@ A default backend is marked by an empty list.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pympress.util.get_ui_resource_file">
 <span class="sig-prename descclassname"><span class="pre">pympress.util.</span></span><span class="sig-name descname"><span class="pre">get_ui_resource_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.glade'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/util.html#get_ui_resource_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.util.get_ui_resource_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load an UI definition file from pympress’ resources.</p>
+<dd><p>Load an UI definition file from pympress’ resources</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -5044,13 +5277,13 @@ A default backend is marked by an empty list.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pympress.util.get_user_config">
 <span class="sig-prename descclassname"><span class="pre">pympress.util.</span></span><span class="sig-name descname"><span class="pre">get_user_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/util.html#get_user_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.util.get_user_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the path to the configuration file in the user config directory.</p>
+<dd><p>Returns the path to the configuration file in the user config directory</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>path to the user configuration file.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -5083,7 +5316,7 @@ A default backend is marked by an empty list.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pympress.util.load_style_provider">
 <span class="sig-prename descclassname"><span class="pre">pympress.util.</span></span><span class="sig-name descname"><span class="pre">load_style_provider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style_provider</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pympress/util.html#load_style_provider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pympress.util.load_style_provider" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load the css and in a style provider.</p>
+<dd><p>Load the css and in a style provider</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>style_provider</strong> (<a class="reference external" href="https://lazka.github.io/pgi-docs/Gtk-3.0/classes/CssProvider.html#Gtk.CssProvider" title="(in Gtk 3.0 v3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CssProvider</span></code></a>) – The style provider in which to load CSS</p>

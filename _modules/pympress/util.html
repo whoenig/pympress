@@ -109,8 +109,6 @@
 <span class="sd">-------------------------------------------------</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -118,6 +116,7 @@
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 
 <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
     <span class="c1"># doesn’t play too well with cx_Freeze</span>
@@ -133,11 +132,6 @@
         <span class="kn">import</span> <span class="nn">winreg</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">_winreg</span> <span class="k">as</span> <span class="nn">winreg</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="ne">PermissionError</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="ne">PermissionError</span> <span class="o">=</span> <span class="ne">OSError</span>
 
 
 
@@ -184,39 +178,20 @@
 <span class="sd">        to the resource, relative to the pympress distribution</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        `str`: The path to the resource</span>
+<span class="sd">        :class:`~pathlib.Path`: The path to the resource</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">),</span> <span class="o">*</span><span class="n">path_parts</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="o">*</span><span class="n">path_parts</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">req</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">Requirement</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;pympress&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;pympress&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">path_parts</span><span class="p">))</span>
-
-
-<span class="k">def</span> <span class="nf">__get_resource_list</span><span class="p">(</span><span class="o">*</span><span class="n">path_parts</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return the list of elements in a directory based on whether its frozen or not.</span>
-
-<span class="sd">    Paths parts given should be relative to the pympress package dir.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        name (`tuple` of `str`): The directories that constitute the path to the resource,</span>
-<span class="sd">        relative to the pympress distribution</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        `list` of `str`: The paths to the resources in the directory</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;frozen&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">),</span> <span class="o">*</span><span class="n">path_parts</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">Requirement</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;pympress&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_listdir</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;pympress&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">path_parts</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s1">&#39;pympress&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">path_parts</span><span class="p">)))</span>
 
 
 <div class="viewcode-block" id="get_locale_dir"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_locale_dir">[docs]</a><span class="k">def</span> <span class="nf">get_locale_dir</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Returns the path to the locale directory.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: The path to the locale directory</span>
+<span class="sd">        :class:`~pathlib.Path`: The path to the locale directory</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;locale&#39;</span><span class="p">)</span></div>
 
@@ -225,7 +200,7 @@
     <span class="sd">&quot;&quot;&quot; Returns the path to the configuration file for a portable install (i.e. in the install root).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: The path to the portable configuration file.</span>
+<span class="sd">        :class:`~pathlib.Path`: The path to the portable configuration file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;pympress.conf&#39;</span><span class="p">)</span></div>
 
@@ -234,31 +209,31 @@
     <span class="sd">&quot;&quot;&quot; Returns the path to the configuration file containing the defaults.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        str: The path to the portable configuration file.</span>
+<span class="sd">        :class:`~pathlib.Path`: The path to the portable configuration file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;defaults.conf&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="get_user_config"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_user_config">[docs]</a><span class="k">def</span> <span class="nf">get_user_config</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot; Returns the path to the configuration file in the user config directory.</span>
+    <span class="sd">&quot;&quot;&quot; Returns the path to the configuration file in the user config directory</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        `str`: path to the user configuration file.</span>
+<span class="sd">        :class:`~pathlib.Path`: path to the user configuration file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">IS_WINDOWS</span><span class="p">:</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPDATA&#39;</span><span class="p">)</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPDATA&#39;</span><span class="p">))</span>
     <span class="k">elif</span> <span class="n">IS_MAC_OS</span><span class="p">:</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/Library/Preferences&#39;</span><span class="p">)</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;~/Library/Preferences&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;XDG_CONFIG_HOME&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.config&#39;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">base_dir</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;XDG_CONFIG_HOME&#39;</span><span class="p">,</span> <span class="s1">&#39;~/.config&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">base_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">base_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;pympress&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;.ini&#39;</span> <span class="k">if</span> <span class="n">IS_WINDOWS</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">base_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;pympress&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;.ini&#39;</span> <span class="k">if</span> <span class="n">IS_WINDOWS</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="load_style_provider"><a class="viewcode-back" href="../../pympress.html#pympress.util.load_style_provider">[docs]</a><span class="k">def</span> <span class="nf">load_style_provider</span><span class="p">(</span><span class="n">style_provider</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load the css and in a style provider.</span>
+    <span class="sd">&quot;&quot;&quot; Load the css and in a style provider</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        style_provider (:class:`~Gtk.CssProvider`): The style provider in which to load CSS</span>
@@ -266,24 +241,24 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        :class:`~Gtk.CssProvider`: The style provider with CSS loaded</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">style_provider</span><span class="o">.</span><span class="n">load_from_path</span><span class="p">(</span><span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;css&#39;</span><span class="p">,</span> <span class="s1">&#39;default.css&#39;</span><span class="p">))</span>
+    <span class="n">style_provider</span><span class="o">.</span><span class="n">load_from_path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;css&#39;</span><span class="p">,</span> <span class="s1">&#39;default.css&#39;</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">style_provider</span></div>
 
 
 <div class="viewcode-block" id="get_icon_path"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_icon_path">[docs]</a><span class="k">def</span> <span class="nf">get_icon_path</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load an image from pympress&#39; resources in a Gdk Pixbuf.</span>
+    <span class="sd">&quot;&quot;&quot; Get the path for an image from pympress&#39; resources</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name (`str`): The name of the icon to load</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        :class:`~GdkPixbuf.Pixbuf`: The loaded icon</span>
+<span class="sd">        `str`: The path to the icon to load</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;pixmaps&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;pixmaps&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="get_ui_resource_file"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_ui_resource_file">[docs]</a><span class="k">def</span> <span class="nf">get_ui_resource_file</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="s1">&#39;.glade&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load an UI definition file from pympress&#39; resources.</span>
+    <span class="sd">&quot;&quot;&quot; Load an UI definition file from pympress&#39; resources</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        name (`str`): The name of the UI to load</span>
@@ -292,7 +267,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        `str`: The full path to the glade file</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">+</span> <span class="n">ext</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">,</span> <span class="n">name</span> <span class="o">+</span> <span class="n">ext</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="list_icons"><a class="viewcode-back" href="../../pympress.html#pympress.util.list_icons">[docs]</a><span class="k">def</span> <span class="nf">list_icons</span><span class="p">():</span>
@@ -301,42 +276,40 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        `list` of `str`: The paths to the icons in the pixmaps directory</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">icons</span> <span class="o">=</span> <span class="n">__get_resource_list</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;pixmaps&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="p">[</span><span class="n">get_icon_path</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">icons</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">i</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.png&#39;</span> <span class="ow">and</span> <span class="n">i</span><span class="p">[:</span><span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;pympress-&#39;</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">__get_resource_path</span><span class="p">(</span><span class="s1">&#39;share&#39;</span><span class="p">,</span> <span class="s1">&#39;pixmaps&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;pympress-*.png&#39;</span><span class="p">)))</span></div>
 
 
 <div class="viewcode-block" id="get_log_path"><a class="viewcode-back" href="../../pympress.html#pympress.util.get_log_path">[docs]</a><span class="k">def</span> <span class="nf">get_log_path</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Returns the appropriate path to the log file in the user app dirs.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        `str`: path to the log file.</span>
+<span class="sd">        :class:`~pathlib.Path`: path to the log file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">IS_WINDOWS</span><span class="p">:</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;LOCALAPPDATA&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPDATA&#39;</span><span class="p">))</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;LOCALAPPDATA&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;APPDATA&#39;</span><span class="p">)))</span>
     <span class="k">elif</span> <span class="n">IS_MAC_OS</span><span class="p">:</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/Library/Logs&#39;</span><span class="p">)</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;~/Library/Logs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;XDG_CACHE_HOME&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.cache&#39;</span><span class="p">))</span>
+        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;XDG_CACHE_HOME&#39;</span><span class="p">,</span> <span class="s1">&#39;~/.cache&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">base_dir</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">base_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s1">&#39;pympress.log&#39;</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">base_dir</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;pympress.log&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="fileopen"><a class="viewcode-back" href="../../pympress.html#pympress.util.fileopen">[docs]</a><span class="k">def</span> <span class="nf">fileopen</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Call the right function to open files, based on the platform.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        f (`str`): path to the file to open</span>
+<span class="sd">        f (path-like): path to the file to open</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">IS_WINDOWS</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">startfile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">IS_MAC_OS</span><span class="p">:</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;xdg-open&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span></div>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s1">&#39;xdg-open&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)])</span></div>
 
 
 <div class="viewcode-block" id="hard_set_screensaver"><a class="viewcode-back" href="../../pympress.html#pympress.util.hard_set_screensaver">[docs]</a><span class="k">def</span> <span class="nf">hard_set_screensaver</span><span class="p">(</span><span class="n">disabled</span><span class="p">):</span>

@@ -116,15 +116,15 @@
 <span class="sd">Both windows are managed by the :class:`~pympress.ui.UI` class.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span><span class="p">,</span> <span class="n">pathname2url</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunsplit</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
@@ -322,6 +322,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_actions</span><span class="p">({</span>
             <span class="s1">&#39;open-file&#39;</span><span class="p">:</span>         <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_file</span><span class="p">,</span> <span class="n">parameter_type</span><span class="o">=</span><span class="nb">str</span><span class="p">),</span>
             <span class="s1">&#39;close-file&#39;</span><span class="p">:</span>        <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">close_file</span><span class="p">),</span>
+            <span class="s1">&#39;save-file&#39;</span><span class="p">:</span>         <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_file</span><span class="p">),</span>
+            <span class="s1">&#39;save-file-as&#39;</span><span class="p">:</span>      <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">save_file_as</span><span class="p">),</span>
             <span class="s1">&#39;pick-file&#39;</span><span class="p">:</span>         <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pick_file</span><span class="p">),</span>
             <span class="s1">&#39;list-recent-files&#39;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="n">change_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">populate_recent_menu</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
             <span class="s1">&#39;next-page&#39;</span><span class="p">:</span>         <span class="nb">dict</span><span class="p">(</span><span class="n">activate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">doc_goto_next</span><span class="p">),</span>
@@ -718,9 +720,9 @@
         <span class="n">about</span><span class="o">.</span><span class="n">set_copyright</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Contributors:&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">pympress</span><span class="p">[</span><span class="s1">&#39;contributors&#39;</span><span class="p">])</span>
         <span class="n">about</span><span class="o">.</span><span class="n">set_comments</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;pympress is a little PDF reader written in Python &#39;</span> <span class="o">+</span>
                              <span class="s1">&#39;using Poppler for PDF rendering and GTK for the GUI.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="o">+</span>
-                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Some preferences are saved in &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">path_to_config</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Resources are loaded from &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_locale_dir</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;The log is written to &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">util</span><span class="o">.</span><span class="n">get_log_path</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Some preferences are saved in &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">path_to_config</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Resources are loaded from &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_locale_dir</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;The log is written to &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">util</span><span class="o">.</span><span class="n">get_log_path</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span>
                            <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Media support uses </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">backend_version</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
                            <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Python version </span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">))</span>
         <span class="n">about</span><span class="o">.</span><span class="n">set_website</span><span class="p">(</span><span class="s1">&#39;https://github.com/Cimbali/pympress&#39;</span><span class="p">)</span>
@@ -747,6 +749,13 @@
 <span class="sd">            page (`int`): the page at which to start the presentation</span>
 <span class="sd">            reloading (`bool`): whether we are reloading or detecting stuff from the document</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsaved_changes</span><span class="p">(</span><span class="n">reloading</span><span class="p">):</span>
+            <span class="c1"># If we keep the unsaved changes and were prompted by automatic file change,</span>
+            <span class="c1"># stop watching for file changes in the future.</span>
+            <span class="k">if</span> <span class="n">reloading</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span><span class="o">.</span><span class="n">stop_watching</span><span class="p">()</span>
+            <span class="k">return</span>
+
         <span class="n">run_gc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">doc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_uri</span><span class="p">)</span>
@@ -850,12 +859,89 @@
 <span class="sd">            info (`int`): info on the target</span>
 <span class="sd">            time (`int`): time of the drop</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">received</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">received</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):</span>
-            <span class="n">received</span> <span class="o">=</span> <span class="n">received</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span><span class="p">):]</span>
+        <span class="n">uri_parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="k">else</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">scheme</span> <span class="o">=</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="k">if</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="k">else</span> <span class="s1">&#39;file&#39;</span>
 
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">received</span><span class="p">)</span> <span class="ow">and</span> <span class="n">received</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.pdf&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">received</span><span class="p">))</span></div>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">urlunsplit</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">pathname2url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">())))))</span></div>
+
+
+<div class="viewcode-block" id="UI.unsaved_changes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.unsaved_changes">[docs]</a>    <span class="k">def</span> <span class="nf">unsaved_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reload</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Prompt the user about what to do with changes in the document: save, discard, or cancel action</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            reload (`bool`): The unsaved changes is prompted by reloading the file</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `bool`: `True` iff we need to cancel the current action</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">has_changes</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Unsaved changes&#39;</span><span class="p">),</span> <span class="n">transient_for</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Gtk</span><span class="o">.</span><span class="n">MessageType</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">WindowPosition</span><span class="o">.</span><span class="n">CENTER</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">reload</span><span class="p">:</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">set_markup</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Save changes before closing?&#39;</span><span class="p">))</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">format_secondary_markup</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Unsaved changes will be lost&#39;</span><span class="p">))</span>
+
+            <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_SAVE</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">YES</span><span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;_Discard&#39;</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">NO</span><span class="p">)</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span>
+                <span class="n">Gtk</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">new_from_icon_name</span><span class="p">(</span><span class="s1">&#39;edit-delete&#39;</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">IconSize</span><span class="o">.</span><span class="n">BUTTON</span><span class="p">)</span><span class="o">.</span><span class="n">get_image</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CANCEL</span><span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">YES</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">set_markup</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;The open file was modified outside of pympress but you have made unsaved changes.&#39;</span><span class="p">)</span> <span class="o">+</span>
+                              <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;b&gt;&#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Overwrite changes instead of reloading?&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/b&gt;&#39;</span><span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">format_secondary_markup</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Saving changes will overwrite the changed file!&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>
+                                           <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Unsaved changes will be lost.&#39;</span><span class="p">))</span>
+
+            <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Overwrite&#39;</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">YES</span><span class="p">)</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span>
+                <span class="n">Gtk</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">new_from_icon_name</span><span class="p">(</span><span class="s1">&#39;document-save&#39;</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">IconSize</span><span class="o">.</span><span class="n">BUTTON</span><span class="p">)</span><span class="o">.</span><span class="n">get_image</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Reload&#39;</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">NO</span><span class="p">)</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span>
+                <span class="n">Gtk</span><span class="o">.</span><span class="n">Button</span><span class="o">.</span><span class="n">new_from_icon_name</span><span class="p">(</span><span class="s1">&#39;view-refresh&#39;</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">IconSize</span><span class="o">.</span><span class="n">BUTTON</span><span class="p">)</span><span class="o">.</span><span class="n">get_image</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_CANCEL</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CANCEL</span><span class="p">)</span>
+            <span class="n">dialog</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">YES</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">YES</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save_changes</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">response</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CANCEL</span> <span class="ow">or</span> <span class="p">(</span><span class="n">reload</span> <span class="ow">and</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">YES</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UI.save_file_as"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.save_file_as">[docs]</a>    <span class="k">def</span> <span class="nf">save_file_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove the current document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Use a GTK file dialog to choose file</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">FileChooserDialog</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Save as...&#39;</span><span class="p">),</span> <span class="n">transient_for</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="p">,</span>
+                                       <span class="n">action</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">FileChooserAction</span><span class="o">.</span><span class="n">SAVE</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">add_buttons</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_SAVE_AS</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">set_default_response</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">OK</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">WindowPosition</span><span class="o">.</span><span class="n">CENTER</span><span class="p">)</span>
+
+        <span class="nb">filter</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;PDF files&#39;</span><span class="p">))</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">add_mime_type</span><span class="p">(</span><span class="s1">&#39;application/pdf&#39;</span><span class="p">)</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s1">&#39;*.pdf&#39;</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+
+        <span class="nb">filter</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">FileFilter</span><span class="p">()</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;All files&#39;</span><span class="p">))</span>
+        <span class="nb">filter</span><span class="o">.</span><span class="n">add_pattern</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save_changes</span><span class="p">(</span><span class="n">dialog</span><span class="o">.</span><span class="n">get_uri</span><span class="p">())</span>
+
+        <span class="n">dialog</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="UI.pick_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.pick_file">[docs]</a>    <span class="k">def</span> <span class="nf">pick_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -887,17 +973,22 @@
         <span class="n">dialog</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="UI.error_opening_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.error_opening_file">[docs]</a>    <span class="k">def</span> <span class="nf">error_opening_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="UI.error_opening_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.error_opening_file">[docs]</a>    <span class="k">def</span> <span class="nf">error_opening_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uri</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove the current document.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            uri (`str`): the URI of the document</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Check if the path is valid</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">uri_parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;file&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Could not find the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error opening the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        <span class="n">dialog</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="n">transient_for</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="p">,</span> <span class="n">flags</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">DialogFlags</span><span class="o">.</span><span class="n">MODAL</span><span class="p">,</span>
-                                   <span class="n">message_type</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageType</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message_format</span> <span class="o">=</span> <span class="n">msg</span><span class="p">)</span>
-        <span class="n">dialog</span><span class="o">.</span><span class="n">add_buttons</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_CLOSE</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Error opening the file &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">MessageDialog</span><span class="p">(</span><span class="n">transient_for</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">p_win</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">Gtk</span><span class="o">.</span><span class="n">DialogFlags</span><span class="o">.</span><span class="n">MODAL</span><span class="p">,</span>
+                                   <span class="n">message_type</span><span class="o">=</span><span class="n">Gtk</span><span class="o">.</span><span class="n">MessageType</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="n">message_format</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">dialog</span><span class="o">.</span><span class="n">add_button</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">STOCK_CLOSE</span><span class="p">,</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">ResponseType</span><span class="o">.</span><span class="n">CLOSE</span><span class="p">)</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">WindowPosition</span><span class="o">.</span><span class="n">CENTER</span><span class="p">)</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="n">dialog</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span></div>
@@ -907,6 +998,12 @@
         <span class="sd">&quot;&quot;&quot; Remove the current document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UI.save_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.save_file">[docs]</a>    <span class="k">def</span> <span class="nf">save_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Remove the current document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save_changes</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="UI.open_file"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.open_file">[docs]</a>    <span class="k">def</span> <span class="nf">open_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
@@ -1097,7 +1194,7 @@
             <span class="n">frame</span><span class="o">.</span><span class="n">set_property</span><span class="p">(</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">next_pr</span><span class="p">)</span>
             <span class="n">da</span><span class="o">.</span><span class="n">queue_draw</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">add_annotations</span><span class="p">(</span><span class="n">page_preview</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">load_annotations</span><span class="p">(</span><span class="n">page_preview</span><span class="p">)</span>
 
         <span class="c1"># Update display -- needs to be different ?</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">update_page_numbers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">,</span> <span class="n">page_preview</span><span class="o">.</span><span class="n">label</span><span class="p">())</span>
@@ -1269,6 +1366,19 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 
+<div class="viewcode-block" id="UI.on_key_input"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.on_key_input">[docs]</a>    <span class="k">def</span> <span class="nf">on_key_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Handle key strokes at top level, only for when editing needs to bypass action accelerators</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            widget (:class:`~Gtk.Widget`):  the widget which has received the key stroke</span>
+<span class="sd">            event (:class:`~Gdk.Event`):  the GTK event, which contains the key stroke details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">key_event</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
 <div class="viewcode-block" id="UI.cancel_current_input"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.cancel_current_input">[docs]</a>    <span class="k">def</span> <span class="nf">cancel_current_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Handle the action cancelling the input, if applicable.</span>
 
@@ -1284,6 +1394,8 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">try_cancel</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">try_cancel</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -1303,8 +1415,6 @@
 
         <span class="c1"># send to spinner if it is active</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">on_scroll</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">on_scroll</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
@@ -1718,7 +1828,7 @@
                     <span class="n">size</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">()</span>
                 <span class="n">parent</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">add_annotations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">)</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">load_annotations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">))</span>
         <span class="n">gaction</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_boolean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">show_annotations</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
