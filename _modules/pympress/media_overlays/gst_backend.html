@@ -168,9 +168,9 @@
         <span class="sd">&quot;&quot;&quot; Sets the media file to be played by the widget.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            filepath (`str`): The path to the media file path</span>
+<span class="sd">            filepath (`pathlib.Path`): The path to the media file path</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">filepath</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">as_uri</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="GstOverlay.mute"><a class="viewcode-back" href="../../../pympress.html#pympress.media_overlays.gst_backend.GstOverlay.mute">[docs]</a>    <span class="k">def</span> <span class="nf">mute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>

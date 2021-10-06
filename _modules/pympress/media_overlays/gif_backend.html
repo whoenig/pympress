@@ -148,9 +148,9 @@
         <span class="sd">&quot;&quot;&quot; Sets the media file to be played by the widget.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            filepath (`str`): The path to the media file path</span>
+<span class="sd">            filepath (`pathlib.Path`): The path to the media file path</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">anim</span> <span class="o">=</span> <span class="n">GdkPixbuf</span><span class="o">.</span><span class="n">PixbufAnimation</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anim</span> <span class="o">=</span> <span class="n">GdkPixbuf</span><span class="o">.</span><span class="n">PixbufAnimation</span><span class="o">.</span><span class="n">new_from_file</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_size</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">get_iter</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 

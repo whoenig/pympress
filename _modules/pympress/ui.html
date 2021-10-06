@@ -123,8 +123,8 @@
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">gc</span>
-<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span><span class="p">,</span> <span class="n">pathname2url</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunsplit</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="kn">import</span> <span class="nn">cairo</span>
@@ -243,6 +243,8 @@
     <span class="n">shortcuts_window</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: :class:`~pympress.dialog.LayoutEditor` popup to configure the layouts of the presenter window</span>
     <span class="n">layout_editor</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~pympress.dialog.AutoPlay` popup to configure automatic playing</span>
+    <span class="n">autoplay</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="c1">#: A :class:`~Gtk.AccelGroup` to store the shortcuts</span>
     <span class="n">accel_group</span> <span class="o">=</span> <span class="kc">None</span>
@@ -344,7 +346,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">est_time</span> <span class="o">=</span> <span class="n">editable_label</span><span class="o">.</span><span class="n">EstimatedTalkTime</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span> <span class="o">=</span> <span class="n">editable_label</span><span class="o">.</span><span class="n">PageNumber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">getboolean</span><span class="p">(</span><span class="s1">&#39;presenter&#39;</span><span class="p">,</span> <span class="s1">&#39;scroll_number&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timing</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">TimingReport</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span> <span class="o">=</span> <span class="n">talk_time</span><span class="o">.</span><span class="n">TimeCounter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">est_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">AutoPlay</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span> <span class="o">=</span> <span class="n">talk_time</span><span class="o">.</span><span class="n">TimeCounter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">est_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout_editor</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">LayoutEditor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">file_watcher</span> <span class="o">=</span> <span class="n">extras</span><span class="o">.</span><span class="n">FileWatcher</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">register_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -797,6 +800,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">set_last</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">enable_labels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">has_labels</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">set_doc_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">medias</span><span class="o">.</span><span class="n">purge_media_overlays</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="o">.</span><span class="n">set_document_metadata</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">get_structure</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page_labels</span><span class="p">[:])</span>
 
@@ -861,10 +865,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">uri_parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="k">if</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="k">else</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="n">scheme</span> <span class="o">=</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="k">if</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="k">else</span> <span class="s1">&#39;file&#39;</span>
 
         <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">urlunsplit</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">pathname2url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">())))))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">swap_document</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">as_uri</span><span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="UI.unsaved_changes"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.unsaved_changes">[docs]</a>    <span class="k">def</span> <span class="nf">unsaved_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reload</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -1045,18 +1048,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">goto_page</span><span class="p">(</span><span class="n">display_page_num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="UI.goto_page"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.goto_page">[docs]</a>    <span class="k">def</span> <span class="nf">goto_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">):</span>
+<div class="viewcode-block" id="UI.goto_page"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.goto_page">[docs]</a>    <span class="k">def</span> <span class="nf">goto_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">autoplay</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Handle going to the page passed as argument</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            page (`int`): the page to which to go. Will be clipped to document pages.</span>
+<span class="sd">            autoplay (`bool`): whether this page change was triggered automatically</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">editing</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">do_page_change</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_page_change</span><span class="p">(</span><span class="n">autoplay</span><span class="o">=</span><span class="n">autoplay</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="UI.doc_goto_prev"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.doc_goto_prev">[docs]</a>    <span class="k">def</span> <span class="nf">doc_goto_prev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gaction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1146,7 +1150,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">goto_page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">pages_number</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="UI.do_page_change"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.do_page_change">[docs]</a>    <span class="k">def</span> <span class="nf">do_page_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unpause</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="UI.do_page_change"><a class="viewcode-back" href="../../pympress.html#pympress.ui.UI.do_page_change">[docs]</a>    <span class="k">def</span> <span class="nf">do_page_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unpause</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoplay</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Switch to another page and display it.</span>
 
 <span class="sd">        This is a kind of event which is supposed to be called only from the</span>
@@ -1155,6 +1159,7 @@
 <span class="sd">        Args:</span>
 <span class="sd">            is_preview (`bool`):  `True` if the page change should not update the content</span>
 <span class="sd">            unpause (`bool`):  `True` if the page change should unpause the timer, `False` otherwise</span>
+<span class="sd">            autoplay (`bool`):  `True` if the page change is triggered automatically, otherwise cancel auto play</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">is_preview</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_number</span><span class="o">.</span><span class="n">editing</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_preview</span><span class="p">:</span>
@@ -1219,6 +1224,8 @@
         <span class="c1"># Start counter if needed</span>
         <span class="k">if</span> <span class="n">unpause</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span><span class="o">.</span><span class="n">unpause</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">autoplay</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">stop_looping</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">timing</span><span class="o">.</span><span class="n">transition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">talk_time</span><span class="o">.</span><span class="n">current_time</span><span class="p">())</span></div>
 
@@ -1395,7 +1402,9 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">scribbler</span><span class="o">.</span><span class="n">try_cancel</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">try_cancel</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">stop_looping</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
         <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -1823,9 +1832,9 @@
             <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_frame_annot</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parent</span><span class="p">),</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Paned</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">Gtk</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">HORIZONTAL</span><span class="p">:</span>
-                    <span class="n">size</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">get_allocated_width</span><span class="p">()</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_allocated_width</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">size</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">()</span>
+                    <span class="n">size</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_allocated_height</span><span class="p">()</span>
                 <span class="n">parent</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">parent</span><span class="p">]</span> <span class="o">*</span> <span class="n">size</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">load_annotations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">preview_page</span><span class="p">))</span>

@@ -131,7 +131,9 @@
     <span class="c1">#: `set` of :class:`~Gtk.Widget`s that have been built by the builder, and translated</span>
     <span class="n">__built_widgets</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-    <span class="c1">#: `dict` mapping :class:`~Gtk.Paned` names to the handler ids of their size-allocate signal</span>
+    <span class="c1">#: `dict` mapping :class:`~Gtk.Paned` names to a `tuple` of (handler id of the size-allocate signal, remaining</span>
+    <span class="c1">#: number of times we allow this signal to run), and we run the signal 2 * (depth + 1) for each pane.</span>
+    <span class="c1">#: This is because size allocation is done bottom-up but each pane sets a top-down constraint.</span>
     <span class="n">pending_pane_resizes</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">_glib_type_strings</span> <span class="o">=</span> <span class="p">{</span>
@@ -296,7 +298,7 @@
             <span class="nb">setattr</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">attr</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="Builder.replace_layout"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.replace_layout">[docs]</a>    <span class="k">def</span> <span class="nf">replace_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">top_widget</span><span class="p">,</span> <span class="n">leaf_widgets</span><span class="p">,</span> <span class="n">pane_resize_handler</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Builder.replace_layout"><a class="viewcode-back" href="../../pympress.html#pympress.builder.Builder.replace_layout">[docs]</a>    <span class="k">def</span> <span class="nf">replace_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layout</span><span class="p">,</span> <span class="n">top_widget</span><span class="p">,</span> <span class="n">leaf_widgets</span><span class="p">,</span> <span class="n">pane_resize_handler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remix the layout below top_widget with the layout configuration given in &#39;layout&#39; (assumed to be valid!).</span>
 
 <span class="sd">        Args:</span>
@@ -348,8 +350,8 @@
 
                     <span class="c1"># Add on resize events</span>
                     <span class="k">if</span> <span class="n">pane_resize_handler</span><span class="p">:</span>
-                        <span class="n">w</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;notify::position&quot;</span><span class="p">,</span> <span class="n">pane_resize_handler</span><span class="p">)</span>
-                        <span class="n">w</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;button-release-event&quot;</span><span class="p">,</span> <span class="n">pane_resize_handler</span><span class="p">)</span>
+                        <span class="n">w</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;notify::position&#39;</span><span class="p">,</span> <span class="n">pane_resize_handler</span><span class="p">)</span>
+                        <span class="n">w</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;button-release-event&#39;</span><span class="p">,</span> <span class="n">pane_resize_handler</span><span class="p">)</span>
 
                     <span class="c1"># left pane is first child</span>
                     <span class="n">widgets_to_add</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()))</span>
@@ -359,15 +361,15 @@
                         <span class="n">left_pane</span>  <span class="o">=</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
                         <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">left_pane</span> <span class="o">+</span> <span class="n">right_pane</span><span class="p">)</span>
 
-                        <span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">left_pane</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">left_pane</span> <span class="o">+</span> <span class="n">right_pane</span><span class="p">)</span>
+                        <span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">left_pane</span> <span class="o">/</span> <span class="p">(</span><span class="n">left_pane</span> <span class="o">+</span> <span class="n">right_pane</span><span class="p">)</span>
                         <span class="n">pane_resize</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 
-                    <span class="n">hid</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;size-allocate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_paned</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
+                    <span class="n">hid</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;size-allocate&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">resize_paned</span><span class="p">,</span> <span class="n">pane_handle_pos</span><span class="p">[</span><span class="n">w</span><span class="p">])</span>
 
                     <span class="n">w</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="s1">&#39;GtkPaned</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="p">)))</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">hid</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="p">(</span><span class="n">hid</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
                     <span class="c1"># if more than 2 children are to be added, add the 2+ from the right side in a new child Gtk.Paned</span>
                     <span class="n">widgets_to_add</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">w_desc</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">w_desc</span><span class="p">))</span>
@@ -416,7 +418,13 @@
         <span class="n">handle_pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">relpos</span> <span class="o">*</span> <span class="n">size</span><span class="p">))</span>
         <span class="n">GLib</span><span class="o">.</span><span class="n">idle_add</span><span class="p">(</span><span class="n">paned</span><span class="o">.</span><span class="n">set_position</span><span class="p">,</span> <span class="n">handle_pos</span><span class="p">)</span>
 
-        <span class="n">paned</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">paned</span><span class="o">.</span><span class="n">get_name</span><span class="p">()))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">paned</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="n">handler_id</span><span class="p">,</span> <span class="n">sizes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pending_pane_resizes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">handler_id</span><span class="p">,</span> <span class="n">sizes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sizes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">paned</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="n">handler_id</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="kc">True</span></div>
 
 

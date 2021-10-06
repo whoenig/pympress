@@ -128,8 +128,8 @@
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span><span class="p">,</span> <span class="n">pathname2url</span>
-<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span><span class="p">,</span> <span class="n">urlunsplit</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">url2pathname</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
 
 <span class="kn">import</span> <span class="nn">gi</span>
 <span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s1">&#39;Poppler&#39;</span><span class="p">,</span> <span class="s1">&#39;0.18&#39;</span><span class="p">)</span>
@@ -778,7 +778,9 @@
 
     <span class="c1">#: Current PDF document (:class:`~Poppler.Document` instance)</span>
     <span class="n">doc</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1">#: Path to pdf</span>
+    <span class="c1">#: `str` full path to pdf</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: :class:`~pathlib.Path` to pdf if uri is a file: URI</span>
     <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1">#: Number of pages in the document</span>
     <span class="n">nb_pages</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -819,6 +821,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">pop_doc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">uri</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">uri_parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;file&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">uri_parts</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;file&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Pages number</span>
         <span class="k">if</span> <span class="n">pop_doc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -942,6 +952,9 @@
 <span class="sd">        Args:</span>
 <span class="sd">            dest_uri (`str` or `None`): The URI where to save the file, or None to save in-place</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
         <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages_cache</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">():</span>
                 <span class="n">page</span><span class="o">.</span><span class="n">page</span><span class="o">.</span><span class="n">add_annot</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span>
@@ -951,15 +964,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># We can’t overwrite the current file directly, so create a temporary file and then overwrite</span>
-            <span class="n">uri_parts</span> <span class="o">=</span> <span class="n">urlsplit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uri</span><span class="p">)</span>
-            <span class="n">cur_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">url2pathname</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
-            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">cur_path</span><span class="o">.</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">cur_path</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">cur_path</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="s1">&#39;wb&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">stem</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span>
                                              <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">temp_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">urlunsplit</span><span class="p">(</span><span class="n">uri_parts</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">pathname2url</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">temp_path</span><span class="p">))))):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">temp_path</span><span class="o">.</span><span class="n">as_uri</span><span class="p">()):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">changes</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">temp_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">cur_path</span><span class="p">)</span>
+                <span class="n">temp_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages_cache</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">page</span><span class="o">.</span><span class="n">get_annotations</span><span class="p">():</span>
@@ -1208,11 +1219,12 @@
         <span class="sd">&quot;&quot;&quot; Returns full path, extrapolated from a path relative to this document or to the current directory.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            filename (:class:`~pathlib.Path`):  Name of the file or relative path to it</span>
+<span class="sd">            filename (:class:`~pathlib.Path` or `str`):  Name of the file or relative path to it</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            :class:`~pathlib.Path`: the full path to the file or None if it doesn&#39;t exist</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">is_absolute</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">filename</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
 

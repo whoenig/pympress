@@ -227,6 +227,8 @@
 <span class="sd">    Args:</span>
 <span class="sd">        builder (builder.Builder): The builder from which to load widgets.</span>
 <span class="sd">        ett (`int`): the estimated time for the talk, in seconds.</span>
+<span class="sd">        timing_tracker: (:class:`~pympress.extras.TimingReport`): to inform when the slides change</span>
+<span class="sd">        autoplay: (:class:`~pympress.dialog.AutoPlay`): to adjust the timer display if we’re auto-playing/looping slides</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">#: Elapsed time :class:`~Gtk.Label`</span>
     <span class="n">label_time</span> <span class="o">=</span> <span class="kc">None</span>
@@ -251,13 +253,16 @@
 
     <span class="c1">#: The :class:`~pympress.extras.TimingReport`, needs to know when the slides change</span>
     <span class="n">timing_tracker</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#: The :class:`~pympress.dialog.AutoPlay`, to adjust the timer display if we’re auto-playing/looping slides</span>
+    <span class="n">autoplay</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">ett</span><span class="p">,</span> <span class="n">timing_tracker</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">,</span> <span class="n">ett</span><span class="p">,</span> <span class="n">timing_tracker</span><span class="p">,</span> <span class="n">autoplay</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TimeCounter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">label_colorer</span> <span class="o">=</span> <span class="n">TimeLabelColorer</span><span class="p">(</span><span class="n">builder</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="s1">&#39;label_time&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ett</span> <span class="o">=</span> <span class="n">ett</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timing_tracker</span> <span class="o">=</span> <span class="n">timing_tracker</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span> <span class="o">=</span> <span class="n">autoplay</span>
 
         <span class="n">builder</span><span class="o">.</span><span class="n">load_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -299,6 +304,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">+=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">restart_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timing_tracker</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">is_looping</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">pause</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
@@ -317,6 +325,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">paused</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pause_action</span><span class="o">.</span><span class="n">change_state</span><span class="p">(</span><span class="n">GLib</span><span class="o">.</span><span class="n">Variant</span><span class="o">.</span><span class="n">new_boolean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">))</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">is_looping</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">unpause</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
@@ -328,6 +339,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">restart_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">is_looping</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">start_looping</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_time</span><span class="p">()</span></div>
 
 
@@ -351,14 +364,18 @@
 <span class="sd">            `bool`: `True` (to prevent the timer from stopping)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Current time</span>
-        <span class="n">clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%X</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &quot;%H:%M:%S&quot;</span>
+        <span class="n">clock</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%X</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># &#39;%H:%M:%S&#39;</span>
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_time</span><span class="p">()</span>
 
         <span class="c1"># Time elapsed since the beginning of the presentation</span>
-        <span class="n">elapsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_time</span><span class="p">()</span>
-        <span class="n">display_time</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:02}</span><span class="s2">:</span><span class="si">{:02}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">elapsed</span><span class="p">),</span> <span class="mi">60</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">is_looping</span><span class="p">():</span>
+            <span class="n">first</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">loop</span><span class="p">,</span> <span class="n">delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoplay</span><span class="o">.</span><span class="n">get_page_range</span><span class="p">()</span>
+            <span class="n">display_time</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1"> / </span><span class="si">{:.1f}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;Loop&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">loop</span> <span class="k">else</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Auto&#39;</span><span class="p">),</span> <span class="n">first</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">delay</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">display_time</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:02}</span><span class="s1">:</span><span class="si">{:02}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">elapsed</span><span class="p">),</span> <span class="mi">60</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
-            <span class="n">display_time</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;(paused)&quot;</span><span class="p">)</span>
+            <span class="n">display_time</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;(paused)&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">label_time</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">display_time</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label_clock</span><span class="o">.</span><span class="n">set_text</span><span class="p">(</span><span class="n">clock</span><span class="p">)</span>
