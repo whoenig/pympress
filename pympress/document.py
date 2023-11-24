@@ -505,7 +505,7 @@ class Page(object):
 
             media_options = {'type': media.get_mime_type()}
             try:
-                media_options['autoplay'] = media.get_auto_play()
+                media_options['autoplay'] = True #media.get_auto_play()
                 media_options['show_controls'] = media.get_show_controls()
                 media_options['repeat'] = media.get_repeat_count() - 1
                 # NB: no poster in Poppler’s MediaParameters

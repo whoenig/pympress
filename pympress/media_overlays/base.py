@@ -112,7 +112,7 @@ class VideoOverlay(builder.Builder):
         self.end_pos = float('inf') if media.duration == 0 else media.start_pos + media.duration
         self._set_file(media.filename)
 
-        self.autoplay = media.autoplay
+        self.autoplay = True #media.autoplay
         self.repeat = media.repeat
         # TODO: handle poster
 

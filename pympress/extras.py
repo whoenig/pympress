@@ -292,7 +292,7 @@ class Media(object):
                 self._media_overlays[media_id] = (v_da_c, v_da_p)
 
             self._media_overlays[media_id][0].mute(True)
-            self._media_overlays[media_id][1].mute(False)
+            self._media_overlays[media_id][1].mute(True)
 
             if any(overlay.autoplay for overlay in self._media_overlays[media_id]):
                 GLib.idle_add(self.play, media_id)
